@@ -130,6 +130,12 @@ footer {
     font-size: 40px;
 }
 
+#eco #detail {
+    padding-top: 10px;
+    border: 1px solid #A0A0A0;
+    height: 280px;
+}
+
 #eco #detail .circle {
     display: inline-block;
     width: 50px;
@@ -152,9 +158,27 @@ footer {
 
 #eco #detail h3 {
     font-size: 40px;
-    padding-left: 150px;
+    padding-left: 130px;
+    line-height: 1.3;
 }
 
+#eco #leaderboard {
+    border: 1px solid #A0A0A0;
+    padding: 20px 50px;
+}
+
+#eco #leaderboard h1 {
+    line-height: 1.3;
+}
+
+#eco #leaderboard h1 .light {
+    font-weight: 300;
+    margin-left: 20px;
+}
+
+#eco #leaderboard h1 .green {
+    color: #299A41;
+}
 
 
 
