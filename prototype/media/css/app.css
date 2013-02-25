@@ -130,6 +130,30 @@ footer {
     font-size: 40px;
 }
 
+#eco #detail .circle {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    margin-right: 25px;
+    position: relative;
+    top: 12px;
+}
+
+#eco #detail .green {
+    background-color: #299A41;
+}
+
+#eco #detail .red {
+    background-color: #DE001E;
+}
+
+#eco #detail h3 {
+    font-size: 40px;
+    padding-left: 150px;
+}
 
 
 
