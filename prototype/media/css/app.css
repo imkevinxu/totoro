@@ -54,6 +54,13 @@ header h1 {
     font-weight: 500;
 }
 
+header #hello {
+    color: #999;
+    font-size: 27px;
+    position: relative;
+    left: 12px;
+}
+
 header #right_nav {
     position: absolute;
     right: 15px;
@@ -103,8 +110,25 @@ footer {
     left: -60px;
 }
 
+/* -----------------------------------------
+   MAIN STYLES
+----------------------------------------- */
 
+#eco #rating {
+    text-align: center;
+    border: 1px solid #A0A0A0;
+    height: 280px;
+    padding: 30px 0;
+}
 
+#eco #rating h1 {
+    font-size: 100px;
+    color: #299A41;
+}
+
+#eco #rating h3 {
+    font-size: 40px;
+}
 
 
 

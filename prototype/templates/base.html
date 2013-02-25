@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-    <title>{% block title %}Prototype{% endblock %}</title>
+    <title>{% block title %}OmniDrive{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     {# TODO: <link rel="icon" type="image/x-icon" href="{{ MEDIA_URL }}images/favicon.png" /> #}
 
@@ -69,8 +69,10 @@
             <header class="row">
                 <div class="twelve columns">
                     <a href="{% url index %}" id="headerlogo">
-                        <h1>Prototype</h1>
+                        <h1>OmniDrive</h1>
                     </a>
+
+                    <span id="hello">Ann Brooks</span>
 
                     <div id="right_nav">
                         {% if request.user.is_authenticated() %}
@@ -95,7 +97,7 @@
 
             <footer class="row">
                 <div class="twelve columns">
-                    &copy; Prototype
+                    &copy; Team Totoro 2013
                 </div>
             </footer>
 
