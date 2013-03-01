@@ -68,7 +68,7 @@
 
             <header class="row">
                 <div class="twelve columns">
-                    <a href="{% url index %}" id="headerlogo">
+                    <a href="{% url 'index' %}" id="headerlogo">
                         <h1>OmniDrive</h1>
                     </a>
 
@@ -76,9 +76,9 @@
 
                     <div id="right_nav">
                         {% if request.user.is_authenticated() %}
-                            <a href="{% url logout %}" class="small secondary button"><i class="foundicon-lock"></i>Logout</a>
+                            <a href="{% url 'logout' %}" class="small secondary button"><i class="foundicon-lock"></i>Logout</a>
                         {% else %}
-                            <a href="{% url login %}" class="small secondary button"><i class="accessibility foundicon-key"></i>Log In</a>
+                            <a href="{% url 'login' %}" class="small secondary button"><i class="accessibility foundicon-key"></i>Log In</a>
                         {% endif %}
                     </div>
                     <hr/>

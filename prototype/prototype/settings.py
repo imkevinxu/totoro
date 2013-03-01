@@ -1,7 +1,10 @@
 # Django settings for prototype project.
 
-import os
+import os, sys
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
+# Hack to load the facebook app in this repo
+sys.path.append(os.path.join(os.getcwd(), '..'))
 
 DEBUG = False
 if os.environ.get('DEBUG') in ['True', 'False']:
@@ -120,7 +123,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 from django.core.urlresolvers import reverse_lazy
 
-LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGIN_REDIRECT_URL = reverse_lazy('home')
 
 LOGIN_URL = '/login/'
 
@@ -152,7 +155,19 @@ INSTALLED_APPS = (
     'coffin',
     'debug_toolbar',
     'prototype_app',
+    'facebook',
+)
 
+# Facebook settings are set via environment variables
+FACEBOOK_APP_ID ='343797409063510'
+FACEBOOK_APP_SECRET = 'baede3c66c5b8f9a5410aa767673d3b2'
+FACEBOOK_SCOPE = 'email,publish_stream'
+
+AUTH_PROFILE_MODULE = 'facebook.FacebookProfile'
+
+AUTHENTICATION_BACKENDS = (
+    'facebook.backend.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 # A sample logging configuration. The only tangible logging
