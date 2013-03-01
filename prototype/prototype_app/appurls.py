@@ -21,11 +21,11 @@ urlpatterns = patterns('',
 	url(r'^$', 'prototype_app.views.home'),
 	url(r'^facebook/login$', 'facebook.views.login'),
 	url(r'^facebook/authentication_callback$', 'facebook.views.authentication_callback'),
-	url(r'^logout$', 'django.contrib.auth.views.logout'),
+	#url(r'^logout$', 'django.contrib.auth.views.logout'),
 
 	url(r'^admin/', include(admin.site.urls)),
 
     #url(r'^login/$', smartlogin, kwargs=dict(template_name='login.html'), name='login'),
-    #url(r'^logout/$', logout, kwargs=dict(next_page='/'), name='logout'),
+    url(r'^logout/$', logout, kwargs=dict(next_page='/'), name='logout'),
 
 )
