@@ -11,7 +11,7 @@ def generatePrefixSum(orig_list):
         prefix_list.append(prefix_list[-1] + number)
     return prefix_list
         
-# Given a list of values for a function, approximates an integral for the function over the given range
+# Given a list of values for a function, approximates an integral for the function over the given range.
 def integrate_linear(list):
     if len(list) == 1:
         return list[0]
@@ -22,7 +22,10 @@ def integrate_linear(list):
     ret = ret - list[-1] / 2.
     return ret
 
-# Given a list of values for a function, approximates an integral for the square of the function over the given range  
+# Given a list of values for a function, approximates an integral for the square of the function over the given range.
+# The point of being able to integrate the square of the function is that, because the function y=x^2 is convex,
+# we can use the integral of a quadratic equation to more cleanly penalize higher values over lower values.
+# Examples of this (TODO for Nick, implement these): Braking pressure, pedal force, air conditioning.
 def integrate_quadratic(list):
     if len(list) == 1:
         return list[0] * list[0]
@@ -32,11 +35,30 @@ def integrate_quadratic(list):
         b = list[i+1] - list[i]
         ret = ret + (a * (a + b)) + (b * b) / 3.
     return ret
-    
+
+OPTIMAL_SPEED = 60 # TODO (Nick): Verify that units of speed are miles per hour. Blocked on receiving data.
+# This function will return a score from 0 to 100 indicating how much excessive speeding
+# was taking place. We assume that the optimal mpg is attained when the car is driving
+# at 60 mph - this is not an unreasonable assumption given other cars.
+# Score will be a real number between 0 and 100.
+def score_engine_overspeeding(vehicle_speed_list):
+    speed_penalty = 0
+    curr_streak = 0
+    for number in vehicle_speed_list:
+        if number > OPTIMAL_SPEED:
+            curr_streak = curr_streak + 1
+        else:
+            curr_streak = 0
+        speed_penalty = speed_penalty + curr_streak
+    score = 100. * (len(vehicle_speed_list) - speed_penalty) / len(vehicle_speed_list)
+    if score < 0:
+        score = 0.0
+    return score
+
 IDLING_ENGINE_THRESHOLD = 1 # TODO (Nick): Make sure that this makes sense. Blocked on receiving data.
 # This function will return a score from 0 to 100 indicating how much idling took place.
 # Longer sequences of idling will be more strongly penalized than shorter bursts of idling.
-# Score will be a real number between 0 and 100
+# Score will be a real number between 0 and 100.
 def score_idling(engine_speed_list):
     idling_penalty = 0
     curr_streak = 0
