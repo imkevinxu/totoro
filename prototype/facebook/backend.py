@@ -38,7 +38,8 @@ class FacebookBackend:
             # No existing user
 
             # Not all users have usernames
-            username = fb_profile.get('username', fb_profile['email'].split('@')[0])
+            #username = fb_profile.get('username', fb_profile['email'].split('@')[0])
+            username = fb_profile.get('username', fb_profile['id'])
 
             if getattr(settings, 'FACEBOOK_FORCE_SIGNUP', False):
                 # No existing user, use anonymous
