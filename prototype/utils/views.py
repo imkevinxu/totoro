@@ -49,4 +49,28 @@ def score_idling(engine_speed_list):
     score = 100. * (len(engine_speed_list) - idling_penalty) / len(engine_speed_list)
     if score < 0:
         score = 0.0
-    return score    
+    return score
+   
+# This function will return a score from 0 to 100 indicating how intelligent the
+# driver is in terms of speeding up preemptively to avoid having to hold down the
+# accelerator harder when going up hills
+# This function will return a score between 0 and 100. Scores are likely to be
+# very high, since the worst case happens when all the force is applied over
+# all the gradient (a poor assumption). 
+# ASSUMPTIONS: Positive gradient means uphill. Verifying this is blocked on seeing data.
+# TODO (Nick): Make the formula more advanced than a simple dot product. Determine
+# an appropriate lookahead range and more strongly penalize when drivers do not
+# approach gradients properly. This may be blocked on doing an actual drive ourselves
+# to see what is reasonable for lookahead range.
+def score_thinking_ahead(pedal_force_list, gradient_list):
+    assert len(pedal_force_list) == len(gradient_list)
+    total_gradient = 0
+    total_force = 0
+    badness = 0
+    for i in range(0, len(pedal_force_list)):
+        badness = badness + pedal_force_list[i] * abs(gradient_list[i])
+        total_force = total_force + pedal_force_list[i]
+        total_gradient = total_gradient + abs(gradient_list[i])
+    return 100. * (1. - badness / (total_force * 1. * total_gradient))
+
+
