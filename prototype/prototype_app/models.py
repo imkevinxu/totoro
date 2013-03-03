@@ -14,18 +14,18 @@ class Base(models.Model):
         abstract = True
 
 class User(models.Model):
-	created_at = models.DateTimeField(auto_now_add=True)
-	name = models.CharField(max_length=256)
-	user_id = models.IntegerField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=256)
+    user_id = models.IntegerField(max_length=100)
 
 class DriveData(models.Model):
-	timestamp = models.DateTimeField()
-	user_id = models.IntegerField(max_length=100, default=0)
-	odometer = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-	vehicle_speed = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-	steering_wheel_angle = models.DecimalField(max_digits=10, decimal_places=2, default=0)	
-	air_conditioning = models.IntegerField(max_length=10, default=0)
-	#mpg = models.DecimalField(max_digits=10, decimal_places=2)
+    timestamp = models.DateTimeField()
+    user_id = models.IntegerField(max_length=100, default=0)
+    odometer = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    vehicle_speed = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    steering_wheel_angle = models.DecimalField(max_digits=10, decimal_places=2, default=0)    
+    air_conditioning = models.IntegerField(max_length=10, default=0)
+    #mpg = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 # class Data(Base):

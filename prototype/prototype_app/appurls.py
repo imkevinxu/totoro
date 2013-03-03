@@ -16,14 +16,14 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^index$', 'prototype_app.views.index'),
 
-	#url(r'^$', 'prototype_app.views.index', name='index'),
+    #url(r'^$', 'prototype_app.views.index', name='index'),
 
-	url(r'^$', 'prototype_app.views.home'),
-	url(r'^facebook/login$', 'facebook.views.login'),
-	url(r'^facebook/authentication_callback$', 'facebook.views.authentication_callback'),
-	#url(r'^logout$', 'django.contrib.auth.views.logout'),
+    url(r'^$', 'prototype_app.views.home'),
+    url(r'^facebook/login$', 'facebook.views.login'),
+    url(r'^facebook/authentication_callback$', 'facebook.views.authentication_callback'),
+    #url(r'^logout$', 'django.contrib.auth.views.logout'),
 
-	url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 
     #url(r'^login/$', smartlogin, kwargs=dict(template_name='login.html'), name='login'),
     url(r'^logout/$', logout, kwargs=dict(next_page='/'), name='logout'),
