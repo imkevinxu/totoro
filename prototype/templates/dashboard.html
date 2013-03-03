@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ super }}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block content %}
+
+<div id="eco" class="row">
+    <div class="twelve columns">
+
+        <div class="row">
+            <div class="four columns">
+                <div id="rating">
+                    <h3>Eco-Rating</h3>
+                    <h1 class="eco-rating">24</h1>
+                </div>
+            </div>
+
+            <div class="eight columns">
+                <div id="detail">
+                    <h3><span class="green circle"></span>Gas Emissions</h3>
+                    <h3><span class="red circle"></span>Cruising speed</h3>
+                    <h3><span class="green circle"></span>Electricty Usage</h3>
+                </div>
+            </div>
+        </div>
+
+        <br/><br/>
+
+        <div class="row">
+            <div class="twelve columns">
+                <div id="leaderboard">
+                    <div class="ranking">
+                        <h1>1. <span class="light">Patrick Parr</span></h1>
+                    </div>
+                    <div class="ranking">
+                        <h1>2. <span class="light">Erin Holman</span></h1>
+                    </div>
+                    <div class="ranking">
+                        <h1>3. <span class="light green">Ann Brooks</span></h1>
+                    </div>
+                    <div class="ranking">
+                        <h1>4. <span class="light">David Anderson</span></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}{% endblock %}
