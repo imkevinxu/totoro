@@ -45,36 +45,39 @@ def average_linear_value(list):
 def average_quadratic_value(list):
     return integrate_quadratic(list) / (len(list) * len(list))
 
-WEIGHTING_FACTOR = 1
+PEDAL_WEIGHTING_FACTOR = 1
+BRAKING_PRESSURE_WEIGHTING_FACTOR = 1
+AIR_CONDITIONING_WEIGHTING_FACTOR = 1
+SUN_INTENSITY_WEIGHTING_FACTOR = 1
 # TODO (Nick): The following four functions are all currently unweighted, and
 # are likely to produce very high scores in their current form. We may decide
 # to increase the penalty consequently if it is remarkably hard to get a low
-# score. This can be done by increasing the WEIGHTING_FACTOR. Determining a
-# good value of the WEIGHTING_FACTOR constant is blocked on observing data.
+# score. This can be done by increasing the WEIGHTING_FACTORs. Determining a
+# good value of the WEIGHTING_FACTORs constant is blocked on observing data.
 
 # This function will return a score from 0 to 100 indicating how much excessive
 # pedal force is being applied.
 # Score will be a real number between 0 and 100.
 def score_pedal_force(pedal_force_list):
-    return max(0.0, 100 - WEIGHTING_FACTOR * WEIGHTING_FACTOR * average_quadratic_value(pedal_force_list))
+    return max(0.0, 100 - PEDAL_WEIGHTING_FACTOR * average_quadratic_value(pedal_force_list))
 
 # This function will return a score from 0 to 100 indicating how much excessive
 # braking pressure is being applied.
 # Score will be a real number between 0 and 100. 
 def score_braking_pressure(braking_pressure_list):
-    return max(0.0, 100 - WEIGHTING_FACTOR * average_quadratic_value(braking_pressure_list))
+    return max(0.0, 100 - BRAKING_PRESSURE_WEIGHTING_FACTOR * average_quadratic_value(braking_pressure_list))
     
 # This function will return a score from 0 to 100 indicating how much excessive
 # air conditioning is being used.
 # Score will be a real number between 0 and 100.    
 def score_air_conditoning(air_conditoning_list):
-    return max(0.0, 100 - WEIGHTING_FACTOR * average_quadratic_value(air_conditoning_list))
+    return max(0.0, 100 - AIR_CONDITIONING_WEIGHTING_FACTOR * average_quadratic_value(air_conditoning_list))
     
 # This function will return a score from 0 to 100 indicating how intense the
 # sun is when driving (more intense sunlight leads to less economical driving)
 # Score will be a real number between 0 and 100.    
 def score_sun_intensity(sun_intensity_list):
-    return max(0.0, 100 - WEIGHTING_FACTOR * average_quadratic_value(sun_intensity_list))
+    return max(0.0, 100 - SUN_INTENSITY_WEIGHTING_FACTOR * average_quadratic_value(sun_intensity_list))
 
 OPTIMAL_SPEED = 60 # TODO (Nick): Verify that units of speed are miles per hour. Blocked on receiving data.
 # This function will return a score from 0 to 100 indicating how much excessive speeding
