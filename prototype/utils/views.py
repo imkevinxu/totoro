@@ -11,3 +11,13 @@ def generatePrefixSum(orig_list):
         prefix_list.append(prefix_list[-1] + number)
     return prefix_list
         
+# Given a list of values for a function, approximates an integral for the function over the given range
+def integrate_linear(list):
+    if len(list) == 1:
+        return list[0]
+    ret = 0
+    for number in list:
+        ret = ret + number
+    ret = ret - list[0] / 2.
+    ret = ret - list[-1] / 2.
+    return ret        
