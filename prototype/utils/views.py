@@ -20,4 +20,14 @@ def integrate_linear(list):
         ret = ret + number
     ret = ret - list[0] / 2.
     ret = ret - list[-1] / 2.
-    return ret        
+    return ret
+    
+def integrate_quadratic(list):
+    if len(list) == 1:
+        return list[0] * list[0]
+    ret = 0
+    for i in range(0, len(list) - 1):
+        a = list[i]
+        b = list[i+1] - list[i]
+        ret = ret + (a * (a + b)) + (b * b) / 3.
+    return ret
