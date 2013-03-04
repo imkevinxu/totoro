@@ -25,7 +25,7 @@ import csv, random, time
 #@login_required
 def index(request):
 	facebook_profile = request.user.get_profile().get_facebook_profile()
-	read_csv()
+	# read_csv()
 	#dates hard coded for now
 	start_time = datetime.strptime('Thu Feb 28 23:13:32 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
 	end_time = datetime.strptime('Thu Feb 28 23:25:39 PST 2013', '%a %b %d %H:%M:%S %Z %Y')

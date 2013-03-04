@@ -23,7 +23,7 @@ class DriveData(models.Model):
 	user_id = models.IntegerField(max_length=100, default=0)
 	odometer = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 	vehicle_speed = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-	steering_wheel_angle = models.DecimalField(max_digits=10, decimal_places=2, default=0)	
+	steering_wheel_angle = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 	air_conditioning = models.IntegerField(max_length=10, default=0)
 	#mpg = models.DecimalField(max_digits=10, decimal_places=2)
 
