@@ -40,10 +40,10 @@ def read_csv():
     for row in cr:
         if counter != 0:
             new_row = DriveData()
-               new_row.timestamp = datetime.strptime(row[0], '%a %b %d %H:%M:%S %Z %Y')
-               new_row.vehicle_speed = row[4]
-               new_row.save()
-           counter+=1
+            new_row.timestamp = datetime.strptime(row[0], '%a %b %d %H:%M:%S %Z %Y')
+            new_row.vehicle_speed = row[4]
+            new_row.save()
+        counter+=1
 
 def home(request):
     return render(request, 'home.html', {'facebook_profile': None})
