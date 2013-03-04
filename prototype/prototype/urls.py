@@ -13,6 +13,9 @@ urlpatterns = patterns('',
     ## App URL include
     url(r'', include('prototype_app.appurls')),
 
+    # Simulation URL include
+    url(r'simulations/', include('simulations.urls')),
+
     ## Static Links
     # url(r'^', TemplateView.as_view(template_name='index.html'), name='index'),
 

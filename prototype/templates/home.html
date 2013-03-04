@@ -1,0 +1,17 @@
+<div>
+    <h1>Facebook Test</h1>
+    {% if user.is_authenticated %}
+    <h2>You are logged in as: {{ user }}</h2>
+    <a href="/logout">Logout</a>
+    <hr />
+    <h2>User info</h2>
+    <img src="http://graph.facebook.com/{{ user.get_profile.facebook_id }}/picture" /><br />
+    <!--<pre>{{ facebook_profile|pprint }}</pre>-->
+    {% else %}
+    <a href="/facebook/login">Login via Facebook</a>
+    {% endif %}
+    <hr />
+    <a href="/admin">Admin</a>
+</div>
+
+
