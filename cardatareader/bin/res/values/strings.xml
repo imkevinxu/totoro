@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">CarDataReader</string>
+    <string name="title_data_detail">Data Detail</string>
+    <string name="title_data_list">Data</string>
+
+</resources>
