@@ -3,9 +3,15 @@ import java.util.*;
 public class DataGenerator {
 	private static final Random rng = new Random();
 
+	// current speed
 	private static double currentSpeed;
+	// current acceleration
 	private static double acceleration;
-
+	// current pressure on brake pedal
+	private static double brakingPressure;
+	// current pressure on accelerator
+	private static double pedalForce;
+	
 	private static PrintWriter pw;
 	
 	public static void main(String[] args) {
@@ -16,21 +22,25 @@ public class DataGenerator {
 			currentSpeed = 0; // kilometers per hour
 			acceleration = 0;
 			double goalSpeed = 0;
-			int numLeft = 0;
-			for(int line = 0; line < NUM_LINES; line++, numLeft--)	{
-				if(numLeft == 0)	{
+			int numSpeedTurnsLeft = 0;
+			for(int line = 0; line < NUM_LINES; line++, numSpeedTurnsLeft--)	{
+				if(numSpeedTurnsLeft == 0)	{
 					goalSpeed = 150 * rng.nextDouble();
-					numLeft = 50+rng.nextInt(100);
+					numSpeedTurnsLeft = 50+rng.nextInt(100);
 				}
 				double accelInc = getNextAccel(goalSpeed);
 				acceleration += accelInc;
 				if(currentSpeed + acceleration < 0)	{
 					currentSpeed = 0;
 					acceleration = 0;
+					brakingPressure = 0;
+					pedalForce = 0;
 				}
 				else	{
 					currentSpeed += acceleration;
 					currentSpeed = Math.max(0, currentSpeed);
+					brakingPressure = Math.max(0, -accelInc);
+					pedalForce = Math.max(0, accelInc);
 				}
 				print();
 			}
@@ -44,7 +54,12 @@ public class DataGenerator {
 	}
 
 	private static void print()	{
-		pw.printf("{\"speed\": %.10f, \"accel\": %.10f}\n", currentSpeed, acceleration);
+		pw.printf("{");
+		pw.printf("\"speed\": %.10f, ", currentSpeed);
+		pw.printf("\"accel\": %.10f, ", acceleration);
+		pw.printf("\"brake\": %.10f, ", brakingPressure);
+		pw.printf("\"pedal\": %.10f", pedalForce);
+		pw.println("}");
 	}
 	
 	private static final double ACCEL_SCALING_FACTOR = 0.005;
