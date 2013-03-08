@@ -13,7 +13,9 @@ public class DataGenerator {
 	private static double pedalForce;
 	// current A/C
 	private static double airConditioning;
-
+	// current steering
+	private static double steering;
+	
 	private static PrintWriter pw;
 
 	public static void main(String[] args) {
@@ -24,6 +26,7 @@ public class DataGenerator {
 			currentSpeed = 0; // kilometers per hour
 			acceleration = 0;
 			airConditioning = 0;
+			steering = 0;
 			double goalSpeed = 0;
 			int numSpeedTurnsLeft = 0;
 			for(int line = 0; line < NUM_LINES; line++, numSpeedTurnsLeft--)	{
@@ -46,6 +49,7 @@ public class DataGenerator {
 					pedalForce = Math.max(0, accelInc);
 				}
 				airConditioning += getNextAC();
+				steering += getNextSteering();
 				print();
 			}
 		}
@@ -57,13 +61,20 @@ public class DataGenerator {
 		}
 	}
 
+	private static final double STEERING_SCALE = 0.01;
+	
+	private static double getNextSteering() {
+		return 10 * rng.nextGaussian() - STEERING_SCALE * steering;
+	}
+
 	private static void print()	{
 		pw.printf("{");
 		pw.printf("\"speed\": %.10f, ", currentSpeed);
 		pw.printf("\"accel\": %.10f, ", acceleration);
 		pw.printf("\"brake\": %.10f, ", brakingPressure);
 		pw.printf("\"pedal\": %.10f, ", pedalForce);
-		pw.printf("\"ac\": %.10f", airConditioning);
+		pw.printf("\"ac\": %.10f, ", airConditioning);
+		pw.printf("\"steering\": %.10f", steering);
 		pw.println("}");
 	}
 
@@ -76,9 +87,6 @@ public class DataGenerator {
 	private static final double ACCEL_SCALING_FACTOR = 0.005;
 
 	private static final double ACCEL_CORRECTION = 0.1;
-
-
-
 
 	private static double getNextAccel(double goalSpeed) {
 		double randomChange = ACCEL_SCALING_FACTOR * Math.abs(rng.nextGaussian()) * (goalSpeed - currentSpeed);
