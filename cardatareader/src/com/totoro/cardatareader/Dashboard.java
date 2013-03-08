@@ -1,27 +1,24 @@
 package com.totoro.cardatareader;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.UUID;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.totoro.cardatareader.util.SystemUiHider;
 
@@ -32,6 +29,22 @@ import com.totoro.cardatareader.util.SystemUiHider;
  * @see SystemUiHider
  */
 public class Dashboard extends Activity {
+	
+	private static final String TAG = "Dashboard";
+    private static final boolean D = true;
+	
+    // Message types sent from the BluetoothChatService Handler
+    public static final int MESSAGE_STATE_CHANGE = 1;
+    public static final int MESSAGE_READ = 2;
+    public static final int MESSAGE_DEVICE_NAME = 3;
+    public static final int MESSAGE_TOAST = 4;
+    
+    public static final String DEVICE_NAME = "device_name";
+    public static final String TOAST = "toast";
+    
+    private BluetoothServices mBluetoothServices = null;
+    private BluetoothAdapter mBluetoothAdapter = null;
+	
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -133,22 +146,38 @@ public class Dashboard extends Activity {
 		// while interacting with the UI.
 		findViewById(R.id.dummy_button).setOnTouchListener(
 				mDelayHideTouchListener);
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
 		
-		
-		// Bluetooth Enable
-		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		if (mBluetoothAdapter == null) {
-		    Button bluetooth_button = (Button) findViewById(R.id.togglebutton01);
-		    bluetooth_button.setVisibility(View.GONE);
-		}
-		
+		if(D) Log.e(TAG, "++ ON START ++");
 		if (!mBluetoothAdapter.isEnabled()) {
-		    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-		    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-		}
-		
-		// Bluetooth Paired Devices
-		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        // Otherwise, setup the chat session
+        } else {
+            if (mBluetoothServices == null) setupBluetooth();
+        }
+	}
+	
+	@Override
+    public synchronized void onResume() {
+        super.onResume();
+        if(D) Log.e(TAG, "+ ON RESUME +");
+
+        if (mBluetoothServices != null) {
+            if (mBluetoothServices.getState() == BluetoothServices.STATE_NONE) {
+            	mBluetoothServices.start();
+            }
+        }
+    }
+	
+	private void setupBluetooth() {
+        Log.d(TAG, "setupBluetooth()");
+        
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 		// If there are paired devices
 		ArrayList<String> mArrayList = new ArrayList<String>();
 		BluetoothDevice obd_device = null;
@@ -161,22 +190,52 @@ public class Dashboard extends Activity {
 		    }
 		}
 		
-		// Device Connection
-		if (obd_device != null) {
-			ConnectThread t = new ConnectThread(obd_device);
-			t.start();
-			
-		} else {
-            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-		}
-		
 		ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mArrayList);
-		setContentView(R.layout.activity_dashboard);
 		ListView lv = (ListView)findViewById(R.id.listView1);
 		lv.setAdapter(mArrayAdapter);
-	}
+
+        // Initialize the BluetoothChatService to perform bluetooth connections
+        mBluetoothServices = new BluetoothServices(this, mHandler);
+    }
+	
+	
+    // The Handler that gets information back from the BluetoothServices
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.what) {
+            case 0:
+            	byte[] readBuf = (byte[]) msg.obj;
+                // construct a string from the valid bytes in the buffer
+                String readMessage = new String(readBuf, 0, msg.arg1);
+                
+                EditText et = (EditText)findViewById(R.id.editText1);
+                et.setText(readMessage);
+                // TODO: must send to some endpoint in the space
+                break;
+            }
+        }
+    };
+	
+    @Override
+    public synchronized void onPause() {
+        super.onPause();
+        if(D) Log.e(TAG, "- ON PAUSE -");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(D) Log.e(TAG, "-- ON STOP --");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Stop the Bluetooth chat services
+        if (mBluetoothServices != null) mBluetoothServices.stop();
+        if(D) Log.e(TAG, "--- ON DESTROY ---");
+    }
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -186,7 +245,6 @@ public class Dashboard extends Activity {
 				bluetooth_button.setVisibility(View.GONE);
 			}
 		}
-		
 	}
 
 	@Override
@@ -230,116 +288,4 @@ public class Dashboard extends Activity {
 		mHideHandler.removeCallbacks(mHideRunnable);
 		mHideHandler.postDelayed(mHideRunnable, delayMillis);
 	}
-	
-	private void manageConnectedSocket(BluetoothSocket socket) {
-		DataCollectionThread t = new DataCollectionThread(socket);
-		t.start();
-	}
-	
-	private class ConnectThread extends Thread {
-	    private final BluetoothSocket mmSocket;
-	    private final BluetoothDevice mmDevice;
-	    
-	    private final UUID DEVICE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	 
-	    public ConnectThread(BluetoothDevice device) {
-	        // Use a temporary object that is later assigned to mmSocket,
-	        // because mmSocket is final
-	        BluetoothSocket tmp = null;
-	        mmDevice = device;
-	 
-	        // Get a BluetoothSocket to connect with the given BluetoothDevice
-	        try {
-	            // MY_UUID is the app's UUID string, also used by the server code
-	            tmp = device.createRfcommSocketToServiceRecord(DEVICE_UUID);
-	        } catch (IOException e) { }
-	        mmSocket = tmp;
-	    }
-	 
-	    public void run() {
-	        // Cancel discovery because it will slow down the connection
-	        // mBluetoothAdapter.cancelDiscovery();
-	 
-	        try {
-	            // Connect the device through the socket. This will block
-	            // until it succeeds or throws an exception
-	            mmSocket.connect();
-	        } catch (IOException connectException) {
-	            // Unable to connect; close the socket and get out
-	            try {
-	                mmSocket.close();
-	            } catch (IOException closeException) { }
-	            return;
-	        }
-	 
-	        // Do work to manage the connection (in a separate thread)
-	        manageConnectedSocket(mmSocket);
-	    }
-	 
-	    /** Will cancel an in-progress connection, and close the socket */
-	    public void cancel() {
-	        try {
-	            mmSocket.close();
-	        } catch (IOException e) { }
-	    }
-	}
-	
-	
-	private class DataCollectionThread extends Thread {
-	    private final BluetoothSocket mmSocket;
-	    private final InputStream mmInStream;
-	 
-	    public DataCollectionThread(BluetoothSocket socket) {
-	        mmSocket = socket;
-	        InputStream tmpIn = null;
-	 
-	        // Get the input and output streams, using temp objects because
-	        // member streams are final
-	        try {
-	            tmpIn = socket.getInputStream();
-	        } catch (IOException e) { }
-	 
-	        mmInStream = tmpIn;
-	    }
-	 
-	    public void run() {
-	        byte[] buffer = new byte[1024];  // buffer store for the stream
-	        int bytes; // bytes returned from read()
-	 
-	        // Keep listening to the InputStream until an exception occurs
-	        while (true) {
-	            try {
-	                // Read from the InputStream
-	                bytes = mmInStream.read(buffer);
-	                // Send the obtained bytes to the UI activity
-	                mHandler.obtainMessage(0, bytes, -1, buffer)
-	                        .sendToTarget();
-	            } catch (IOException e) {
-	                break;
-	            }
-	        }
-	    }
-	 
-	    /* Call this from the main activity to shutdown the connection */
-	    public void cancel() {
-	        try {
-	            mmSocket.close();
-	        } catch (IOException e) { }
-	    }
-	}
-	
-    // The Handler that gets information back from the BluetoothChatService
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch(msg.what) {
-            case 0:
-            	byte[] readBuf = (byte[]) msg.obj;
-                // construct a string from the valid bytes in the buffer
-                String readMessage = new String(readBuf, 0, msg.arg1);
-                
-                // TODO: must send to some endpoint in the space
-            }
-        }
-    };
 }

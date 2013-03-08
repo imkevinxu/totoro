@@ -57,11 +57,26 @@
                 android:textOn="Scanning Bluetooth" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/listView1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="412dp" >
-        </ListView>
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+	        <ListView
+	            android:id="@+id/listView1"
+	            android:layout_width="match_parent"
+	            android:layout_height="129dp" >
+	        </ListView>
+
+	        <EditText
+	            android:id="@+id/editText1"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10" >
+
+	            <requestFocus />
+	        </EditText>
+            
+        </LinearLayout>
 
     </FrameLayout>
 
