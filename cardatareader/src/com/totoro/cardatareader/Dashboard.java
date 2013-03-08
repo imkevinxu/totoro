@@ -3,6 +3,12 @@ package com.totoro.cardatareader;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -19,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.totoro.cardatareader.util.SystemUiHider;
 
@@ -41,6 +48,8 @@ public class Dashboard extends Activity {
     
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
+    
+    private static final String URL_ENDPOINT = "http://www.blah.com/blah.php";
     
     private BluetoothServices mBluetoothServices = null;
     private BluetoothAdapter mBluetoothAdapter = null;
@@ -146,6 +155,13 @@ public class Dashboard extends Activity {
 		// while interacting with the UI.
 		findViewById(R.id.dummy_button).setOnTouchListener(
 				mDelayHideTouchListener);
+		
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 	}
 	
 	@Override
@@ -153,6 +169,7 @@ public class Dashboard extends Activity {
 		super.onStart();
 		
 		if(D) Log.e(TAG, "++ ON START ++");
+		
 		if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
@@ -180,13 +197,11 @@ public class Dashboard extends Activity {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 		// If there are paired devices
 		ArrayList<String> mArrayList = new ArrayList<String>();
-		BluetoothDevice obd_device = null;
 		if (pairedDevices.size() > 0) {
 		    // Loop through paired devices
 		    for (BluetoothDevice device : pairedDevices) {
 		        // Add the name and address to an array adapter to show in a ListView
 		        mArrayList.add(device.getName() + "\n" + device.getAddress());
-		        if (device.getName() == "OBDII") obd_device = device;
 		    }
 		}
 		
@@ -211,11 +226,29 @@ public class Dashboard extends Activity {
                 
                 EditText et = (EditText)findViewById(R.id.editText1);
                 et.setText(readMessage);
-                // TODO: must send to some endpoint in the space
+                sendData(readMessage);
                 break;
             }
         }
     };
+	
+	private void sendData(String data)
+	{
+	     // 1) Connect via HTTP. 2) Encode data. 3) Send data.
+	    try
+	    {
+	        HttpClient httpclient = new DefaultHttpClient();
+	        HttpPost httppost = new HttpPost(URL_ENDPOINT);
+	        httppost.setEntity(new StringEntity(data));
+	        HttpResponse response = httpclient.execute(httppost);
+	        Log.i("postData", response.getStatusLine().toString());
+	            //Could do something better with response.
+	    }
+	    catch(Exception e)
+	    {
+	        Log.e("log_tag", "Error:  "+e.toString());
+	    }  
+	}
 	
     @Override
     public synchronized void onPause() {
