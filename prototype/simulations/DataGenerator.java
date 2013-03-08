@@ -15,6 +15,8 @@ public class DataGenerator {
 	private static double airConditioning;
 	// current steering
 	private static double steering;
+	// odometer
+	private static double odometer = 0;
 	
 	private static PrintWriter pw;
 
@@ -27,6 +29,7 @@ public class DataGenerator {
 			acceleration = 0;
 			airConditioning = 0;
 			steering = 0;
+			odometer = 0;
 			double goalSpeed = 0;
 			int numSpeedTurnsLeft = 0;
 			for(int line = 0; line < NUM_LINES; line++, numSpeedTurnsLeft--)	{
@@ -50,6 +53,7 @@ public class DataGenerator {
 				}
 				airConditioning += getNextAC();
 				steering += getNextSteering();
+				odometer += currentSpeed / 3600;
 				print();
 			}
 		}
@@ -74,7 +78,8 @@ public class DataGenerator {
 		pw.printf("\"brake\": %.10f, ", brakingPressure);
 		pw.printf("\"pedal\": %.10f, ", pedalForce);
 		pw.printf("\"ac\": %.10f, ", airConditioning);
-		pw.printf("\"steering\": %.10f", steering);
+		pw.printf("\"steering\": %.10f, ", steering);
+		pw.printf("\"odometer\": %.10f", odometer);
 		pw.println("}");
 	}
 
