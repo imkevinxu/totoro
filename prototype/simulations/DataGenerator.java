@@ -11,9 +11,11 @@ public class DataGenerator {
 	private static double brakingPressure;
 	// current pressure on accelerator
 	private static double pedalForce;
-	
+	// current A/C
+	private static double airConditioning;
+
 	private static PrintWriter pw;
-	
+
 	public static void main(String[] args) {
 		final int NUM_LINES = 100000; // how many lines of data you want
 		pw = null;
@@ -21,6 +23,7 @@ public class DataGenerator {
 			pw = new PrintWriter(new BufferedWriter(new FileWriter("data.txt")));
 			currentSpeed = 0; // kilometers per hour
 			acceleration = 0;
+			airConditioning = 0;
 			double goalSpeed = 0;
 			int numSpeedTurnsLeft = 0;
 			for(int line = 0; line < NUM_LINES; line++, numSpeedTurnsLeft--)	{
@@ -42,6 +45,7 @@ public class DataGenerator {
 					brakingPressure = Math.max(0, -accelInc);
 					pedalForce = Math.max(0, accelInc);
 				}
+				airConditioning += getNextAC();
 				print();
 			}
 		}
@@ -58,14 +62,24 @@ public class DataGenerator {
 		pw.printf("\"speed\": %.10f, ", currentSpeed);
 		pw.printf("\"accel\": %.10f, ", acceleration);
 		pw.printf("\"brake\": %.10f, ", brakingPressure);
-		pw.printf("\"pedal\": %.10f", pedalForce);
+		pw.printf("\"pedal\": %.10f, ", pedalForce);
+		pw.printf("\"ac\": %.10f", airConditioning);
 		pw.println("}");
 	}
-	
+
+	private static final double AC_SCALING = 0.01;
+
+	private static double getNextAC()	{
+		return Math.max(-airConditioning, rng.nextGaussian() - AC_SCALING * airConditioning);
+	}
+
 	private static final double ACCEL_SCALING_FACTOR = 0.005;
 
 	private static final double ACCEL_CORRECTION = 0.1;
-	
+
+
+
+
 	private static double getNextAccel(double goalSpeed) {
 		double randomChange = ACCEL_SCALING_FACTOR * Math.abs(rng.nextGaussian()) * (goalSpeed - currentSpeed);
 		acceleration -= ACCEL_CORRECTION * Math.abs(rng.nextGaussian()) * acceleration;
