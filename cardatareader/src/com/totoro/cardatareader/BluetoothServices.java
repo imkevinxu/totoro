@@ -39,10 +39,9 @@ public class BluetoothServices {
 	}
 	
 	private synchronized void setState(int state) {
-        // if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
+        if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
         mState = state;
 
-        // Give the new state to the Handler so the UI Activity can update
         mHandler.obtainMessage(Dashboard.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
     }
 	
@@ -51,9 +50,8 @@ public class BluetoothServices {
     }
 	
 	public synchronized void start() {
-        // if (D) Log.d(TAG, "start");
+        if (D) Log.d(TAG, "start");
 
-        // Cancel any thread attempting to make a connection
         if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
         if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
 
@@ -61,7 +59,7 @@ public class BluetoothServices {
     }
 	
 	public synchronized void connect(BluetoothDevice device, boolean secure) {
-        // if (D) Log.d(TAG, "connect to: " + device);
+        if (D) Log.d(TAG, "connect to: " + device);
 
         // Cancel any thread attempting to make a connection
         if (mState == STATE_CONNECTING) {
@@ -71,7 +69,6 @@ public class BluetoothServices {
         // Cancel any thread currently running a connection
         if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
 
-        // Start the thread to connect with the given device
         mConnectThread = new ConnectThread(device);
         mConnectThread.start();
         setState(STATE_CONNECTING);
@@ -148,8 +145,6 @@ public class BluetoothServices {
             mmDevice = device;
             BluetoothSocket tmp = null;
 
-            // Get a BluetoothSocket for a connection with the
-            // given BluetoothDevice
             try {
                 tmp = device.createRfcommSocketToServiceRecord(DEVICE_UUID);
             } catch (IOException e) {
@@ -159,7 +154,7 @@ public class BluetoothServices {
         }
 
         public void run() {
-            //Log.i(TAG, "BEGIN mConnectThread");
+            Log.i(TAG, "BEGIN mConnectThread");
             setName("ConnectThread");
 
             // Always cancel discovery because it will slow down a connection
