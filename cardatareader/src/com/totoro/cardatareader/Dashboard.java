@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -46,7 +48,7 @@ public class Dashboard extends Activity {
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
     
-    private static final String URL_ENDPOINT = "http://www.blah.com/blah.php";
+    private static final String URL_ENDPOINT = "http://omnidrive.herokuapp.com/load";
     
     private BluetoothServices mBluetoothServices = null;
     private BluetoothAdapter mBluetoothAdapter = null;
@@ -138,11 +140,13 @@ public class Dashboard extends Activity {
 	private void sendData(String data)
 	{
 	     // 1) Connect via HTTP. 2) Encode data. 3) Send data.
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("data", data));
 	    try
 	    {
 	        HttpClient httpclient = new DefaultHttpClient();
 	        HttpPost httppost = new HttpPost(URL_ENDPOINT);
-	        httppost.setEntity(new StringEntity(data));
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	        HttpResponse response = httpclient.execute(httppost);
 	        Log.i("postData", response.getStatusLine().toString());
 	            //Could do something better with response.
