@@ -24,7 +24,6 @@ public class BluetoothServices {
 	private ConnectThread mConnectThread;
 	private ConnectedThread mConnectedThread;
 	
-	
 	private final UUID DEVICE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	
 	public static final int STATE_NONE = 0;       // we're doing nothing
@@ -58,7 +57,7 @@ public class BluetoothServices {
         setState(STATE_LISTEN);
     }
 	
-	public synchronized void connect(BluetoothDevice device, boolean secure) {
+	public synchronized void connect(BluetoothDevice device) {
         if (D) Log.d(TAG, "connect to: " + device);
 
         // Cancel any thread attempting to make a connection
@@ -86,13 +85,6 @@ public class BluetoothServices {
         // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
-
-        // Send the name of the connected device back to the UI Activity
-        Message msg = mHandler.obtainMessage(Dashboard.MESSAGE_DEVICE_NAME);
-        Bundle bundle = new Bundle();
-        bundle.putString(Dashboard.DEVICE_NAME, device.getName());
-        msg.setData(bundle);
-        mHandler.sendMessage(msg);
 
         setState(STATE_CONNECTED);
     }
