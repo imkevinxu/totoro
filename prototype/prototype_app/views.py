@@ -7,9 +7,8 @@ from django.core import serializers
 from django.core.context_processors import csrf
 from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
-from coffin.shortcuts import get_object_or_404, \
-   redirect
-from django.shortcuts import render, render_to_response
+from coffin.shortcuts import render_to_response, get_object_or_404, render, \
+    redirect, render_to_string
 from django.template import loader, RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Avg
@@ -23,11 +22,18 @@ from datetime import datetime
 
 import csv, random, time
 
+def home(request):
+    facebook_profile = None
+    return render(request, 'home.html', locals())
+    #return render_to_response('home.html', { 'facebook_profile': None }, context_instance=RequestContext(request))
+
 #@login_required
-def index(request):
+def dashboard(request):
     facebook_profile = request.user.get_profile().get_facebook_profile()
     #match_user_profile(facebook_profile['id'])
     #read_csv()
+    if len(DriveData.objects.all()) == 0:
+        read_csv()
     #dates hard coded for now
     start_time = datetime.strptime('Thu Feb 28 23:13:32 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
     end_time = datetime.strptime('Thu Feb 28 23:25:39 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
@@ -66,10 +72,6 @@ def read_csv():
             new_row.save()
         counter+=1
 
-def home(request):
-    return render(request, 'home.html', {'facebook_profile': None})
-    #return render_to_response('home.html', { 'facebook_profile': None }, context_instance=RequestContext(request))
-
 def generate_dashboard(request):
     username = request.user.username
     #hard coded for now
@@ -107,7 +109,7 @@ def integrate_quadratic(list):
     return ret
 
 # Given a list of values, returns the average value of the square of the function,
-# after normalizing for length of the trip. 
+# after normalizing for length of the trip.
 def average_quadratic_value(list):
     return integrate_quadratic(list) / (len(list) * len(list))
 

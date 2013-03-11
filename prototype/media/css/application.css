@@ -1,0 +1,139 @@
+.center {
+    text-align: center;
+}
+
+.navbar {
+    margin-bottom: 0;
+    border-bottom: 1px solid #F4F4F4;
+}
+.navbar-inner {
+    background-image: none;
+}
+
+.navbar .container {
+    width: 940px;
+}
+
+.navbar .brand {
+    text-decoration: none;
+    font-size: 32px;
+    color: #E74C3C;
+}
+
+.navbar .last .brand {
+    float: right;
+    color: #34495e;
+}
+
+.navbar .last .brand img {
+    margin-left: 10px;
+    margin-top: -10px;
+    height: 32px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    border-radius: 16px;
+}
+
+.hero {
+    text-align: center;
+    background: #ECF0F1 url(/media/images/cars.png);
+    height: 400px;
+    -webkit-animation: bgscroll 20s infinite linear;
+    -moz-animation: bgscroll 20s infinite linear;
+    -ms-animation: bgscroll 20s infinite linear;
+    -o-animation: bgscroll 20s infinite linear;
+    animation: bgscroll 20s infinite linear;
+    margin-bottom: 32px;
+}
+
+.hero .row {
+    margin-top: 120px;
+}
+
+.hero h1 {
+    font-size: 64px;
+    margin-bottom: 32px;
+    /*color: #E74C3C;*/
+}
+
+.hero .btn-large {
+    font-size: 24px;
+    padding-top: 19px;
+    padding-bottom: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.demo img {
+    width: 125px;
+}
+
+footer {
+     margin-top: 64px;
+     padding-bottom: 32px;
+}
+
+#dashboard {
+    margin-top: 32px;
+    text-align: center;
+}
+
+#dashboard .row {
+    margin-bottom: 20px;
+}
+
+#dashboard .span3 {
+    border: 3px solid #34495E;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px 0 20px;
+}
+
+#dashboard h3 {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background-color: #16A085;
+    color: white;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    margin-top: 10px;
+}
+
+#dashboard h3 span {
+    top: 28px;
+    position: relative;
+}
+
+/*////////////////////////////////////////////////
+--------------------------------------------------
+*   Animations
+--------------------------------------------------
+////////////////////////////////////////////////*/
+
+@-webkit-keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
+
+@-moz-keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
+
+@-ms-keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
+
+@-o-keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
+
+@keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
