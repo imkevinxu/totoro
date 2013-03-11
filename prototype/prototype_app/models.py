@@ -25,8 +25,10 @@ class DriveData(models.Model):
     vehicle_speed = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     steering_wheel_angle = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     air_conditioning = models.IntegerField(max_length=10, default=0)
+    pedal_force = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     mpg = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-
+    altitude = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    engine_rpm = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 # class Data(Base):
 #     data = models.CharField(blank=True, null=True, max_length=255)

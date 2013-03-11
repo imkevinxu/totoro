@@ -21,11 +21,15 @@ class Migration(SchemaMigration):
         db.create_table('prototype_app_drivedata', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('timestamp', self.gf('django.db.models.fields.DateTimeField')()),
-            ('user_id', self.gf('django.db.models.fields.IntegerField')(max_length=100)),
-            ('odometer', self.gf('django.db.models.fields.DecimalField')(max_digits=10, decimal_places=2)),
-            ('vehicle_speed', self.gf('django.db.models.fields.DecimalField')(max_digits=10, decimal_places=2)),
-            ('steering_wheel_angle', self.gf('django.db.models.fields.DecimalField')(max_digits=10, decimal_places=2)),
-            ('air_conditioning', self.gf('django.db.models.fields.IntegerField')(max_length=10)),
+            ('user_id', self.gf('django.db.models.fields.IntegerField')(default=0, max_length=100)),
+            ('odometer', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=10, decimal_places=2)),
+            ('vehicle_speed', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=10, decimal_places=2)),
+            ('steering_wheel_angle', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=10, decimal_places=2)),
+            ('air_conditioning', self.gf('django.db.models.fields.IntegerField')(default=0, max_length=10)),
+            ('pedal_force', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=10, decimal_places=2)),
+            ('mpg', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=10, decimal_places=2)),
+            ('altitude', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=10, decimal_places=2)),
+            ('engine_rpm', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=10, decimal_places=2)),
         ))
         db.send_create_signal('prototype_app', ['DriveData'])
 
@@ -41,13 +45,17 @@ class Migration(SchemaMigration):
     models = {
         'prototype_app.drivedata': {
             'Meta': {'object_name': 'DriveData'},
-            'air_conditioning': ('django.db.models.fields.IntegerField', [], {'max_length': '10'}),
+            'air_conditioning': ('django.db.models.fields.IntegerField', [], {'default': '0', 'max_length': '10'}),
+            'altitude': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '10', 'decimal_places': '2'}),
+            'engine_rpm': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '10', 'decimal_places': '2'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'odometer': ('django.db.models.fields.DecimalField', [], {'max_digits': '10', 'decimal_places': '2'}),
-            'steering_wheel_angle': ('django.db.models.fields.DecimalField', [], {'max_digits': '10', 'decimal_places': '2'}),
+            'mpg': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '10', 'decimal_places': '2'}),
+            'odometer': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '10', 'decimal_places': '2'}),
+            'pedal_force': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '10', 'decimal_places': '2'}),
+            'steering_wheel_angle': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '10', 'decimal_places': '2'}),
             'timestamp': ('django.db.models.fields.DateTimeField', [], {}),
-            'user_id': ('django.db.models.fields.IntegerField', [], {'max_length': '100'}),
-            'vehicle_speed': ('django.db.models.fields.DecimalField', [], {'max_digits': '10', 'decimal_places': '2'})
+            'user_id': ('django.db.models.fields.IntegerField', [], {'default': '0', 'max_length': '100'}),
+            'vehicle_speed': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '10', 'decimal_places': '2'})
         },
         'prototype_app.user': {
             'Meta': {'object_name': 'User'},

@@ -1,10 +1,15 @@
 {% extends "base.html" %}
-{% block title %}{{ super }}{% endblock %}
+{% block title %}{{ super() }}{% endblock %}
 {% block meta_description %}{% endblock %}
 
 {% block extra_head %}{% endblock %}
 
 {% block content %}
+<div>average speed:{{avg_speed}}</div>
+<div>average mpg:{{avg_mpg}}</div>
+<div>pedal force score:{{pedal_score}}</div>
+<div>altitude:{{avg_altitude}}</div>
+
 
 <div id="eco" class="row">
     <div class="twelve columns">
