@@ -26,7 +26,8 @@ import csv, random, time
 #@login_required
 def index(request):
     facebook_profile = request.user.get_profile().get_facebook_profile()
-    read_csv()
+    #match_user_profile(facebook_profile['id'])
+    #read_csv()
     #dates hard coded for now
     start_time = datetime.strptime('Thu Feb 28 23:13:32 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
     end_time = datetime.strptime('Thu Feb 28 23:25:39 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
@@ -34,7 +35,7 @@ def index(request):
     avg_mpg = get_average(facebook_profile['id'], 'mpg', start_time, end_time)
     pedal_score = get_average(facebook_profile['id'], 'pedal_force', start_time, end_time)
 
-   # avg_altitude = get_average(facebook_profile['id'], 'altitude', start_time, end_time)
+    avg_altitude = get_average(facebook_profile['id'], 'altitude', start_time, end_time)
     #ac_list = list(DriveData.values_list('air_conditioning', flat=True))
     #ac_score = score_air_conditioning(ac_list)
     #pedal_list = list(DriveData.objects.only("pedal_force"))
@@ -44,6 +45,9 @@ def index(request):
 
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))
+
+#def match_user_profile(id):
+
 
 def read_csv():
     #DriveData.objects.all().delete()
@@ -57,8 +61,8 @@ def read_csv():
             new_row.air_conditioning = row[13] #data
             new_row.pedal_force = row[18]
             new_row.mpg = row[14]
-            #new_row.altitude = row[6]
-            #new_row.engine_rpm = row[15]
+            new_row.altitude = row[6]
+            new_row.engine_rpm = row[15]
             new_row.save()
         counter+=1
 
