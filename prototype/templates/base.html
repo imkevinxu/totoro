@@ -63,9 +63,8 @@
 <body class="body">
 
     {# Content #}
-    <div class="row">
-        <div class="twelve columns">
 
+        <div class="top-wrapper">
             <header class="row">
                 <div class="twelve columns">
                     <a href="" id="headerlogo">
@@ -78,13 +77,12 @@
                         {% if request.user.is_authenticated %}
                             <a href="{% load url from future %}{% url 'logout' %}" class="small secondary button"><i class="foundicon-lock"></i>Logout</a>
                         {% else %}
-                            <a href="" class="small secondary button"><i class="accessibility foundicon-key"></i>Log In</a>
+                            <a href="/facebook/login" class="small secondary button"><i class="accessibility foundicon-key"></i>Log In</a>
                         {% endif %}
                     </div>
-                    <hr/>
-
                 </div>
             </header>
+        </div>
 
             <!-- PROMPT IE 6 USERS TO INSTALL CHROME FRAME. REMOVE THIS IF YOU SUPPORT IE 6.
             chromium.org/developers/how-tos/chrome-frame-getting-started -->
@@ -101,8 +99,6 @@
                 </div>
             </footer>
 
-        </div>
-    </div>
     {# End Content #}
 
     <!-- jQuery 1.8.2 -->

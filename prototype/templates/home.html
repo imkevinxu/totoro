@@ -1,17 +1,38 @@
-<div>
-    <h1>Facebook Test</h1>
-    {% if user.is_authenticated %}
-    <h2>You are logged in as: {{ user }}</h2>
-    <a href="/logout">Logout</a>
-    <hr />
-    <h2>User info</h2>
-    <img src="http://graph.facebook.com/{{ user.get_profile.facebook_id }}/picture" /><br />
-    <!--<pre>{{ facebook_profile|pprint }}</pre>-->
+{% extends "base.html" %}
+{% block title %}{{ super }}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{#     {% if user.is_authenticated %}
+        <h2>You are logged in as: {{ user }}</h2>
+        <a href="/logout">Logout</a>
+        <hr />
+        <h2>User info</h2>
+        <img src="http://graph.facebook.com/{{ user.get_profile.facebook_id }}/picture" /><br />
+        <!--<pre>{{ facebook_profile|pprint }}</pre>-->
     {% else %}
-    <a href="/facebook/login">Login via Facebook</a>
-    {% endif %}
-    <hr />
-    <a href="/admin">Admin</a>
+        <a href="/facebook/login">Login via Facebook</a>
+    {% endif %} #}
+
+{% block content %}
+
+
+<div class="main-wrapper"></div>
+<div id="main">
+<div  class="row">
+    <div class="ten columns centered">
+
+
+                <h1>Unleash your car's data</h1>
+                <a href="/facebook/login" class="large button">Login via Facebook</a>
+
+
+
+    </div>
+</div>
 </div>
 
+{% endblock %}
 
+{% block javascript %}{% endblock %}
