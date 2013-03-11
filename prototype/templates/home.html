@@ -17,21 +17,50 @@
 
 {% block content %}
 
-
-<div class="main-wrapper"></div>
-<div id="main">
-<div  class="row">
-    <div class="ten columns centered">
-
+<div class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
 
                 <h1>Unleash your car's data</h1>
-                <a href="/facebook/login" class="large button">Login via Facebook</a>
+                <a href="/facebook/login" class="btn btn-primary btn-large">Login via Facebook</a>
 
-
-
+            </div>
+        </div>
     </div>
 </div>
+
+<div class="container">
+    <div class="row center demo">
+        <div class="span4">
+            <img src="{{ MEDIA_URL }}images/illustrations/book.png" alt="">
+            <h2>Car Analytics</h2>
+            <p>Connect OmniDrive to your car and automatically collect all your driving data to view on a beautiful dashboard</p>
+        </div>
+        <div class="span4">
+            <img src="{{ MEDIA_URL }}images/illustrations/map.png" alt="">
+            <h2>Personal Driving Map</h2>
+            <p>See a map of all the places you've driven along with personalized heat maps of traffic and scenic places to visit</p>
+        </div>
+        <div class="span4">
+            <img src="{{ MEDIA_URL }}images/illustrations/clipboard.png" alt="">
+            <h2>Become a greener driver</h2>
+            <p>Compete with your friends for badges to see who is the most greenest driver!</p>
+        </div>
+    </div>
 </div>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <h3 class="footer-title">&copy; Team Totoro 2013</h3>
+            <p>In partnership with <a href="http://www.vw.com/" target="_blank">Volkswagen</a> and <a href="http://www.stanford.edu/class/cs210/" target="_blank">Stanford CS 210</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
 
 {% endblock %}
 
