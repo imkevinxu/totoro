@@ -29,6 +29,7 @@ class DriveData(models.Model):
     mpg = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     altitude = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     engine_rpm = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    fuel_used = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 # class Data(Base):
 #     data = models.CharField(blank=True, null=True, max_length=255)

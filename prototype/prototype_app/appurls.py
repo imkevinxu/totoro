@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'^$', 'prototype_app.views.home'),
     url(r'^dashboard$', 'prototype_app.views.dashboard'),
 
-    #url(r'^$', 'prototype_app.views.index', name='index'),
+    url(r'^index$', 'prototype_app.views.index', name='index'),
 
     url(r'^facebook/login$', 'facebook.views.login'),
     url(r'^facebook/authentication_callback$', 'facebook.views.authentication_callback'),

@@ -33,7 +33,7 @@ def integrate_quadratic(list):
     for i in range(0, len(list) - 1):
         a = list[i]
         b = list[i+1] - list[i]
-        ret = ret + (a * (a + b)) + (b * b) / 3.
+        ret = ret + (float(a) * float(a + b)) + (float(b) * float(b)) / float(3.)
     return ret
 
 # Given a list of values, returns the average value of the function.
@@ -122,7 +122,7 @@ def update_score_thinking_ahead(pedal_force_datum, gradient_datum, badness, tota
 # pedal force is being applied.
 # Score will be a real number between 0 and 100.
 def score_pedal_force(pedal_force_list):
-    return max(0.0, 100 - PEDAL_WEIGHTING_FACTOR * average_quadratic_value(pedal_force_list))
+    return max(float(0.0), 100 - float(PEDAL_WEIGHTING_FACTOR) * float(average_quadratic_value(pedal_force_list)))
 
 # This function will return a score from 0 to 100 indicating how much excessive
 # braking pressure is being applied.
@@ -197,5 +197,5 @@ def score_thinking_ahead(pedal_force_list, gradient_list):
         badness = badness + pedal_force_list[i] * abs(gradient_list[i])
         total_force = total_force + pedal_force_list[i]
         total_gradient = total_gradient + abs(gradient_list[i])
-    return 100. * (1. - badness / (total_force * 1. * total_gradient))
+    return float(100.) * float(float(1.) - float(badness) / (float(total_force) * float(1.) * float(total_gradient)))
 
