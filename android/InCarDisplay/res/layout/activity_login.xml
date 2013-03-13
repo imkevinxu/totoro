@@ -50,6 +50,15 @@
                 android:layout_weight="1"
                 android:text="@string/dummy_button" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/clear_db"
+            android:paddingTop="50dp"
+            android:paddingBottom="50dp"
+            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear Database" />
     </FrameLayout>
 
 </FrameLayout>

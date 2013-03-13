@@ -1,14 +1,18 @@
 package com.totoro.incardisplay;
 
-import com.totoro.incardisplay.util.SystemUiHider;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+
+import com.totoro.incardisplay.util.SystemUiHider;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -116,6 +120,34 @@ public class Login extends Activity {
 		// while interacting with the UI.
 		findViewById(R.id.dummy_button).setOnTouchListener(
 				mDelayHideTouchListener);
+		
+		// Dummy button goes to car profile page
+		final Button dummy_button = (Button) findViewById(R.id.dummy_button);
+        dummy_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                	Intent k = new Intent(Login.this, CarProfileForm.class);
+                	startActivity(k);
+                } catch (Exception e) {
+                	
+                }
+            }
+        });
+        
+        // for test purposes: this button clears the database
+        final Button clear_db_button = (Button) findViewById(R.id.clear_db);
+        clear_db_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                	Log.i("Login", "Clear database");
+                	ProfileCarDB db = new ProfileCarDB(v.getContext());
+                	db.deleteProfile();
+                	db.close();
+                } catch (Exception e) {
+                	
+                }
+            }
+        });
 	}
 
 	@Override
