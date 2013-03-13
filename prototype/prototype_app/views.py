@@ -29,7 +29,8 @@ def home(request):
 
 #@login_required
 def dashboard(request):
-    facebook_profile = request.user.get_profile().get_facebook_profile()
+    # facebook_profile = request.user.get_profile().get_facebook_profile()
+    facebook_profile = {'id': "1374900452", "name": "Kevin Xu", "username": "imkevinxu"}
     #match_user_profile(facebook_profile['id'])
     #read_csv()
     if len(DriveData.objects.all()) == 0:
@@ -37,8 +38,8 @@ def dashboard(request):
     #dates hard coded for now
     start_time = datetime.strptime('Thu Feb 28 23:13:32 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
     end_time = datetime.strptime('Thu Feb 28 23:25:39 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
-  
-    # Averages (output is a number)  
+
+    # Averages (output is a number)
     avg_speed = get_average(facebook_profile['id'], 'vehicle_speed', start_time, end_time)
     avg_mpg = get_average(facebook_profile['id'], 'mpg', start_time, end_time)
     avg_altitude = get_average(facebook_profile['id'], 'altitude', start_time, end_time)
@@ -75,7 +76,7 @@ def dashboard(request):
 
 
 def read_csv():
-    #DriveData.objects.all().delete()
+    # DriveData.objects.all().delete()
     cr = csv.reader(open('media/data/trackLog-2013-Feb-28_23-13-08.csv', 'rb'))
     counter = 0
     for row in cr:
