@@ -1,0 +1,7 @@
+*~
+*.swp
+*.pyc
+*.class
+.DS_Store
+db.sql
+notes.txt

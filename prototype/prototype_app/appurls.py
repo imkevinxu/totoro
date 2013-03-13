@@ -14,11 +14,11 @@ admin.autodiscover()
 #    return login(request, **kwargs)
 
 urlpatterns = patterns('',
-    url(r'^index$', 'prototype_app.views.index'),
-
-    #url(r'^$', 'prototype_app.views.index', name='index'),
-
     url(r'^$', 'prototype_app.views.home'),
+    url(r'^dashboard$', 'prototype_app.views.dashboard'),
+
+    url(r'^index$', 'prototype_app.views.index', name='index'),
+
     url(r'^facebook/login$', 'facebook.views.login'),
     url(r'^facebook/authentication_callback$', 'facebook.views.authentication_callback'),
     #url(r'^logout$', 'django.contrib.auth.views.logout'),
