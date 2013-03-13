@@ -12,7 +12,7 @@ $(document).ready(function() {
     });
 
     // Init tooltips
-    $("[data-toggle=tooltip]").tooltip("show");
+    $("[data-toggle=tooltip]").tooltip();
 
     // Init tags input
     $("#tagsinput").tagsInput();
@@ -46,6 +46,15 @@ $(document).ready(function() {
     $("a[href='#']").click(function() {
         return false
     });
+
+    // $(".score").countTo({
+    //     "interval": 100,
+    //     "startNumber": 0,
+    //     "endNumber": $(self).text(),
+    // });
+
+    // $('.donut-arrow').trigger('updatePercentage', 0);
+    // $('.donut-arrow').eachtrigger('updatePercentage', $(this).data('percentage'));
 
 });
 

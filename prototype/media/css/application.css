@@ -157,8 +157,8 @@ footer {
 }
 
 #averages {
-    background-color: #E67E22;
-    border: 4px solid #E67E22;
+    background-color: #34495E;
+    border: 4px solid #34495E;
     margin-top: 20px;
     padding-left: 20px;
 }
@@ -179,6 +179,40 @@ footer {
     float: left;
     padding-top: 5px;
     padding-bottom: 20px;
+}
+
+#scores {
+    background-color: #E74C3C;
+    border: 4px solid #E74C3C;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+#scores .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#scores .data {
+    text-align: center;
+    background-color: white;
+}
+
+#scores .data .half {
+    width: 33%;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.half h2:first-child {
+    font-weight: normal;
+}
+
+a[data-toggle="tooltip"] {
+    text-decoration: none;
+    font-weight: bold;
 }
 
 /*#dashboard h3 {
