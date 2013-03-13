@@ -66,7 +66,7 @@ def dashboard(request):
     # data from the last trip
     last_trip = get_last_trip(facebook_profile['id'], start_time, end_time)
     last_trip_date = last_trip[0]
-    last_trip_duration = last_trip[1]
+    last_trip_duration = ("%d" % (last_trip[1].seconds/3600), "%d" % (last_trip[1].seconds%3600/60))
     last_trip_fuel = last_trip[2]
 
     return render(request, 'dashboard.html', locals())

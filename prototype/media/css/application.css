@@ -73,24 +73,115 @@ footer {
      padding-bottom: 32px;
 }
 
+#dashboardbody {
+    background-color: #ECF0F1;
+}
+
 #dashboard {
     margin-top: 32px;
-    text-align: center;
 }
-
-#dashboard .row {
-    margin-bottom: 20px;
-}
-
+/*
 #dashboard .span3 {
-    border: 3px solid #34495E;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
     padding: 10px 0 20px;
+    background: white;
+}*/
+
+#dashboard .modules {
+    text-align: center;
 }
 
-#dashboard h3 {
+#latest_trip {
+    background-color: #3498DB;
+    padding-left: 20px;
+    border: 4px solid #3498DB;
+}
+
+#latest_trip .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#latest_trip .data {
+    text-align: center;
+    background-color: white;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.data small {
+    font-size: 20px;
+}
+
+#latest_trip .half {
+    width: 33%;
+    display: inline-block;
+    float: left;
+}
+
+#eco-score {
+    background-color: #1ABC9C;
+    border: 4px solid #1ABC9C;
+    text-align: center;
+}
+
+#eco-score .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#eco-score .data {
+    margin-left: 0px;
+    background-color: white;
+}
+
+#eco-score .data h2 {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background-color: #1ABC9C;
+    color: white;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    margin-top: 21px;
+    margin-bottom: 20px;
+}
+
+#eco-score .data span {
+    top: 19px;
+    font-size: 34px;
+    position: relative;
+}
+
+#averages {
+    background-color: #E67E22;
+    border: 4px solid #E67E22;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+#averages .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#averages .data {
+    text-align: center;
+    background-color: white;
+}
+
+#averages .data .half {
+    width: 33%;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+/*#dashboard h3 {
     width: 100px;
     height: 100px;
     margin: 0 auto;
@@ -105,7 +196,7 @@ footer {
 #dashboard h3 span {
     top: 28px;
     position: relative;
-}
+}*/
 
 /*////////////////////////////////////////////////
 --------------------------------------------------
