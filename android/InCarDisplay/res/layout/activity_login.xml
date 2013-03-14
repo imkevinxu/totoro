@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#ECF0F1"
     tools:context=".Login" >
 
     <!--
@@ -16,11 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/dummy_content"
+        android:keepScreenOn="true"/>
+        <!--android:text="@string/dummy_content"
         android:textColor="#33b5e5"
         android:textSize="50sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"--> 
 
     <!--
          This FrameLayout insets its children based on system windows using
@@ -52,13 +52,44 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/clear_db"
-            android:paddingTop="50dp"
-            android:paddingBottom="50dp"
-            
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Clear Database" />
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:textSize="25sp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:background="#1ABC9C"
+            android:text="Login with Facebook" />
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="335dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="120dp"
+            android:ems="10"
+            android:text="@string/logo"
+            android:textColor="#E74C3C"
+            android:textSize="70sp" />
+
+        <Button
+            android:id="@+id/login_with_email"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="85dp"
+            android:background="#1ABC9C"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:text="Login with Email"
+            android:textSize="25sp" />
+
     </FrameLayout>
 
 </FrameLayout>

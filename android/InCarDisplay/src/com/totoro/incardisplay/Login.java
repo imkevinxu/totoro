@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +13,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.totoro.incardisplay.util.SystemUiHider;
 
@@ -126,20 +130,6 @@ public class Login extends Activity {
         dummy_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-                	Intent k = new Intent(Login.this, CarProfileForm.class);
-                	startActivity(k);
-                } catch (Exception e) {
-                	
-                }
-            }
-        });
-        
-        // for test purposes: this button clears the database
-        final Button clear_db_button = (Button) findViewById(R.id.clear_db);
-        clear_db_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                try {
-                	Log.i("Login", "Clear database");
                 	ProfileCarDB db = new ProfileCarDB(v.getContext());
                 	db.deleteProfile();
                 	db.close();
@@ -148,7 +138,31 @@ public class Login extends Activity {
                 }
             }
         });
+        
+        //	facebook login button!!!!
+		final Button login_button = (Button) findViewById(R.id.login_button);
+		login_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                	Intent k = new Intent(Login.this, CarProfileForm.class);
+                	startActivity(k);
+                } catch (Exception e) {
+                	
+                }
+            }
+        });
+		
+		/*final EditText logo_field = new EditText(this);
+		logo_field.setId(R.id.logo);
+		Typeface type = Typeface.createFromAsset(getAssets(), "Fonts/helveticaneue-webfont.tff");
+		logo_field.setTypeface(type);
+		logo_field.setTextColor(Color.parseColor("#E74C3C"));
+		LinearLayout ll = new LinearLayout(this);
+		ll.setBackgroundResource(R.drawable.image_name);*/
+        
 	}
+	
+	
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {

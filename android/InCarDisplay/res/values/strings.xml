@@ -41,7 +41,6 @@
     <string name="zero">0</string>
     <string name="getdata">Get Vehicle Operating Data</string>
     <string name="getcodes">Check Trouble Codes</string>
-    <string name="logo">Application Logo</string>
     <string name="voltage">Voltage</string>
     <string name="TX">TX: </string>
     <string name="RX">RX: </string>
@@ -51,9 +50,8 @@
     <string name="found">Trouble Codes Found:</string>
     <string name="erasecodes">Clear Trouble Codes</string>
     <string name="nocodesfound">No Trouble Codes Found!</string>
+    <string name="logo">OmniDrive</string>
     
-
-</resources>
     <string name="title_activity_car_profile_form">CarProfileForm</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -125,5 +123,6 @@
         <item >Volvo</item>
         
     </string-array>
+	<string name="car_title">Create a New Vehicle Profile</string>
     
 </resources>
