@@ -1,0 +1,264 @@
+.center {
+    text-align: center;
+}
+
+.navbar {
+    margin-bottom: 0;
+    border-bottom: 1px solid #F4F4F4;
+}
+.navbar-inner {
+    background-image: none;
+}
+
+.navbar .container {
+    width: 940px;
+}
+
+.navbar .brand {
+    text-decoration: none;
+    font-size: 32px;
+    color: #E74C3C;
+}
+
+.navbar .last .brand {
+    float: right;
+    color: #34495e;
+}
+
+.navbar .last .brand img {
+    margin-left: 10px;
+    margin-top: -10px;
+    height: 32px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    border-radius: 16px;
+}
+
+.hero {
+    text-align: center;
+    background: #ECF0F1 url(/media/images/cars.png);
+    height: 400px;
+    -webkit-animation: bgscroll 20s infinite linear;
+    -moz-animation: bgscroll 20s infinite linear;
+    -ms-animation: bgscroll 20s infinite linear;
+    -o-animation: bgscroll 20s infinite linear;
+    animation: bgscroll 20s infinite linear;
+    margin-bottom: 32px;
+}
+
+.hero .row {
+    margin-top: 120px;
+}
+
+.hero h1 {
+    font-size: 64px;
+    margin-bottom: 32px;
+    /*color: #E74C3C;*/
+}
+
+.hero .btn-large {
+    font-size: 24px;
+    padding-top: 19px;
+    padding-bottom: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.demo img {
+    width: 125px;
+}
+
+footer {
+     margin-top: 64px;
+     padding-bottom: 32px;
+}
+
+#dashboardbody {
+    background-color: #ECF0F1;
+}
+
+#dashboard {
+    margin-top: 32px;
+}
+/*
+#dashboard .span3 {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px 0 20px;
+    background: white;
+}*/
+
+#dashboard .modules {
+    text-align: center;
+}
+
+#latest_trip {
+    background-color: #3498DB;
+    padding-left: 20px;
+    border: 4px solid #3498DB;
+}
+
+#latest_trip .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#latest_trip .data {
+    text-align: center;
+    background-color: white;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.data small {
+    font-size: 20px;
+}
+
+#latest_trip .half {
+    width: 33%;
+    display: inline-block;
+    float: left;
+}
+
+#eco-score {
+    background-color: #1ABC9C;
+    border: 4px solid #1ABC9C;
+    text-align: center;
+}
+
+#eco-score .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#eco-score .data {
+    margin-left: 0px;
+    background-color: white;
+}
+
+#eco-score .data h2 {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background-color: #1ABC9C;
+    color: white;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    margin-top: 21px;
+    margin-bottom: 20px;
+}
+
+#eco-score .data span {
+    top: 19px;
+    font-size: 34px;
+    position: relative;
+}
+
+#averages {
+    background-color: #34495E;
+    border: 4px solid #34495E;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+#averages .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#averages .data {
+    text-align: center;
+    background-color: white;
+}
+
+#averages .data .half {
+    width: 33%;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+#scores {
+    background-color: #E74C3C;
+    border: 4px solid #E74C3C;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+#scores .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#scores .data {
+    text-align: center;
+    background-color: white;
+}
+
+#scores .data .half {
+    width: 33%;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.half h2:first-child {
+    font-weight: normal;
+}
+
+a[data-toggle="tooltip"] {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/*#dashboard h3 {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background-color: #16A085;
+    color: white;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    margin-top: 10px;
+}
+
+#dashboard h3 span {
+    top: 28px;
+    position: relative;
+}*/
+
+/*////////////////////////////////////////////////
+--------------------------------------------------
+*   Animations
+--------------------------------------------------
+////////////////////////////////////////////////*/
+
+@-webkit-keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
+
+@-moz-keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
+
+@-ms-keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
+
+@-o-keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}
+
+@keyframes bgscroll {
+    from {background-position:0 0;}
+    to {background-position:0 -520px;}
+}

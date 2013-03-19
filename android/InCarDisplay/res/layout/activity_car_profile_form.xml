@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".CarProfileForm" >
+
+    <TextView
+        android:id="@+id/editText1"
+            android:layout_width="765dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="120dp"
+            android:ems="10"
+            android:text="@string/car_title"
+            android:textSize="40sp"/>
+
+    <EditText
+        android:id="@+id/profile_model"
+        android:layout_width="300dp"
+                android:layout_marginBottom="50dp"
+        
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/profile_make"
+        android:layout_alignRight="@+id/profile_make"
+        android:layout_below="@+id/profile_make"
+        android:layout_marginTop="23dp"
+        android:ems="10"
+        android:hint="@string/enter_model"
+        android:inputType="textCapWords" />
+
+    <Button
+        android:id="@+id/form_profile_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="71dp"
+        android:text="@string/form_profile_submit" />
+
+    <EditText
+        android:id="@+id/profile_mpg"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/profile_model"
+        android:layout_below="@+id/profile_model"
+        android:ems="10"
+        android:hint="@string/enter_mpg"
+        android:inputType="numberDecimal" />
+
+    <Spinner
+        android:id="@+id/profile_year"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_alignTop="@+id/editText1"
+        android:layout_marginTop="74dp" />
+
+    <Spinner
+        android:id="@+id/profile_make"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/profile_year"
+        android:layout_below="@+id/profile_year" />
+
+</RelativeLayout>

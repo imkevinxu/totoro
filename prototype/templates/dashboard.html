@@ -1,58 +1,145 @@
 {% extends "base.html" %}
-{% block title %}{{ super }}{% endblock %}
+{% block title %}{{ super() }}{% endblock %}
 {% block meta_description %}{% endblock %}
 
 {% block extra_head %}{% endblock %}
 
+{% block bodyid %}dashboardbody{% endblock %}
+
 {% block content %}
-<div>average speed:{{avg_speed}}</div>
-<div>average mpg:{{avg_mpg}}</div>
-<div>pedal force score:{{pedal_score}}</div>
 
 
-<div id="eco" class="row">
-    <div class="twelve columns">
 
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
         <div class="row">
-            <div class="four columns">
-                <div id="rating">
-                    <h3>Eco-Rating</h3>
-                    <h1 class="eco-rating">{{avg_speed}}</h1>
-                </div>
+            <div class="span2">
+                <a class="brand" href="/">OmniDrive</a>
             </div>
+            <div class="span4 offset6 last">
+                <span class="brand">{{ facebook_profile.name }}
+                    <img src="http://graph.facebook.com/{{ facebook_profile.username }}/picture" />
+                </span>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
 
-            <div class="eight columns">
-                <div id="detail">
-                    <h3><span class="green circle"></span>Gas Emissions</h3>
-                    <h3><span class="red circle"></span>Cruising Speed</h3>
-                    <h3><span class="green circle"></span>Electricity Usage</h3>
+
+<div id="dashboard" class="container">
+    <div class="row">
+        <div class="span8">
+            <div id="latest_trip">
+                <div class="row header">
+                    <div class="span3">
+                        <h2>RECENT TRIP</h2>
+                    </div>
+                    <div class="span2 offset2">
+                        <h2 style="color:rgba(255, 255, 255, 0.7)">{{last_trip_date.strftime('%m/%d/%Y')}}</h2>
+                    </div>
+                </div>
+                <div class="row data">
+                    <div class="half">
+                        <h2>Total Miles</h2>
+                        <h3><span class="score">42.31 <small>miles</small></span></h3>
+                    </div>
+                    <div class="half">
+                        <h2>Trip Length</h2>
+                        <h3><span>50 <small>min</small> 10 <small>sec</small></span></h3>
+                    </div>
+                    <div class="half">
+                        <h2>Fuel Used</h2>
+                        <h3><span>32.12 <small>gal</small></span></h3>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <br/><br/>
-
-        <div class="row">
-            <div class="twelve columns">
-                <div id="leaderboard">
-                    <div class="ranking">
-                        <h1>1. <span class="light">Patrick Parr</span></h1>
+        <div class="span4">
+            <div id="eco-score">
+                <div class="row header">
+                    <div class="span4">
+                        <h2>ECO-SCORE</h2>
                     </div>
-                    <div class="ranking">
-                        <h1>2. <span class="light">Erin Holman</span></h1>
-                    </div>
-                    <div class="ranking">
-                        <h1>3. <span class="light green">Ann Brooks</span></h1>
-                    </div>
-                    <div class="ranking">
-                        <h1>4. <span class="light">David Anderson</span></h1>
-                    </div>
+                </div>
+                <div class="row data">
+                    <h2><span class="score">88</span></h2>
                 </div>
             </div>
         </div>
+    </div>
 
+    <div id="averages">
+        <div class="row header">
+            <div class="span3">
+                <h2>AVERAGE DATA</h2>
+            </div>
+            <div class="span5 offset3" style="text-align: right">
+                <h2 style="color:rgba(255, 255, 255, 0.7)">02/01/2013 - 02/28/2013</h2>
+            </div>
+        </div>
+        <div class="row data">
+            <div class="half">
+                <h2>Average Speed</h2>
+                <h3><span>{{avg_speed}} <small>m/s</small></span></h3>
+                <div class="donut donut-big reverse">
+                    <div class="donut-arrow" data-percentage="30"></div>
+                </div>
+            </div>
+            <div class="half">
+                <h2>Average MPG</h2>
+                <h3><span>{{avg_mpg}} <small>mpg</small></span></h3>
+                <div class="donut donut-big reverse">
+                    <div class="donut-arrow" data-percentage="80"></div>
+                </div>
+            </div>
+            <div class="half">
+                <h2>Average Altitude</h2>
+                <h3><span>{{avg_altitude}} <small>m</small></span></h3>
+                <div class="donut donut-big">
+                    <div class="donut-arrow" data-percentage="50"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="scores">
+        <div class="row header">
+            <div class="span4">
+                <h2>&#9733;&nbsp;&nbsp;&nbsp;SPECIAL SCORES</h2>
+            </div>
+            <div class="span5 offset2" style="text-align: right">
+                <h2 style="color:rgba(255, 255, 255, 0.7)">Calculated by Nick Wu</h2>
+            </div>
+        </div>
+        <div class="row data">
+            <div class="half">
+                <h2>Engine Idle Score <a href="#" data-toggle="tooltip" title="Your score is higher if you avoid engine idling">?</a></h2>
+                <h3><span>{{engine_idle_score}}</span></h3>
+                <div class="donut donut-big">
+                    <div class="donut-arrow" data-percentage="{{engine_idle_score}}"></div>
+                </div>
+            </div>
+            <div class="half">
+                <h2>Pedal Score <a href="#" data-toggle="tooltip" title="Your score is higher if you avoid pushing down on the pedal too hard">?</a></h2>
+                <h3><span>{{pedal_score}}</span></h3>
+                <div class="donut donut-big">
+                    <div class="donut-arrow" data-percentage="{{pedal_score}}"></div>
+                </div>
+            </div>
+            <div class="half">
+                <h2>Think Ahead Score <a href="#" data-toggle="tooltip" title="Your score is higher if you avoid accelerating on inclines">?</a></h2>
+                <h3><span>{{think_ahead_score|round(2, 'floor')}}</span></h3>
+                <div class="donut donut-big">
+                    <div class="donut-arrow" data-percentage="{{think_ahead_score}}"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 
 {% endblock %}
 

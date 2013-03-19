@@ -55,7 +55,7 @@ header h1 {
 }
 
 header #hello {
-    color: #999;
+    color: #fff;
     font-size: 27px;
     position: relative;
     left: 12px;
@@ -183,6 +183,60 @@ footer {
 
 
 
+
+.top-wrapper {
+    background-color: #EF4322;
+}
+
+.top-wrapper h1 {
+    color: white;
+    font-weight: 900;
+}
+
+.main-wrapper {
+    background-image: url(http://www.drivethecars.net/images2/Volkswagen-Passat_R36_2007_photo_03.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    opacity: 0.55;
+    height: 800px;
+}
+
+#main {
+      /* fallback */
+    height: 800px;
+  background-color: #2F2727;
+  background-image: url(images/radial_bg.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  /* Safari 4-5, Chrome 1-9 */
+  /* Can't specify a percentage size? Laaaaaame. */
+  background: -webkit-gradient(radial, center center, 0, center center, 460, from(#1a82f7), to(#2F2727));
+
+  /* Safari 5.1+, Chrome 10+ */
+  background: -webkit-radial-gradient(circle, rgba(47, 39, 39, 0.2), rgba(26, 0, 0, 0.9));
+
+  /* Firefox 3.6+ */
+  background: -moz-radial-gradient(circle, #1a82f7, #2F2727);
+
+  /* IE 10 */
+  background: -ms-radial-gradient(circle, #1a82f7, #2F2727);
+
+  /* Opera cannot do radial gradients yet */
+    position: relative;
+    top: -800px;
+    text-align: center;
+}
+
+#main h1 {
+    margin-top:250px;
+    color: #fff;
+    font-size: 100px;
+}
 
 
 
