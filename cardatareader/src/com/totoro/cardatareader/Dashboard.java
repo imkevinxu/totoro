@@ -46,7 +46,7 @@ public class Dashboard extends Activity {
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
     
-    private static final String URL_ENDPOINT = "http://www.blah.com/blah.php";
+    private static final String URL_ENDPOINT = "http://omnidrive.herokuapp.com/load";
     
     private BluetoothServices mBluetoothServices = null;
     private BluetoothAdapter mBluetoothAdapter = null;

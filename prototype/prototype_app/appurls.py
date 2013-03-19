@@ -15,6 +15,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^index$', 'prototype_app.views.index'),
+    url(r'^load$', 'prototype_app.views.load');
 
     #url(r'^$', 'prototype_app.views.index', name='index'),
 
