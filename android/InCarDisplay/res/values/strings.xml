@@ -124,5 +124,7 @@
     </string-array>
 	<string name="car_title">Create a New Vehicle Profile</string>
 	<string name="app_id">343797409063510</string>
+	<string name="logout">Logout</string>
+	<string name="settings">Settings</string>
     
 </resources>
