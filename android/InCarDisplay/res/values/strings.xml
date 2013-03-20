@@ -126,5 +126,7 @@
 	<string name="app_id">343797409063510</string>
 	<string name="logout">Logout</string>
 	<string name="settings">Settings</string>
+	<string name="action_people">With whom would you like to play?</string>
+	<string name="action_people_default">Select friends</string>
     
 </resources>
