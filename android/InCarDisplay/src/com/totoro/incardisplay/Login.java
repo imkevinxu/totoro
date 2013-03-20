@@ -56,6 +56,8 @@ public class Login extends Activity {
 	 */
 	private SystemUiHider mSystemUiHider;
 	
+	private Activity loginActivity;
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	  super.onActivityResult(requestCode, resultCode, data);
@@ -68,29 +70,7 @@ public class Login extends Activity {
 
 		setContentView(R.layout.activity_login);
 		
-		// start Facebook Login
-		Session.openActiveSession(this, true, new Session.StatusCallback() {
-
-			// callback when session changes state
-			@Override
-			public void call(Session session, SessionState state, Exception exception) {
-				if (session.isOpened()) {
-					// make request to the /me API
-					Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-
-					  // callback after Graph API response with user object
-					  @Override
-					  public void onCompleted(GraphUser user, Response response) {
-						  if (user != null) {
-							  TextView welcome = (TextView) findViewById(R.id.logo);
-							  welcome.setText("Hello " + user.getName() + "!");
-							}
-					  }
-					});
-				}
-			}
-		});
-
+		loginActivity = this;
 		final View controlsView = findViewById(R.id.fullscreen_content_controls);
 		final View contentView = findViewById(R.id.fullscreen_content);
 
@@ -176,14 +156,56 @@ public class Login extends Activity {
 		login_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
+            		// start Facebook Login
+            		Session.openActiveSession(loginActivity, true, new Session.StatusCallback() {
+
+            			// callback when session changes state
+            			@Override
+            			public void call(Session session, SessionState state, Exception exception) {
+            				if (session.isOpened()) {
+            					// make request to the /me API
+            					Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+
+            					  // callback after Graph API response with user object
+            					  @Override
+            					  public void onCompleted(GraphUser user, Response response) {
+            						  if (user != null) {
+            							  TextView welcome = (TextView) findViewById(R.id.logo);
+            							  welcome.setText("Hello " + user.getName() + "!");
+            							}
+            					  }
+            					});
+            				}
+            			}
+            		});
                 	Intent k = new Intent(Login.this, CarProfileForm.class);
                 	startActivity(k);
+                	
                 } catch (Exception e) {
                 	
                 }
             }
 		});
 
+		final Button logout_button = (Button) findViewById(R.id.login_with_email);
+		logout_button.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v) {
+				try {
+					if (Session.getActiveSession() != null) {
+						Session.getActiveSession().closeAndClearTokenInformation();
+						Session.getActiveSession().close();
+						Session.setActiveSession(null);
+						TextView welcome = (TextView) findViewById(R.id.logo);
+						welcome.setText("Goodbye");
+					} else {
+						TextView welcome = (TextView) findViewById(R.id.logo);
+						welcome.setText("You weren't logged in to start with");
+					}
+				} catch (Exception e) {
+					
+				}
+			}
+		});
 
 
 	}
