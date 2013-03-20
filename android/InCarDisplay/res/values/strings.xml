@@ -54,7 +54,6 @@
     
     <string name="title_activity_car_profile_form">CarProfileForm</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="enter_model">Please enter model.</string>
     <string name="enter_mpg">Please enter mpg.</string>
     <string name="form_profile_submit">Submit</string>
@@ -124,5 +123,6 @@
         
     </string-array>
 	<string name="car_title">Create a New Vehicle Profile</string>
+	<string name="app_id">343797409063510</string>
     
 </resources>

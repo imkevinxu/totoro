@@ -1,5 +1,8 @@
 package com.totoro.incardisplay;
 
+import com.facebook.*;
+import com.facebook.model.*;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -52,12 +55,41 @@ public class Login extends Activity {
 	 * The instance of the {@link SystemUiHider} for this activity.
 	 */
 	private SystemUiHider mSystemUiHider;
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	  super.onActivityResult(requestCode, resultCode, data);
+	  Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
+		
+		// start Facebook Login
+		Session.openActiveSession(this, true, new Session.StatusCallback() {
+
+			// callback when session changes state
+			@Override
+			public void call(Session session, SessionState state, Exception exception) {
+				if (session.isOpened()) {
+					// make request to the /me API
+					Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+
+					  // callback after Graph API response with user object
+					  @Override
+					  public void onCompleted(GraphUser user, Response response) {
+						  if (user != null) {
+							  TextView welcome = (TextView) findViewById(R.id.logo);
+							  welcome.setText("Hello " + user.getName() + "!");
+							}
+					  }
+					});
+				}
+			}
+		});
 
 		final View controlsView = findViewById(R.id.fullscreen_content_controls);
 		final View contentView = findViewById(R.id.fullscreen_content);
@@ -150,16 +182,10 @@ public class Login extends Activity {
                 	
                 }
             }
-        });
-		
-		/*final EditText logo_field = new EditText(this);
-		logo_field.setId(R.id.logo);
-		Typeface type = Typeface.createFromAsset(getAssets(), "Fonts/helveticaneue-webfont.tff");
-		logo_field.setTypeface(type);
-		logo_field.setTextColor(Color.parseColor("#E74C3C"));
-		LinearLayout ll = new LinearLayout(this);
-		ll.setBackgroundResource(R.drawable.image_name);*/
-        
+		});
+
+
+
 	}
 	
 	
