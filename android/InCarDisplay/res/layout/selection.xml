@@ -29,6 +29,11 @@
             android:textColor="#333"
             android:textSize="18sp" />
     </LinearLayout>
+    <ListView
+        android:id="@+id/selection_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"/>
 
     <Button
         android:id="@+id/logout"
