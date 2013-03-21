@@ -1,5 +1,7 @@
 package com.totoro.incardisplay;
 
+import com.totoro.incardisplay.ScoreboardActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +33,20 @@ public class GameSelector extends Activity {
                 }
             }
         });
+		
+		final Button back_button = (Button) findViewById(R.id.back);
+		back_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                	Intent i = new Intent(GameSelector.this, ScoreboardActivity.class);
+            		startActivityForResult(i, 0);
+                } catch (Exception e) {
+                	
+                }
+            }
+        });
+		
+
 		
 		final ImageButton green_driving_button = (ImageButton) findViewById(R.id.green_driving_button);
 		green_driving_button.setOnClickListener(new View.OnClickListener() {

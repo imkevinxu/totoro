@@ -31,6 +31,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.totoro.incardisplay.OmniDriveApplication;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
@@ -336,6 +337,7 @@ public class SelectionFragment extends Fragment {
 				// If the response is successful
 				if (session == Session.getActiveSession()) {
 					if (user != null) {
+						((OmniDriveApplication)getActivity().getApplication()).setCurrentFBUser(user);
 						// Set the id for the ProfilePictureView
 						// view that in turn displays the profile picture.
 						profilePictureView.setProfileId(user.getId());
