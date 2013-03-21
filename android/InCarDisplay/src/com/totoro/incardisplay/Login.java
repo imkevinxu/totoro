@@ -338,6 +338,18 @@ public class Login extends FragmentActivity {
 				}
 			}
 		});
+		
+		final Button next_button = (Button) findViewById(R.id.next);
+		next_button.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v) {
+				try {
+					Intent k = new Intent(Login.this, GameSelector.class);
+                	startActivity(k);
+				} catch (Exception e) {
+					
+				}
+			}
+		});
 
 	}
 	

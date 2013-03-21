@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/selection_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Which game would you like to play?"
+        android:textColor="#333"
+        android:textSize="30sp" />
+
+    <RelativeLayout
+        android:id="@+id/selection"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/start"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="18dp"
+        android:layout_weight="0.31" >
+
+        <TextView
+            android:id="@+id/selection_skill_driving_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/skill_driving_button"
+            android:layout_alignLeft="@+id/skill_driving_button"
+            android:text="Skill Driving Game"
+            android:textColor="#333"
+            android:textSize="30sp" />
+
+        <ImageButton
+            android:id="@+id/skill_driving_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="141dp"
+            android:background="#C0C0C0"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:src="@drawable/skill_driving" />
+
+        <TextView
+            android:id="@+id/selection_green_driving_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/selection_skill_driving_text"
+            android:layout_alignBottom="@+id/selection_skill_driving_text"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="150dp"
+            android:text="Green Driving Game"
+            android:textColor="#333"
+            android:textSize="30sp" />
+
+        <ImageButton
+            android:id="@+id/green_driving_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/selection_green_driving_text"
+            android:layout_alignTop="@+id/skill_driving_button"
+            android:background="#C0C0C0"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:src="@drawable/green_driving" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/start"
+        android:layout_alignBottom="@+id/start"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="18dp"
+        android:background="#1ABC9C"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        android:text="@string/back"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginRight="18dp"
+        android:background="#1ABC9C"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        android:text="@string/start"
+        android:textSize="25sp" />
+
+</RelativeLayout>

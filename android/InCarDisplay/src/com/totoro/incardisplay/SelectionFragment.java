@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -277,28 +278,7 @@ public class SelectionFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, 
-<<<<<<< HEAD
-	        ViewGroup container, Bundle savedInstanceState) {
-	    super.onCreateView(inflater, container, savedInstanceState);
-	    View view = inflater.inflate(R.layout.selection, 
-	            container, false);
-	 // Find the user's profile picture custom view
-	    profilePictureView = (ProfilePictureView) view.findViewById(R.id.selection_profile_pic);
-	    profilePictureView.setCropped(true);
 
-	    // Find the user's name view
-	    userNameView = (TextView) view.findViewById(R.id.selection_user_name);
-	    
-	    // Check for an open session
-	    Session session = Session.getActiveSession();
-	    if (session != null && session.isOpened()) {
-	        // Get the user's data
-	        makeMeRequest(session);
-	    }	                    
-
-	    
-	    return view;
-=======
 			ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.selection, 
@@ -336,7 +316,6 @@ public class SelectionFragment extends Fragment {
 		}
 
 		return view;
->>>>>>> d45a8f1d97b49ece0d5b88e187d7f27c8de9faf0
 	}
 
 	private void onSessionStateChange(final Session session, SessionState state, Exception exception) {
@@ -347,31 +326,7 @@ public class SelectionFragment extends Fragment {
 	}
 
 	private void makeMeRequest(final Session session) {
-<<<<<<< HEAD
-	    // Make an API call to get user data and define a 
-	    // new callback to handle the response.
-	    Request request = Request.newMeRequest(session, 
-	            new Request.GraphUserCallback() {
-	        @Override
-	        public void onCompleted(GraphUser user, Response response) {
-	            // If the response is successful
-	            if (session == Session.getActiveSession()) {
-	                if (user != null) {
-	                    // Set the id for the ProfilePictureView
-	                    // view that in turn displays the profile picture.
-	                    profilePictureView.setProfileId(user.getId());
-	                    // Set the Textview's text to the user's name.
-	                    userNameView.setText(user.getName());
 
-	                }
-	            }
-	            if (response.getError() != null) {
-	                // Handle errors, will do so later.
-	            }
-	        }
-	    });
-	    request.executeAsync();
-=======
 		// Make an API call to get user data and define a 
 		// new callback to handle the response.
 		Request request = Request.newMeRequest(session, 
@@ -394,6 +349,6 @@ public class SelectionFragment extends Fragment {
 			}
 		});
 		request.executeAsync();
->>>>>>> d45a8f1d97b49ece0d5b88e187d7f27c8de9faf0
 	} 
+	
 }
