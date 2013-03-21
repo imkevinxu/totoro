@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+         <TextView
+             android:id="@+id/your_score"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentLeft="true"
+             android:layout_alignParentTop="true"
+             android:layout_marginLeft="54dp"
+             android:layout_marginTop="33dp"
+             android:text="Your Score"
+             android:textColor="#333"
+             android:textSize="50sp" />
+
+         <TextView
+             android:id="@+id/leaderboard_title"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:layout_alignTop="@+id/your_score"
+             android:layout_marginRight="55dp"
+             android:text="Leaderboard"
+             android:textColor="#333"
+             android:textSize="50sp" />
+
+         <TextView
+             android:id="@+id/current_score"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_above="@+id/progressbar"
+             android:layout_alignLeft="@+id/progressbar"
+             android:layout_marginBottom="21dp"
+             android:layout_marginLeft="36dp"
+             android:text="50"
+             android:textColor="#FF0000"
+             android:textSize="100sp" />
+
+         <ProgressBar
+             android:id="@+id/progressbar"
+             style="?android:attr/progressBarStyleLarge"
+             android:layout_width="200dp"
+             android:layout_height="200dp"
+             android:layout_alignParentBottom="true"
+             android:layout_alignRight="@+id/your_score"
+             android:layout_marginBottom="21dp"
+             android:layout_marginRight="21dp" />
+    
+</RelativeLayout>
