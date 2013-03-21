@@ -32,6 +32,12 @@
         <item name="android:paddingBottom">0dp</item>
         <item name="android:background">@android:drawable/bottom_bar</item>
     </style>
+    <style name="ScoreboardPlayerNameFont" parent="@android:style/TextAppearance.Medium">
+       	<item name="android:textColor">#FFFFFF</item>
+   	</style>
+   	<style name="ScoreboardPlayerScoreFont" parent="@android:style/TextAppearance.Small">
+       	<item name="android:textColor">#FFFFFF</item>
+   	</style>
 
     <style name="ButtonBarButton" />
 

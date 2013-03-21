@@ -133,5 +133,9 @@
     <string name="next">next</string>
     <string name="start">start</string>
     <string name="back">back</string>
+    
+    <string name="network_error">Please check your network connection</string>
+ 
+    <string name="error_no_scores">"No scores to display"</string>
 
 </resources>
