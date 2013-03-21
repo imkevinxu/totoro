@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 public class GameSelector extends Activity {
@@ -29,6 +30,30 @@ public class GameSelector extends Activity {
                 }
             }
         });
+		
+		final ImageButton green_driving_button = (ImageButton) findViewById(R.id.green_driving_button);
+		green_driving_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				try {
+					green_driving_button.setImageResource(R.drawable.green_driving);
+					green_driving_button.setBackgroundColor(16711680);
+				} catch (Exception e) {
+					
+				}
+			}
+		});
+		
+		final ImageButton skill_driving_button = (ImageButton) findViewById(R.id.skill_driving_button);
+		skill_driving_button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				try {
+					skill_driving_button.setImageResource(R.drawable.skill_driving);
+					skill_driving_button.setBackgroundColor(16711680);
+				} catch (Exception e) {
+					
+				}
+			}
+		});
 	}
 
 }

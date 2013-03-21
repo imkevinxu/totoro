@@ -41,7 +41,7 @@
             android:background="#C0C0C0"
             android:paddingBottom="15dp"
             android:paddingLeft="15dp"
-            android:src="@drawable/skill_driving" />
+            android:src="@drawable/skill_driving_gray" />
 
         <TextView
             android:id="@+id/selection_green_driving_text"
@@ -50,7 +50,7 @@
             android:layout_alignBaseline="@+id/selection_skill_driving_text"
             android:layout_alignBottom="@+id/selection_skill_driving_text"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="150dp"
+            android:layout_marginRight="141dp"
             android:text="Green Driving Game"
             android:textColor="#333"
             android:textSize="30sp" />
@@ -64,7 +64,7 @@
             android:background="#C0C0C0"
             android:paddingBottom="15dp"
             android:paddingLeft="15dp"
-            android:src="@drawable/green_driving" />
+            android:src="@drawable/green_driving_gray" />
 
     </RelativeLayout>
 
