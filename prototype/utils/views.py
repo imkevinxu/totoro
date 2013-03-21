@@ -43,7 +43,7 @@ def average_linear_value(list):
 # Given a list of values, returns the average value of the square of the function,
 # after normalizing for length of the trip. 
 def average_quadratic_value(list):
-    return integrate_quadratic(list) / (len(list) * len(list))
+    return integrate_quadratic(list) / len(list)
 
 PEDAL_WEIGHTING_FACTOR = 1
 BRAKING_PRESSURE_WEIGHTING_FACTOR = 1

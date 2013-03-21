@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -277,6 +278,7 @@ public class SelectionFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, 
+
 			ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.selection, 
@@ -324,6 +326,7 @@ public class SelectionFragment extends Fragment {
 	}
 
 	private void makeMeRequest(final Session session) {
+
 		// Make an API call to get user data and define a 
 		// new callback to handle the response.
 		Request request = Request.newMeRequest(session, 
@@ -347,4 +350,5 @@ public class SelectionFragment extends Fragment {
 		});
 		request.executeAsync();
 	} 
+	
 }
