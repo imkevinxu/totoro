@@ -14,8 +14,12 @@
           android:id="@+id/loginFragment"
           android:layout_width="match_parent"
           android:layout_height="match_parent" />
-    <fragment android:name="com.facebook.widget.UserSettingsFragment"
-          android:id="@+id/userSettingsFragment"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent" />
+
+    <fragment
+        android:id="@+id/userSettingsFragment"
+        android:name="com.facebook.widget.UserSettingsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/com_facebook_usersettingsfragment" />
+
 </FrameLayout>

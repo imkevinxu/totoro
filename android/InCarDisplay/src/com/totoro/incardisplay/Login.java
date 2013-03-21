@@ -116,6 +116,8 @@ public class Login extends FragmentActivity {
 	            // If the session state is open:
 	            // Show the authenticated fragment
 	            showFragment(SELECTION, false);
+	    	    //Intent k = new Intent(Login.this, CarProfileForm.class);
+	        	//startActivity(k);
 	        } else if (state.isClosed()) {
 	            // If the session state is closed:
 	            // Show the login fragment

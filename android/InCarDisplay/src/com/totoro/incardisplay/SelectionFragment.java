@@ -87,7 +87,8 @@ public class SelectionFragment extends Fragment {
 	    if (session != null && session.isOpened()) {
 	        // Get the user's data
 	        makeMeRequest(session);
-	    }
+	    }	                    
+
 	    
 	    return view;
 	}
@@ -114,6 +115,7 @@ public class SelectionFragment extends Fragment {
 	                    profilePictureView.setProfileId(user.getId());
 	                    // Set the Textview's text to the user's name.
 	                    userNameView.setText(user.getName());
+
 	                }
 	            }
 	            if (response.getError() != null) {
