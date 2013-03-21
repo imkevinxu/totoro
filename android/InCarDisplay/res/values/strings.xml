@@ -122,6 +122,7 @@
     <string name="car_title">Create a New Vehicle Profile</string>
     <string name="app_id">343797409063510</string>
     <string name="logout">Logout</string>
+    <string name="login_with_email">Login with Email</string>
     <string name="settings">Settings</string>
     <string name="action_people">With whom would you like to play?</string>
     <string name="action_people_default">Select friends</string>

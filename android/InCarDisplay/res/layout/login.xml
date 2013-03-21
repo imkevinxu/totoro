@@ -79,7 +79,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="15dp"
-            android:text="@string/logout"
+            android:text="@string/login_with_email"
             android:textSize="25sp" />
     </FrameLayout>
 
