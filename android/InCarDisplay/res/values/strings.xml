@@ -5,7 +5,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <!--  BluetoothChat -->
+    <!-- BluetoothChat -->
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
@@ -13,7 +13,7 @@
     <!-- <string name="title_connected_to">connected to <xliff:g id="device_name">%1$s</xliff:g></string> -->
     <string name="title_not_connected">not connected</string>
 
-    <!--  DeviceListActivity -->
+    <!-- DeviceListActivity -->
     <string name="scanning">scanning for devices</string>
     <string name="select_device">select a device to connect</string>
     <string name="none_paired">No devices have been paired</string>
@@ -26,12 +26,9 @@
     <string name="secure_connect">Connect to OBD-II Adapter</string>
     <string name="insecure_connect">Connect a device - Insecure</string>
     <string name="discoverable">Make discoverable</string>
-    
-    
     <string name="developedby">Developed By: Ryan James Cristobal and Jonathan Luong</string>
-    
-    
-    <!--  Get Data Screen -->
+
+    <!-- Get Data Screen -->
     <string name="MPH">MPH</string>
     <string name="RPM">RPM</string>
     <string name="CIA">Intake Air Temperature</string>
@@ -44,87 +41,94 @@
     <string name="voltage">Voltage</string>
     <string name="TX">TX: </string>
     <string name="RX">RX: </string>
-    <string name="blank"> </string>
-    
-    <!--  Get Trouble Codes Screen -->
+    <string name="blank"></string>
+
+    <!-- Get Trouble Codes Screen -->
     <string name="found">Trouble Codes Found:</string>
     <string name="erasecodes">Clear Trouble Codes</string>
     <string name="nocodesfound">No Trouble Codes Found!</string>
     <string name="logo">OmniDrive</string>
-    
     <string name="title_activity_car_profile_form">CarProfileForm</string>
     <string name="action_settings">Settings</string>
     <string name="enter_model">Please enter model.</string>
     <string name="enter_mpg">Please enter mpg.</string>
     <string name="form_profile_submit">Submit</string>
+
     <string-array name="car_profile_year">
-        <item >1996</item>
-        <item >1997</item>
-        <item >1998</item>
-        <item >1999</item>
-        <item >2000</item>
-        <item >2001</item>
-        <item >2002</item>
-        <item >2003</item>
-        <item >2004</item>
-        <item >2005</item>
-        <item >2006</item>
-        <item >2007</item>
-        <item >2008</item>
-        <item >2009</item>
-        <item >2010</item>
-        <item >2011</item>
-        <item >2012</item>
-        <item >2013</item>
+        <item>1996</item>
+        <item>1997</item>
+        <item>1998</item>
+        <item>1999</item>
+        <item>2000</item>
+        <item>2001</item>
+        <item>2002</item>
+        <item>2003</item>
+        <item>2004</item>
+        <item>2005</item>
+        <item>2006</item>
+        <item>2007</item>
+        <item>2008</item>
+        <item>2009</item>
+        <item>2010</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
     </string-array>
-	<string-array name="car_profile_make">
-        <item >Acura</item>
-        <item >Alfa Romeo</item>
-        <item >Aston Martin</item>
-        <item >Audi</item>
-        <item >BMW</item>
-        <item >Buick</item>
-        <item >Cadillac</item>
-        <item >Chevrolet</item>
-        <item >Chrysler</item>
-        <item >Dodge</item>
-        <item >Fiat</item>
-        <item >Ford</item>
-        <item >GMC</item>
-        <item >Honda</item>
-        <item >Hyundai</item>
-        <item >Infiniti</item>
-        <item >Jaguar</item>
-        <item >Jeep</item>
-        <item >Kia</item>
-        <item >Land Rover</item>
-        <item >Lexus</item>
-        <item >Lincoln</item>
-        <item >Lotus</item>
-        <item >Mazda</item>
-        <item >McLaren</item>
-        <item >Mercedes-Benz</item>
-        <item >Mini</item>
-        <item >Mitsubishi</item>
-        <item >Nissan</item>
-        <item >Peugeot</item>
-        <item >Porsche</item>
-        <item >Ram</item>
-        <item >Renault</item>
-        <item >Scion</item>
-        <item >Seat</item>
-        <item >Smart</item>
-        <item >Subaru</item>
-        <item >Suzuki</item>
-        <item >Toyota</item>
-        <item >VPG</item>
-        <item >Volkswagen</item>
-        <item >Volvo</item>
-        
+    <string-array name="car_profile_make">
+        <item>Acura</item>
+        <item>Alfa Romeo</item>
+        <item>Aston Martin</item>
+        <item>Audi</item>
+        <item>BMW</item>
+        <item>Buick</item>
+        <item>Cadillac</item>
+        <item>Chevrolet</item>
+        <item>Chrysler</item>
+        <item>Dodge</item>
+        <item>Fiat</item>
+        <item>Ford</item>
+        <item>GMC</item>
+        <item>Honda</item>
+        <item>Hyundai</item>
+        <item>Infiniti</item>
+        <item>Jaguar</item>
+        <item>Jeep</item>
+        <item>Kia</item>
+        <item>Land Rover</item>
+        <item>Lexus</item>
+        <item>Lincoln</item>
+        <item>Lotus</item>
+        <item>Mazda</item>
+        <item>McLaren</item>
+        <item>Mercedes-Benz</item>
+        <item>Mini</item>
+        <item>Mitsubishi</item>
+        <item>Nissan</item>
+        <item>Peugeot</item>
+        <item>Porsche</item>
+        <item>Ram</item>
+        <item>Renault</item>
+        <item>Scion</item>
+        <item>Seat</item>
+        <item>Smart</item>
+        <item>Subaru</item>
+        <item>Suzuki</item>
+        <item>Toyota</item>
+        <item>VPG</item>
+        <item>Volkswagen</item>
+        <item>Volvo</item>
     </string-array>
-	<string name="car_title">Create a New Vehicle Profile</string>
-	<string name="app_id">343797409063510</string>
-	<string name="logout">Logout</string>
-	<string name="settings">Settings</string>
-    
+
+    <string name="car_title">Create a New Vehicle Profile</string>
+    <string name="app_id">343797409063510</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="action_people">With whom would you like to play?</string>
+    <string name="action_people_default">Select friends</string>
+    <string name="error_dialog_title">Error</string>
+    <string name="error_dialog_button_text">OK</string>
+    <string name="single_user_selected">%1$s</string>
+    <string name="two_users_selected">%1$s and %2$s</string>
+    <string name="multiple_users_selected">%1$s and %2$s others</string>
+
 </resources>
