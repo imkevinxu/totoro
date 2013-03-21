@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.facebook.FacebookRequestError;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -351,6 +353,28 @@ public class SelectionFragment extends Fragment {
 			}
 		});
 		request.executeAsync();
+		
+		getAllFriends(session);
 	} 
+	
+	private void getAllFriends(final Session session) {
+		Request friendsRequest = Request.newMyFriendsRequest(session, new Request.GraphUserListCallback() {
+
+			@Override
+			public void onCompleted(List<GraphUser> users, Response response) {
+				FacebookRequestError error = response.getError();
+				if (error != null) {
+					Log.e(OmniDriveApplication.TAG, error.toString());
+				} else if (session == Session.getActiveSession()) {
+					// Set the friends attribute
+					((OmniDriveApplication)getActivity().getApplication()).setFriends(users);
+				}
+			}
+		});
+		Bundle params = new Bundle();
+		params.putString("fields", "name,first_name,last_name");
+		friendsRequest.setParameters(params);
+		friendsRequest.executeAsync();
+	}
 	
 }
