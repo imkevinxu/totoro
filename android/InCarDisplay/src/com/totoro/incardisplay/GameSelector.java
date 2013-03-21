@@ -24,7 +24,8 @@ public class GameSelector extends Activity {
 		start_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-
+					Intent k = new Intent(GameSelector.this, GameActivity.class);
+                	startActivity(k);
                 } catch (Exception e) {
                 	
                 }
