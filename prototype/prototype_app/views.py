@@ -86,9 +86,11 @@ def scores(request):
             fb = FacebookProfile.objects.get(facebook_id=request.GET['fbid'])
             fbid = fb.get_facebook_profile()['id']
             first_name = fb.get_facebook_profile()['name'].split()[0]
-            highscore = [user.highscore for user in FacebookProfile.objects.all()]
+            highscore = fb.highscore
+            friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'first_name' : user.get_facebook_profile()['name'].split()[0], 'highscore' : user.highscore } for user in FacebookProfile.objects.all() if user != fb]
+            # friends = [1, 2, 3]
 
-            results = json.dumps({ 'fbid' : fbid, 'first_name' : first_name, 'highscore' : highscore }, ensure_ascii=False)
+            results = json.dumps({ 'fbid' : fbid, 'first_name' : first_name, 'highscore' : highscore, 'friends' : friends }, ensure_ascii=False)
             return HttpResponse(results, mimetype='application/json')
     except FacebookProfile.DoesNotExist:
         pass
