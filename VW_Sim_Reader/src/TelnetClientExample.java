@@ -17,8 +17,8 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
 {
     static TelnetClient tc = null;
     
-    public static final String IP_ADDR = "192.168.1.82";
-    // EC2 IP address 54.241.57.216
+    // EC2 IP address instance is 184.169.154.101 port 28501
+    public static final String IP_ADDR = "184.169.154.101";
     public static final int PORT = 28501;
 
     public static void main(String[] args) throws Exception
@@ -207,7 +207,6 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
             }
         }
     }
-    
     
     
     /***
