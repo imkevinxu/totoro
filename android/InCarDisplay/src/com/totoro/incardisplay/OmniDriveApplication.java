@@ -1,6 +1,7 @@
 package com.totoro.incardisplay;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Application;
 
@@ -18,6 +19,7 @@ public class OmniDriveApplication extends Application {
 	// List of ordered ScoreboardEntry objects in order from highest to lowest score to
 	// be shown in the ScoreboardFragment
 	private ArrayList<ScoreboardEntry> scoreboardEntriesList = null;
+	private List<GraphUser> friends;
 
 	public GraphUser getCurrentFBUser() {
 		return currentFBUser;
@@ -33,6 +35,14 @@ public class OmniDriveApplication extends Application {
 	
 	public void setSelectedUsers(ArrayList<GraphUser> users) {
 		selectedUsers = users;
+	}
+	
+	public void setFriends(List<GraphUser> friends) {
+		this.friends = friends;
+	}
+	
+	public List<GraphUser> getFriends() {
+		return friends;
 	}
 	
 	/* Scoreboard */
