@@ -29,6 +29,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,18 +63,25 @@ public class ScoreboardFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		
-		application = (OmniDriveApplication) getActivity().getApplication();
-		
 		// Instantiate the handler
 		uiHandler = new Handler();
-		scoreHandler = new Handler();
+		scoreHandler = new Handler();	
+        scoreHandler.removeCallbacks(updateScoreTask);
+        scoreHandler.postDelayed(updateScoreTask, 0);
+        
+		application = (OmniDriveApplication) getActivity().getApplication();
+		
+
 		setRetainInstance(true);
 		long startTime = System.currentTimeMillis();
-		
-        scoreHandler.removeCallbacks(updateScoreTask);
-        scoreHandler.postDelayed(updateScoreTask, 100);
+
+
+
 	}
+	
+
+	
+	
 	private Runnable updateScoreTask = new Runnable() {
 		   public void run() {
 			   TextView yourScore = (TextView) getView().findViewById(R.id.current_score);
@@ -98,7 +106,18 @@ public class ScoreboardFragment extends Fragment {
 		progressContainer.setVisibility(View.INVISIBLE);
 		
 		// Note: Scoreboard is populated during onResume below
-		
+    	Button pause_button = (Button) v.findViewById(R.id.pause);
+
+    	pause_button.setOnClickListener(new View.OnClickListener(){
+    		public void onClick(View v) {
+    			try {
+    				scoreHandler.removeCallbacks(updateScoreTask);
+    			} catch (Exception e) {
+    				
+    			}
+    		}
+    	});	
+
 		return v;
 	}
 	
