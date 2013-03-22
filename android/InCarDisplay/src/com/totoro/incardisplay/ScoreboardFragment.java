@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,13 +37,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.facebook.Session;
 import com.facebook.widget.ProfilePictureView;
 
 /**
  *  Fragment shown once a user opens the scoreboard
  */
 public class ScoreboardFragment extends Fragment {
+	private boolean stop = false;
+	public static BlockingQueue<Double> queue;
 
 	// Tag used when logging messages
 	private static final String TAG = ScoreboardFragment.class.getSimpleName();
@@ -51,6 +54,7 @@ public class ScoreboardFragment extends Fragment {
 
 	// LinearLayout as the container for the scoreboard entries
 	private LinearLayout scoreboardContainer;
+	private final Double nullVal = -1.0;
 
 	// FrameLayout of the progress container to show the spinner
 	private FrameLayout progressContainer;
@@ -64,7 +68,7 @@ public class ScoreboardFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-
+		queue = new ArrayBlockingQueue<Double>(100);
 		application = (OmniDriveApplication) getActivity().getApplication();
 
 		// Instantiate the handler
@@ -85,8 +89,9 @@ public class ScoreboardFragment extends Fragment {
 	private Runnable updateScoreTask = new Runnable() {
 		public void run() {
 			TextView yourScore = (TextView) getView().findViewById(R.id.current_score);
-			yourScore.setText("" + Math.random() * (100));
-
+			double d = getQueue();
+			//yourScore.setText("" + Math.random() * (100));
+			yourScore.setText("" + d);
 			scoreHandler.postDelayed(updateScoreTask, 1000);
 
 		}
@@ -112,6 +117,7 @@ public class ScoreboardFragment extends Fragment {
     	pause_button.setOnClickListener(new View.OnClickListener(){
     		public void onClick(View v) {
     			try {
+    				queue.put(nullVal);
     				scoreHandler.removeCallbacks(updateScoreTask);
     				boardHandler.removeCallbacks(f);
     			} catch (Exception e) {
@@ -122,7 +128,25 @@ public class ScoreboardFragment extends Fragment {
 
 		return v;
 	}
+	
+	public double getQueue() {
+		try {
+			double d = queue.take();
+			return d;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return nullVal;
+		}
+	}
 
+	public void putQueue(double d) {
+		try {
+			queue.put(d);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// Close the game and show the specified error to the user
 	private void closeAndShowError(String error) {
 		Bundle bundle = new Bundle();
