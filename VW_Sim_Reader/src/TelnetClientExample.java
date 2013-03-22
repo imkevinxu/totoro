@@ -1,20 +1,30 @@
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.FileOutputStream;
 import java.util.StringTokenizer;
 
+import org.apache.commons.net.telnet.EchoOptionHandler;
+import org.apache.commons.net.telnet.InvalidTelnetOptionException;
+import org.apache.commons.net.telnet.SimpleOptionHandler;
+import org.apache.commons.net.telnet.SuppressGAOptionHandler;
 import org.apache.commons.net.telnet.TelnetClient;
 import org.apache.commons.net.telnet.TelnetNotificationHandler;
-import org.apache.commons.net.telnet.SimpleOptionHandler;
-import org.apache.commons.net.telnet.EchoOptionHandler;
 import org.apache.commons.net.telnet.TerminalTypeOptionHandler;
-import org.apache.commons.net.telnet.SuppressGAOptionHandler;
-import org.apache.commons.net.telnet.InvalidTelnetOptionException;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.io.SAXReader;
 
+/***
+ * Commands:
+ * <Req><Subscribe url="VehicleSpeed" ival="1000" notification="onChange"/></Req>
+ * <Req><Unsubscribe url="VehicleSpeed"/></Req>
+ * <Req><Dir urlPattern="*"/></Req>
+ */
 
 public class TelnetClientExample implements Runnable, TelnetNotificationHandler
 {
+	SAXReader reader = new SAXReader();
     static TelnetClient tc = null;
     
     // EC2 IP address instance is 184.169.154.101 port 28501
@@ -56,6 +66,8 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
         {
             System.err.println("Error registering option handlers: " + e.getMessage());
         }
+        
+        boolean first_iteration = true;
 
         while (true)
         {
@@ -64,22 +76,32 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
             {
                 tc.connect(remoteip, remoteport);
 
-
                 Thread reader = new Thread (new TelnetClientExample());
                 tc.registerNotifHandler(new TelnetClientExample());
-                System.out.println("TelnetClientExample");
+                /*System.out.println("TelnetClientExample");
                 System.out.println("Type AYT to send an AYT telnet command");
                 System.out.println("Type OPT to print a report of status of options (0-24)");
                 System.out.println("Type REGISTER to register a new SimpleOptionHandler");
                 System.out.println("Type UNREGISTER to unregister an OptionHandler");
                 System.out.println("Type SPY to register the spy (connect to port 3333 to spy)");
-                System.out.println("Type UNSPY to stop spying the connection");
+                System.out.println("Type UNSPY to stop spying the connection"); */
 
                 reader.start();
                 OutputStream outstr = tc.getOutputStream();
 
                 byte[] buff = new byte[1024];
                 int ret_read = 0;
+                
+                // hackish method to initially subscribe to car speed
+                if (first_iteration) {
+                    String comm = "<Req><Subscribe url='VehicleSpeed' ival='1000' notification='onChange'/></Req>";
+                    buff = comm.getBytes();
+                	
+                	outstr.write(buff, 0 , 78);
+                    outstr.flush();
+                	
+                	first_iteration = false;
+                }
 
                 do
                 {
@@ -210,22 +232,8 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
     
     
     /***
-     * Commands:
-     * <Req><Subscribe url="VehicleSpeed" ival="1000" notification="onChange"/></Req>
-     * <Req><Unsubscribe url="VehicleSpeed"/></Req>
-     * <Req><Dir urlPattern="*"/></Req>
-     */
-
-
-    /***
      * Callback method called when TelnetClient receives an option
      * negotiation command.
-     * <p>
-     * @param negotiation_code - type of negotiation command received
-     * (RECEIVED_DO, RECEIVED_DONT, RECEIVED_WILL, RECEIVED_WONT)
-     * <p>
-     * @param option_code - code of the option negotiated
-     * <p>
      ***/
     @Override
     public void receivedNegotiation(int negotiation_code, int option_code)
@@ -251,10 +259,6 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
    }
 
     
-    
-    
-    
-    
     /***
      * Reader thread currently echoes output from simulator
      ***/
@@ -273,7 +277,23 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
                 ret_read = instr.read(buff);
                 if(ret_read > 0)
                 {
-                    System.out.print(new String(buff, 0, ret_read));
+                	String output = new String(buff, 0, ret_read);
+                	/* Parse out speed */
+                	int val_ind = output.indexOf("val=");
+                	if (val_ind != -1) {
+                		int num_ind = val_ind + 5;
+                		String new_str = output.substring(num_ind);
+                		int index_apos = new_str.indexOf('"');
+                		String val = new_str.substring(0, index_apos);
+                		
+                		double doub_val = Double.parseDouble(val);
+                		
+                		System.out.println(doub_val);
+                	}
+                	
+                	
+                   // System.out.print(output);
+                    
                 }
             }
             while (ret_read >= 0);
