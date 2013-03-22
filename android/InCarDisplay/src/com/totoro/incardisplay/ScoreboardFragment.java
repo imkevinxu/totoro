@@ -109,7 +109,8 @@ public class ScoreboardFragment extends Fragment {
 			// scoreboardEntriesList is null, so fetch the information from Facebook (scoreboard will be updated in
 			// the scoreboardEntriesFetched callback) and show the progress spinner while doing so
 			progressContainer.setVisibility(View.VISIBLE);
-			//fetchScoreboardEntries();
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			fetchScoreboardEntries();
 		} else {
 			// Information has already been fetched, so populate the scoreboard
 			populateScoreboard();
@@ -134,7 +135,7 @@ public class ScoreboardFragment extends Fragment {
 					HttpClient client = new DefaultHttpClient();
 					/* Update this */
 					//String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
-					String getURL = "http://omnidrive.herokuapp.com";
+					String getURL = "http://omnidrive.herokuapp.com/scores?fbid=" + currentUserFBID;
 					HttpGet get = new HttpGet(getURL);
 					HttpResponse responseGet = client.execute(get);
 					
@@ -142,7 +143,9 @@ public class ScoreboardFragment extends Fragment {
 					HttpEntity responseEntity = responseGet.getEntity();
 					String response = EntityUtils.toString(responseEntity);
 					if (!response.equals(null)) {
-						JSONArray responseJSONArray = new JSONArray(response);
+						JSONObject jObject = new JSONObject(response);
+						JSONArray responseJSONArray = jObject.getJSONArray("friends");
+						//JSONArray responseJSONArray = new JSONArray(response);
 						
 						// Go through the response JSON Array to populate the scoreboard
 						if (responseJSONArray != null && responseJSONArray.length() > 0) {
