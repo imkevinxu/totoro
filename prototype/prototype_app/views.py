@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Avg
 from django.db.models import *
 
+from facebook.models import *
 from prototype_app.models import *
 from prototype_app.model_forms import *
 from prototype_app.forms import *
@@ -21,6 +22,12 @@ from utils import views as util_views
 from datetime import datetime
 
 import csv, random, time
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 
 def home(request):
     facebook_profile = None
@@ -73,6 +80,21 @@ def dashboard(request):
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))
 
 #def match_user_profile(id):
+def scores(request):
+    try:
+        if 'fbid' in request.GET:
+            fb = FacebookProfile.objects.get(facebook_id=request.GET['fbid'])
+            fbid = fb.get_facebook_profile()['id']
+            first_name = fb.get_facebook_profile()['name'].split()[0]
+            highscore = fb.highscore
+            friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'first_name' : user.get_facebook_profile()['name'].split()[0], 'highscore' : user.highscore } for user in FacebookProfile.objects.all() if user != fb]
+            # friends = [1, 2, 3]
+
+            results = json.dumps({ 'fbid' : fbid, 'first_name' : first_name, 'highscore' : highscore, 'friends' : friends }, ensure_ascii=False)
+            return HttpResponse(results, mimetype='application/json')
+    except FacebookProfile.DoesNotExist:
+        pass
+    return redirect('home')
 
 
 def read_csv():
