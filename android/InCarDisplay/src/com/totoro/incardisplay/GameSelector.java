@@ -26,8 +26,8 @@ public class GameSelector extends Activity {
 		start_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-					Intent k = new Intent(GameSelector.this, GameActivity.class);
-                	startActivity(k);
+                	Intent i = new Intent(GameSelector.this, ScoreboardActivity.class);
+            		startActivityForResult(i, 0);
                 } catch (Exception e) {
                 	
                 }
@@ -38,8 +38,8 @@ public class GameSelector extends Activity {
 		back_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-                	Intent i = new Intent(GameSelector.this, ScoreboardActivity.class);
-            		startActivityForResult(i, 0);
+                	Intent i = new Intent(GameSelector.this, Login.class);
+            		startActivity(i);
                 } catch (Exception e) {
                 	
                 }

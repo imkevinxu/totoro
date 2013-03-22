@@ -129,7 +129,7 @@ public class ScoreboardFragment extends Fragment {
 					
 					// Get the attributes used for the HTTP GET
 					String currentUserFBID = application.getCurrentFBUser().getId();
-					String currentUserAccessToken = Session.getActiveSession().getAccessToken();
+					//String currentUserAccessToken = Session.getActiveSession().getAccessToken();
 					
 					// Execute the HTTP Get to our server for the scores of the user's friends
 					HttpClient client = new DefaultHttpClient();
