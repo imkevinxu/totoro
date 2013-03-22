@@ -68,37 +68,25 @@
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/back"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/start"
-        android:layout_alignBottom="@+id/start"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="18dp"
-        android:layout_marginLeft="18dp"
-        android:background="#1ABC9C"
-        android:paddingBottom="15dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="15dp"
-        android:text="@string/back"
-        android:textSize="25sp" />
-
-    <Button
+    <ImageButton
         android:id="@+id/start"
-        android:layout_width="260dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="18dp"
-        android:layout_marginRight="18dp"
-        android:background="#1ABC9C"
-        android:paddingBottom="15dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="15dp"
-        android:text="@string/start"
-        android:textSize="25sp" />
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="17dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/next_button" />
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/start"
+        android:layout_marginLeft="17dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/back_button" />
 
 </RelativeLayout>
