@@ -56,6 +56,7 @@ public class ScoreboardFragment extends Fragment {
 	
 	// Handler for putting messages on Main UI thread from background thread after fetching the scores
 	private Handler uiHandler;
+	private Handler scoreHandler;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,9 +67,22 @@ public class ScoreboardFragment extends Fragment {
 		
 		// Instantiate the handler
 		uiHandler = new Handler();
-		
+		scoreHandler = new Handler();
 		setRetainInstance(true);
+		long startTime = System.currentTimeMillis();
+		
+        scoreHandler.removeCallbacks(updateScoreTask);
+        scoreHandler.postDelayed(updateScoreTask, 100);
 	}
+	private Runnable updateScoreTask = new Runnable() {
+		   public void run() {
+			   TextView yourScore = (TextView) getView().findViewById(R.id.current_score);
+			   yourScore.setText("" + Math.random() * (100));
+			  
+			   scoreHandler.postDelayed(updateScoreTask, 1000);
+		      
+		   }
+		};
 	
 	@TargetApi(13)
 	@Override
@@ -109,7 +123,6 @@ public class ScoreboardFragment extends Fragment {
 			// scoreboardEntriesList is null, so fetch the information from Facebook (scoreboard will be updated in
 			// the scoreboardEntriesFetched callback) and show the progress spinner while doing so
 			progressContainer.setVisibility(View.VISIBLE);
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			fetchScoreboardEntries();
 		} else {
 			// Information has already been fetched, so populate the scoreboard

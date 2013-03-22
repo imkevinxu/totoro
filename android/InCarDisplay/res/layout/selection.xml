@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_horizontal"
-            facebook:preset_size="small" /><TextView
+            facebook:preset_size="small" />
+        <TextView
             android:id="@+id/selection_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

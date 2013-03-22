@@ -22,7 +22,7 @@ public class GameSelector extends Activity {
 		setContentView(R.layout.activity_game_selector);
 
 		
-		final Button start_button = (Button) findViewById(R.id.start);
+		final ImageButton start_button = (ImageButton) findViewById(R.id.start);
 		start_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
@@ -34,7 +34,7 @@ public class GameSelector extends Activity {
             }
         });
 		
-		final Button back_button = (Button) findViewById(R.id.back);
+		final ImageButton back_button = (ImageButton) findViewById(R.id.back);
 		back_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
