@@ -44,7 +44,7 @@ import com.facebook.widget.ProfilePictureView;
  */
 public class ScoreboardFragment extends Fragment {
 	private boolean stop = false;
-	public static BlockingQueue<Double> queue;
+	public static BlockingQueue<Double> queue = new ArrayBlockingQueue<Double>(100);
 
 	// Tag used when logging messages
 	private static final String TAG = ScoreboardFragment.class.getSimpleName();
@@ -63,13 +63,24 @@ public class ScoreboardFragment extends Fragment {
 	private Handler uiHandler;
 	private Handler scoreHandler;
 	private Handler boardHandler;
+	
+	private TelnetClientOutput tco;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		queue = new ArrayBlockingQueue<Double>(100);
 		application = (OmniDriveApplication) getActivity().getApplication();
+		try {
+			System.out.println("ALALALALAL");
+			tco = new TelnetClientOutput();
+			tco.execute();
+			System.out.println("123144");
+		} catch (Exception e) {
+			System.out.println("EXCEPTION THROWN");
+			// TODO Auto-generated catch block
+			e.printStackTrace(); 
+		}
 
 		// Instantiate the handler
 		uiHandler = new Handler();
@@ -89,7 +100,15 @@ public class ScoreboardFragment extends Fragment {
 	private Runnable updateScoreTask = new Runnable() {
 		public void run() {
 			TextView yourScore = (TextView) getView().findViewById(R.id.current_score);
-			double d = getQueue();
+			double d = 0.0;
+			try {
+				//Log.i("QUEUE", "WILL TAKE");
+				d = TelnetClientOutput.queue.take();
+				Log.i("QUEUE", "WILL TAKE " + d);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//getQueue();
 			//yourScore.setText("" + Math.random() * (100));
 			yourScore.setText("" + d);
 			scoreHandler.postDelayed(updateScoreTask, 1000);
@@ -119,7 +138,7 @@ public class ScoreboardFragment extends Fragment {
     			try {
     				queue.put(nullVal);
     				scoreHandler.removeCallbacks(updateScoreTask);
-    				boardHandler.removeCallbacks(f);
+    				//boardHandler.removeCallbacks(f);
     			} catch (Exception e) {
     				
     			}
@@ -179,10 +198,9 @@ public class ScoreboardFragment extends Fragment {
 		}
 		
 		progressContainer.setVisibility(View.VISIBLE);
-		boardHandler.removeCallbacks(f);
-		boardHandler.postDelayed(f, 0);
-		//boardHandler.postDelayed(fetchScoreboardEntries, 100);
-		//fetchScoreboardFunc();
+		//boardHandler.removeCallbacks(f);
+		//boardHandler.postDelayed(f, 0);
+		fetchScoreboardFunc();
 	}
 	
 	private Runnable f = new Runnable()  {
