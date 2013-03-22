@@ -113,6 +113,7 @@ public class ScoreboardFragment extends Fragment {
     		public void onClick(View v) {
     			try {
     				scoreHandler.removeCallbacks(updateScoreTask);
+    				boardHandler.removeCallbacks(f);
     			} catch (Exception e) {
     				
     			}
@@ -154,11 +155,19 @@ public class ScoreboardFragment extends Fragment {
 		}
 		
 		progressContainer.setVisibility(View.VISIBLE);
-		boardHandler.removeCallbacks(fetchScoreboardEntries);
-		boardHandler.postDelayed(fetchScoreboardEntries, 100);
+		boardHandler.removeCallbacks(f);
+		boardHandler.postDelayed(f, 0);
+		//boardHandler.postDelayed(fetchScoreboardEntries, 100);
 		//fetchScoreboardFunc();
 	}
 	
+	private Runnable f = new Runnable()  {
+		// Fetch the scores ...
+		//AsyncTask.execute(new Runnable() {
+		public void run() {
+			fetchScoreboardFunc();
+		}
+	};
 
 	private void fetchScoreboardFunc() {
 		// Fetch the scores ...
@@ -232,99 +241,15 @@ public class ScoreboardFragment extends Fragment {
 							populateScoreboard();
 						}
 					});
+					boardHandler.postDelayed(f, 10000);
 				} catch (Exception e) {
 					Log.e(OmniDriveApplication.TAG, e.toString());
 					closeAndShowError(getResources().getString(R.string.network_error));
 				}
 			}
+
 		});
 	}
-
-
-	// Fetch a List of ScoreboardEntry objects with the scores and details
-	// of the user and their friends' scores who have played FriendSmash
-	private Runnable fetchScoreboardEntries = new Runnable()  {
-		// Fetch the scores ...
-		//AsyncTask.execute(new Runnable() {
-		public void run() {
-			try {
-				// Instantiate the scoreboardEntriesList
-				progressContainer.setVisibility(View.VISIBLE);
-				Log.i("tag", "WHAT THE FUCK??????????");
-
-				ArrayList<ScoreboardEntry> scoreboardEntriesList = new ArrayList<ScoreboardEntry>();
-
-				// Get the attributes used for the HTTP GET
-				String currentUserFBID = application.getCurrentFBUser().getId();
-				//String currentUserAccessToken = Session.getActiveSession().getAccessToken();
-
-				// Execute the HTTP Get to our server for the scores of the user's friends
-				HttpClient client = new DefaultHttpClient();
-				/* Update this */
-				//String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
-				String getURL = "http://omnidrive.herokuapp.com/scores?fbid=" + currentUserFBID;
-				HttpGet get = new HttpGet(getURL);
-				HttpResponse responseGet = client.execute(get);
-
-				// Parse the response
-				HttpEntity responseEntity = responseGet.getEntity();
-				String response = EntityUtils.toString(responseEntity);
-				if (!response.equals(null)) {
-					JSONObject jObject = new JSONObject(response);
-					JSONArray responseJSONArray = jObject.getJSONArray("friends");
-					//JSONArray responseJSONArray = new JSONArray(response);
-
-					// Go through the response JSON Array to populate the scoreboard
-					if (responseJSONArray != null && responseJSONArray.length() > 0) {
-
-						// Loop through all users that have been retrieved
-						for (int i=0; i<responseJSONArray.length(); i++) {
-							// Store the user details in the following attributes
-							String userID = null;
-							String userName = null;
-							int userScore = -1;
-
-							// Extract the user information
-							JSONObject currentUser = responseJSONArray.optJSONObject(i);
-							if (currentUser != null) {
-								userID = currentUser.optString("fbid");
-								userName = currentUser.optString("first_name");
-								String fetchedScoreAsString = currentUser.optString("highscore");
-								if (fetchedScoreAsString != null) {
-									userScore = Integer.parseInt(fetchedScoreAsString);
-								}
-								if (userID != null && userName != null && userScore >= 0) {
-									// All attributes have been successfully fetched, so create a new
-									// ScoreboardEntry and add it to the List
-									ScoreboardEntry currentUserScoreboardEntry =
-											new ScoreboardEntry(userID, userName, userScore);
-									scoreboardEntriesList.add(currentUserScoreboardEntry);
-								}
-							}
-						}
-					}
-				}
-
-				// Now that all scores should have been fetched and added to the scoreboardEntriesList, sort it,
-				// set it within scoreboardFragment and then callback to scoreboardFragment to populate the scoreboard
-				Comparator<ScoreboardEntry> comparator = Collections.reverseOrder();
-				Collections.sort(scoreboardEntriesList, comparator);
-				application.setScoreboardEntriesList(scoreboardEntriesList);
-
-				// Populate the scoreboard on the UI thread
-				uiHandler.post(new Runnable() {
-					@Override
-					public void run() {
-						populateScoreboard();
-					}
-				});
-			} catch (Exception e) {
-				Log.e(OmniDriveApplication.TAG, e.toString());
-				closeAndShowError(getResources().getString(R.string.network_error));
-			}
-			boardHandler.postDelayed(fetchScoreboardEntries, 10000);
-		}
-	};
 
 	private void populateScoreboard() {
 		// Ensure all components are firstly removed from scoreboardContainer
