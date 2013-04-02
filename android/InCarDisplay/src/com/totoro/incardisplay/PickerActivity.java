@@ -1,6 +1,7 @@
 package com.totoro.incardisplay;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -30,6 +31,10 @@ public class PickerActivity extends FragmentActivity{
 	        }
 	    }
 	}
+    private interface GraphUserWithInstalled extends GraphUser {
+        Boolean getInstalled();
+    }
+
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,14 @@ public class PickerActivity extends FragmentActivity{
 	            public void onError(PickerFragment<?> fragment,
 	                                FacebookException error) {
 	                PickerActivity.this.onError(error);
+	            }
+	        });
+	        friendPickerFragment.setExtraFields(Arrays.asList("installed"));
+	        friendPickerFragment.setFilter(new PickerFragment.GraphObjectFilter<GraphUser>() {
+	            @Override
+	            public boolean includeItem(GraphUser graphObject) {
+	                Boolean installed = graphObject.cast(GraphUserWithInstalled.class).getInstalled();
+	                return (installed != null) && installed.booleanValue();
 	            }
 	        });
 	        // Set the listener to handle button clicks
