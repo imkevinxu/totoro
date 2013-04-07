@@ -28,7 +28,7 @@ public class TelnetClientOutput implements Runnable, TelnetNotificationHandler
     public static final String IP_ADDR = "184.169.154.101";
     public static final int PORT = 28501;
 
-    public static void main(String[] args) throws Exception
+    public TelnetClientOutput() throws Exception
     {
         FileOutputStream fout = null;
 
