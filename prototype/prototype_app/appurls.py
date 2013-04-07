@@ -25,6 +25,8 @@ urlpatterns = patterns('',
 
     url(r'^scores$', 'prototype_app.views.scores'),
 
+    url(r'^data$', 'prototype_app.views.data'),
+
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^login/$', smartlogin, kwargs=dict(template_name='login.html'), name='login'),

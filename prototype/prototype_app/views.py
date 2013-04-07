@@ -36,9 +36,9 @@ def home(request):
 
 #@login_required
 def dashboard(request):
-    facebook_profile = request.user.get_profile().get_facebook_profile()
-    # facebook_profile = {'id': "1374900452", "name": "Kevin Xu", "username": "imkevinxu"}
-    #match_user_profile(facebook_profile['id'])
+    # facebook_profile = request.user.get_profile().get_facebook_profile()
+    facebook_profile = {'id': "1374900452", "name": "Kevin Xu", "username": "imkevinxu"}
+    # match_user_profile(facebook_profile['id'])
     #read_csv()
     if len(DriveData.objects.all()) == 0:
         read_csv()
@@ -87,15 +87,32 @@ def scores(request):
             fbid = fb.get_facebook_profile()['id']
             first_name = fb.get_facebook_profile()['name'].split()[0]
             highscore = fb.highscore
-            friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'first_name' : user.get_facebook_profile()['name'].split()[0], 'highscore' : user.highscore } for user in FacebookProfile.objects.all() if user != fb]
+            #friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'first_name' : user.get_facebook_profile()['name'].split()[0], 'highscore' : user.highscore } for user in FacebookProfile.objects.all() if user != fb]
             # friends = [1, 2, 3]
+            friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'first_name' : user.get_facebook_profile()['name'].split()[0], 'highscore' : user.highscore } for user in FacebookProfile.objects.all()]
+            results = json.dumps({'friends' : friends }, ensure_ascii=False)
 
-            results = json.dumps({ 'fbid' : fbid, 'first_name' : first_name, 'highscore' : highscore, 'friends' : friends }, ensure_ascii=False)
+            #results = json.dumps({ 'fbid' : fbid, 'first_name' : first_name, 'highscore' : highscore, 'friends' : friends }, ensure_ascii=False)
             return HttpResponse(results, mimetype='application/json')
     except FacebookProfile.DoesNotExist:
         pass
     return redirect('home')
 
+def data(request):
+    try:
+        fb = FacebookProfile.objects.get(facebook_id=request.GET['fbid'])
+        fb.highscore = request.GET['data']
+        fb.save()
+        if 'fbid' in request.GET:
+            fb = FacebookProfile.objects.get(facebook_id=request.GET['fbid'])
+            fbid = fb.get_facebook_profile()['id']
+            first_name = fb.get_facebook_profile()['name'].split()[0]
+            friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'first_name' : user.get_facebook_profile()['name'].split()[0], 'highscore' : user.highscore } for user in FacebookProfile.objects.all()]
+            results = json.dumps({'friends' : friends }, ensure_ascii=False)
+            return HttpResponse(results, mimetype='application/json')
+    except FacebookProfile.DoesNotExist:
+        pass
+    return redirect('home')
 
 def read_csv():
     # DriveData.objects.all().delete()
