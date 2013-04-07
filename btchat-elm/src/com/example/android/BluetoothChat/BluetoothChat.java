@@ -114,7 +114,6 @@ public class BluetoothChat extends Activity {
             finish();
             return;
         }
-        fetchScoreboardFunc();
            
     }
     
@@ -188,6 +187,7 @@ public class BluetoothChat extends Activity {
               mChatService.start();
             }
         }
+        fetchScoreboardFunc();
     }
 
     private void setupChat() {
