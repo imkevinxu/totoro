@@ -1,5 +1,6 @@
 package com.totoro.incardisplay;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,11 +12,13 @@ import java.util.concurrent.BlockingQueue;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.TargetApi;
@@ -66,26 +69,27 @@ public class ScoreboardFragment extends Fragment {
 	private Handler uiHandler;
 	private Handler scoreHandler;
 	private Handler boardHandler;
-	
+
 	private TelnetClientOutput tco;
 	private Random rgen = new Random();
+
+	private boolean simulate = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		application = (OmniDriveApplication) getActivity().getApplication();
-		try {
-			System.out.println("ALALALALAL");
-			tco = new TelnetClientOutput();
-			tco.execute();
-			System.out.println("123144");
-		} catch (Exception e) {
-			System.out.println("EXCEPTION THROWN");
-			// TODO Auto-generated catch block
-			e.printStackTrace(); 
-		}
-
+		if (simulate) {
+			try {
+				tco = new TelnetClientOutput();
+				tco.execute();
+			} catch (Exception e) {
+				System.out.println("EXCEPTION THROWN");
+				// TODO Auto-generated catch block
+				e.printStackTrace(); 
+			}
+		} 
 		// Instantiate the handler
 		uiHandler = new Handler();
 		scoreHandler = new Handler();
@@ -97,23 +101,53 @@ public class ScoreboardFragment extends Fragment {
 		scoreHandler.postDelayed(updateScoreTask, 100);
 
 	}
-	
 
-	
-	
+
+
+
 	private Runnable updateScoreTask = new Runnable() {
 		public void run() {
 			TextView yourScore = (TextView) getView().findViewById(R.id.current_score);
 			double d = 0.0;
-			try {
-				//Log.i("QUEUE", "WILL TAKE");
-				d = TelnetClientOutput.queue.take();
-				Log.i("QUEUE", "WILL TAKE " + d);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}//getQueue();
-			//yourScore.setText("" + Math.random() * (100));
+			if (simulate) {
+				try {
+					d = TelnetClientOutput.queue.take();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				String currentUserFBID = application.getCurrentFBUser().getId();
+				HttpClient client = new DefaultHttpClient();
+				String getURL = "http://omnidrive.herokuapp.com/getscore?fbid=" + currentUserFBID;
+				//fbid: blah hiscore: blah
+				HttpGet get = new HttpGet(getURL);
+				try {
+					HttpResponse responseGet = client.execute(get);
+					HttpEntity responseEntity = responseGet.getEntity();
+					String response = EntityUtils.toString(responseEntity);
+					if (!response.equals(null)) {
+						JSONObject currUser;
+						try {
+							currUser = new JSONObject(response);
+							String fetchedScoreAsString = currUser.optString("highscore");
+							if (fetchedScoreAsString != null) {
+								d = Double.parseDouble(fetchedScoreAsString);
+							}
+							
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			DecimalFormat df = new DecimalFormat("####0.0");
 			yourScore.setText("" + df.format(d));
 			globalD = Double.parseDouble(df.format(d));
@@ -137,23 +171,23 @@ public class ScoreboardFragment extends Fragment {
 
 		// Note: Scoreboard is populated during onResume below
 
-    	Button pause_button = (Button) v.findViewById(R.id.pause);
+		Button pause_button = (Button) v.findViewById(R.id.pause);
 
-    	pause_button.setOnClickListener(new View.OnClickListener(){
-    		public void onClick(View v) {
-    			try {
-    				queue.put(nullVal);
-    				scoreHandler.removeCallbacks(updateScoreTask);
-    				//boardHandler.removeCallbacks(f);
-    			} catch (Exception e) {
-    				
-    			}
-    		}
-    	});	
+		pause_button.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v) {
+				try {
+					queue.put(nullVal);
+					scoreHandler.removeCallbacks(updateScoreTask);
+					//boardHandler.removeCallbacks(f);
+				} catch (Exception e) {
+
+				}
+			}
+		});	
 
 		return v;
 	}
-	
+
 	public double getQueue() {
 		try {
 			double d = queue.take();
@@ -171,7 +205,7 @@ public class ScoreboardFragment extends Fragment {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// Close the game and show the specified error to the user
 	private void closeAndShowError(String error) {
 		Bundle bundle = new Bundle();
@@ -202,13 +236,13 @@ public class ScoreboardFragment extends Fragment {
 		if (application.getScoreboardEntriesList() == null) {
 			//progressContainer.setVisibility(View.VISIBLE);
 		}
-		
+
 		progressContainer.setVisibility(View.VISIBLE);
 		//boardHandler.removeCallbacks(f);
 		//boardHandler.postDelayed(f, 0);
 		fetchScoreboardFunc();
 	}
-	
+
 	private Runnable f = new Runnable()  {
 		// Fetch the scores ...
 		//AsyncTask.execute(new Runnable() {
@@ -232,9 +266,7 @@ public class ScoreboardFragment extends Fragment {
 					// Execute the HTTP Get to our server for the scores of the user's friends
 					HttpClient client = new DefaultHttpClient();
 					/* Update this */
-					//String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
 					String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + currentUserFBID + "&data=" + globalD;
-					System.out.println(getURL);
 					HttpGet get = new HttpGet(getURL);
 					HttpResponse responseGet = client.execute(get);
 
@@ -299,7 +331,8 @@ public class ScoreboardFragment extends Fragment {
 							populateScoreboard();
 						}
 					});
-					boardHandler.postDelayed(f, 5000);
+					boardHandler.postDelayed(f, 2500);
+
 				} catch (Exception e) {
 					Log.e(OmniDriveApplication.TAG, e.toString());
 					closeAndShowError(getResources().getString(R.string.network_error));
