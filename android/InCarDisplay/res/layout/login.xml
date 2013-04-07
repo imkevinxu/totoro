@@ -46,11 +46,12 @@
                 android:text="@string/dummy_button" />
         </LinearLayout>
 
-        
         <com.facebook.widget.LoginButton
             android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                        android:paddingRight="10dp"
+            
+            android:layout_width="260dp"
+            android:layout_height="54dp"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_marginBottom="30dp"
             android:layout_marginTop="40dp"
@@ -71,16 +72,17 @@
         <Button
             android:id="@+id/logout"
             android:layout_width="260dp"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_marginTop="85dp"
             android:background="#1ABC9C"
-            android:paddingBottom="15dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="15dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingTop="0dp"
             android:text="@string/login_with_email"
-            android:textSize="25sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="16.0sp" />
     </FrameLayout>
 
 </FrameLayout>

@@ -1,5 +1,6 @@
 package com.totoro.incardisplay;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,7 +45,8 @@ import com.facebook.widget.ProfilePictureView;
  */
 public class ScoreboardFragment extends Fragment {
 	private boolean stop = false;
-	public static BlockingQueue<Double> queue;
+	private double globalD = 0;
+	public static BlockingQueue<Double> queue = new ArrayBlockingQueue<Double>(100);
 
 	// Tag used when logging messages
 	private static final String TAG = ScoreboardFragment.class.getSimpleName();
@@ -63,13 +65,24 @@ public class ScoreboardFragment extends Fragment {
 	private Handler uiHandler;
 	private Handler scoreHandler;
 	private Handler boardHandler;
+	
+	private TelnetClientOutput tco;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		queue = new ArrayBlockingQueue<Double>(100);
 		application = (OmniDriveApplication) getActivity().getApplication();
+		try {
+			System.out.println("ALALALALAL");
+			tco = new TelnetClientOutput();
+			tco.execute();
+			System.out.println("123144");
+		} catch (Exception e) {
+			System.out.println("EXCEPTION THROWN");
+			// TODO Auto-generated catch block
+			e.printStackTrace(); 
+		}
 
 		// Instantiate the handler
 		uiHandler = new Handler();
@@ -89,9 +102,19 @@ public class ScoreboardFragment extends Fragment {
 	private Runnable updateScoreTask = new Runnable() {
 		public void run() {
 			TextView yourScore = (TextView) getView().findViewById(R.id.current_score);
-			double d = getQueue();
+			double d = 0.0;
+			try {
+				//Log.i("QUEUE", "WILL TAKE");
+				d = TelnetClientOutput.queue.take();
+				Log.i("QUEUE", "WILL TAKE " + d);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//getQueue();
 			//yourScore.setText("" + Math.random() * (100));
-			yourScore.setText("" + d);
+			DecimalFormat df = new DecimalFormat("####0.0");
+			yourScore.setText("" + df.format(d));
+			globalD = Double.parseDouble(df.format(d));
 			scoreHandler.postDelayed(updateScoreTask, 1000);
 
 		}
@@ -119,7 +142,7 @@ public class ScoreboardFragment extends Fragment {
     			try {
     				queue.put(nullVal);
     				scoreHandler.removeCallbacks(updateScoreTask);
-    				boardHandler.removeCallbacks(f);
+    				//boardHandler.removeCallbacks(f);
     			} catch (Exception e) {
     				
     			}
@@ -179,10 +202,9 @@ public class ScoreboardFragment extends Fragment {
 		}
 		
 		progressContainer.setVisibility(View.VISIBLE);
-		boardHandler.removeCallbacks(f);
-		boardHandler.postDelayed(f, 0);
-		//boardHandler.postDelayed(fetchScoreboardEntries, 100);
-		//fetchScoreboardFunc();
+		//boardHandler.removeCallbacks(f);
+		//boardHandler.postDelayed(f, 0);
+		fetchScoreboardFunc();
 	}
 	
 	private Runnable f = new Runnable()  {
@@ -209,7 +231,8 @@ public class ScoreboardFragment extends Fragment {
 					HttpClient client = new DefaultHttpClient();
 					/* Update this */
 					//String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
-					String getURL = "http://omnidrive.herokuapp.com/scores?fbid=" + currentUserFBID;
+					String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + currentUserFBID + "&data=" + globalD;
+					System.out.println(getURL);
 					HttpGet get = new HttpGet(getURL);
 					HttpResponse responseGet = client.execute(get);
 
@@ -229,7 +252,7 @@ public class ScoreboardFragment extends Fragment {
 								// Store the user details in the following attributes
 								String userID = null;
 								String userName = null;
-								int userScore = -1;
+								double userScore = -1.0;
 
 								// Extract the user information
 								JSONObject currentUser = responseJSONArray.optJSONObject(i);
@@ -238,7 +261,7 @@ public class ScoreboardFragment extends Fragment {
 									userName = currentUser.optString("first_name");
 									String fetchedScoreAsString = currentUser.optString("highscore");
 									if (fetchedScoreAsString != null) {
-										userScore = Integer.parseInt(fetchedScoreAsString);
+										userScore = Double.parseDouble(fetchedScoreAsString);
 									}
 									if (userID != null && userName != null && userScore >= 0) {
 										// All attributes have been successfully fetched, so create a new
