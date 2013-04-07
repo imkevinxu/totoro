@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -70,6 +71,7 @@ public class ScoreboardFragment extends Fragment {
 	private Handler boardHandler;
 
 	private TelnetClientOutput tco;
+	private Random rgen = new Random();
 
 	private boolean simulate = false;
 
@@ -294,6 +296,15 @@ public class ScoreboardFragment extends Fragment {
 									String fetchedScoreAsString = currentUser.optString("highscore");
 									if (fetchedScoreAsString != null) {
 										userScore = Double.parseDouble(fetchedScoreAsString);
+										
+										/*double nextR = rgen.nextDouble();
+										boolean nextB = rgen.nextBoolean();
+										if (nextB) {
+											userScore *= nextR;
+										} else {
+											nextR += 0.001;
+											userScore /= nextR;
+										}*/
 									}
 									if (userID != null && userName != null && userScore >= 0) {
 										// All attributes have been successfully fetched, so create a new
@@ -321,6 +332,7 @@ public class ScoreboardFragment extends Fragment {
 						}
 					});
 					boardHandler.postDelayed(f, 2500);
+
 				} catch (Exception e) {
 					Log.e(OmniDriveApplication.TAG, e.toString());
 					closeAndShowError(getResources().getString(R.string.network_error));

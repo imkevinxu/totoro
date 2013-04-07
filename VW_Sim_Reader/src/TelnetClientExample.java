@@ -2,7 +2,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.util.StringTokenizer;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.net.telnet.EchoOptionHandler;
 import org.apache.commons.net.telnet.InvalidTelnetOptionException;
@@ -12,8 +16,9 @@ import org.apache.commons.net.telnet.TelnetClient;
 import org.apache.commons.net.telnet.TelnetNotificationHandler;
 import org.apache.commons.net.telnet.TerminalTypeOptionHandler;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /***
  * Commands:
@@ -30,11 +35,11 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
     // EC2 IP address instance is 184.169.154.101 port 28501
     public static final String IP_ADDR = "184.169.154.101";
     public static final int PORT = 28501;
-
+    
     public static void main(String[] args) throws Exception
     {
         FileOutputStream fout = null;
-
+        
         String remoteip = IP_ADDR;
 
         int remoteport = PORT;
@@ -49,7 +54,6 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
                 "Exception while opening the spy file: "
                 + e.getMessage());
         }
-
         tc = new TelnetClient();
 
         TerminalTypeOptionHandler ttopt = new TerminalTypeOptionHandler("VT100", false, false, true, false);
@@ -98,6 +102,12 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
                     buff = comm.getBytes();
                 	
                 	outstr.write(buff, 0 , 78);
+                    outstr.flush();
+                    
+                    comm = "<Req><Subscribe url='EngineSpeed' ival='1000' notification='onChange'/></Req>";
+                    buff = comm.getBytes();
+                	
+                	outstr.write(buff, 0 , 77);
                     outstr.flush();
                 	
                 	first_iteration = false;
@@ -266,7 +276,8 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
     public void run()
     {
         InputStream instr = tc.getInputStream();
-
+        int count = 0;
+        String output = "";
         try
         {
             byte[] buff = new byte[1024];
@@ -274,27 +285,39 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
 
             do
             {
+                
                 ret_read = instr.read(buff);
-                if(ret_read > 0)
-                {
-                	String output = new String(buff, 0, ret_read);
-                	/* Parse out speed */
-                	int val_ind = output.indexOf("val=");
-                	if (val_ind != -1) {
-                		int num_ind = val_ind + 5;
-                		String new_str = output.substring(num_ind);
-                		int index_apos = new_str.indexOf('"');
-                		String val = new_str.substring(0, index_apos);
-                		
-                		double doub_val = Double.parseDouble(val);
-                		
-                		System.out.println(doub_val);
+                if (ret_read > 0) {
+                	output += new String(buff, 0, ret_read);
+                	int nl_ind = output.indexOf('\n');
+                	if (nl_ind != -1) {
+                		String line = output.substring(0, nl_ind);
+						//System.out.println(count + " " + line);
+						
+						int val_ind = line.indexOf("val=");
+						int name_ind = line.indexOf("name=");
+	                	if (val_ind != -1 && name_ind != -1) {
+	                		int num_ind = val_ind + 5;
+	                		int name_val_ind = name_ind + 6;
+	                		
+	                		String new_str = line.substring(num_ind);
+	                		int index_apos = new_str.indexOf('"');
+	                		String val = new_str.substring(0, index_apos);
+	                		double doub_val = Double.parseDouble(val);
+	                		
+	                		String name_new_str = line.substring(name_val_ind);
+	                		int name_index_apos = name_new_str.indexOf('"');
+	                		String name_val = name_new_str.substring(0, name_index_apos);
+	                		
+	                		System.out.println(doub_val);
+	                		System.out.println(name_val);
+	                	}
+						
+                		count++;
+                		output = output.substring(nl_ind+1);
                 	}
-                	
-                	
-                   // System.out.print(output);
-                    
                 }
+                
             }
             while (ret_read >= 0);
         }

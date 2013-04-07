@@ -5,7 +5,6 @@
 
 
 
-
   /* ZURB Foundation Javascript Initialization */
   var $doc = $(document);
   var Modernizr = window.Modernizr;
