@@ -24,8 +24,8 @@ urlpatterns = patterns('',
     #url(r'^logout$', 'django.contrib.auth.views.logout'),
 
     url(r'^scores$', 'prototype_app.views.scores'),
-
     url(r'^data$', 'prototype_app.views.data'),
+    url(r'^getscore$', 'prototype_app.views.getscore'),
 
     url(r'^admin/', include(admin.site.urls)),
 

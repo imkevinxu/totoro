@@ -114,6 +114,16 @@ def data(request):
         pass
     return redirect('home')
 
+def getscore(request):
+    try:
+        if 'fbid' in request.GET:
+            fb = FacebookProfile.objects.get(facebook_id=request.GET['fbid'])
+            results = json.dumps({'fbid' : fb.get_facebook_profile()['id'], 'highscore' : fb.highscore }, ensure_ascii=False)
+            return HttpResponse(results, mimetype='application/json')
+    except FacebookProfile.DoesNotExist:
+        pass
+    return redirect('home')
+
 def read_csv():
     # DriveData.objects.all().delete()
     cr = csv.reader(open('media/data/trackLog-2013-Feb-28_23-13-08.csv', 'rb'))
