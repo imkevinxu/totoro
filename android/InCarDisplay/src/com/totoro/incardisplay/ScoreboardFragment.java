@@ -1,5 +1,6 @@
 package com.totoro.incardisplay;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,6 +45,7 @@ import com.facebook.widget.ProfilePictureView;
  */
 public class ScoreboardFragment extends Fragment {
 	private boolean stop = false;
+	private double globalD = 0;
 	public static BlockingQueue<Double> queue = new ArrayBlockingQueue<Double>(100);
 
 	// Tag used when logging messages
@@ -110,7 +112,9 @@ public class ScoreboardFragment extends Fragment {
 				e.printStackTrace();
 			}//getQueue();
 			//yourScore.setText("" + Math.random() * (100));
-			yourScore.setText("" + d);
+			DecimalFormat df = new DecimalFormat("####0.0");
+			yourScore.setText("" + df.format(d));
+			globalD = Double.parseDouble(df.format(d));
 			scoreHandler.postDelayed(updateScoreTask, 1000);
 
 		}
@@ -227,7 +231,8 @@ public class ScoreboardFragment extends Fragment {
 					HttpClient client = new DefaultHttpClient();
 					/* Update this */
 					//String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
-					String getURL = "http://omnidrive.herokuapp.com/scores?fbid=" + currentUserFBID;
+					String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + currentUserFBID + "&data=" + globalD;
+					System.out.println(getURL);
 					HttpGet get = new HttpGet(getURL);
 					HttpResponse responseGet = client.execute(get);
 
@@ -247,7 +252,7 @@ public class ScoreboardFragment extends Fragment {
 								// Store the user details in the following attributes
 								String userID = null;
 								String userName = null;
-								int userScore = -1;
+								double userScore = -1.0;
 
 								// Extract the user information
 								JSONObject currentUser = responseJSONArray.optJSONObject(i);
@@ -256,7 +261,7 @@ public class ScoreboardFragment extends Fragment {
 									userName = currentUser.optString("first_name");
 									String fetchedScoreAsString = currentUser.optString("highscore");
 									if (fetchedScoreAsString != null) {
-										userScore = Integer.parseInt(fetchedScoreAsString);
+										userScore = Double.parseDouble(fetchedScoreAsString);
 									}
 									if (userID != null && userName != null && userScore >= 0) {
 										// All attributes have been successfully fetched, so create a new

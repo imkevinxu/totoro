@@ -11,9 +11,9 @@ public class ScoreboardEntry implements Comparable<ScoreboardEntry> {
 	// Attributes for a ScoreboardEntry
 	private String id;
 	private String name;
-	private int score;
+	private double score;
 	
-	public ScoreboardEntry (String id, String name, int score) {
+	public ScoreboardEntry (String id, String name, double score) {
 		setId(id);
 		setName(name);
 		setScore(score);
@@ -35,11 +35,11 @@ public class ScoreboardEntry implements Comparable<ScoreboardEntry> {
 		this.name = name;
 	}
 
-	public int getScore() {
+	public double getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(double score) {
 		this.score = score;
 	}
 
@@ -47,7 +47,7 @@ public class ScoreboardEntry implements Comparable<ScoreboardEntry> {
 	public int compareTo(ScoreboardEntry another) {
 		// Returns a negative integer, zero, or a positive integer as this object
 		// is less than, equal to, or greater than the specified object.
-		return this.score - another.score;
+		return (int) (this.score - another.score);
 	}
 	
 }
