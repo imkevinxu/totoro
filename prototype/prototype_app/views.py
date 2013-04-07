@@ -101,13 +101,16 @@ def scores(request):
 def data(request):
     try:
         fb = FacebookProfile.objects.get(facebook_id=request.GET['fbid'])
-        fb.highscore = request.GET['data']
+        if 'data' in request.GET:
+            fb.highscore = request.GET['data']
+        if 'currentscore' in request.GET:
+            fb.currentscore = request.GET['currentscore']
         fb.save()
         if 'fbid' in request.GET:
             fb = FacebookProfile.objects.get(facebook_id=request.GET['fbid'])
             fbid = fb.get_facebook_profile()['id']
             first_name = fb.get_facebook_profile()['name'].split()[0]
-            friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'first_name' : user.get_facebook_profile()['name'].split()[0], 'highscore' : user.highscore } for user in FacebookProfile.objects.all()]
+            friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'first_name' : user.get_facebook_profile()['name'].split()[0], 'highscore' : user.highscore, 'currentscore' : user.currentscore } for user in FacebookProfile.objects.all()]
             results = json.dumps({'friends' : friends }, ensure_ascii=False)
             return HttpResponse(results, mimetype='application/json')
     except FacebookProfile.DoesNotExist:
@@ -118,7 +121,7 @@ def getscore(request):
     try:
         if 'fbid' in request.GET:
             fb = FacebookProfile.objects.get(facebook_id=request.GET['fbid'])
-            results = json.dumps({'fbid' : fb.get_facebook_profile()['id'], 'highscore' : fb.highscore }, ensure_ascii=False)
+            results = json.dumps({'fbid' : fb.get_facebook_profile()['id'], 'highscore' : fb.highscore, 'currentscore' : fb.currentscore }, ensure_ascii=False)
             return HttpResponse(results, mimetype='application/json')
     except FacebookProfile.DoesNotExist:
         pass
