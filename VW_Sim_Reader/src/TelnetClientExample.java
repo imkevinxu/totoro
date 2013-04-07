@@ -103,6 +103,12 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler
                 	
                 	outstr.write(buff, 0 , 78);
                     outstr.flush();
+                    
+                    comm = "<Req><Subscribe url='EngineSpeed' ival='1000' notification='onChange'/></Req>";
+                    buff = comm.getBytes();
+                	
+                	outstr.write(buff, 0 , 77);
+                    outstr.flush();
                 	
                 	first_iteration = false;
                 }
