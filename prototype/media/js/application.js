@@ -56,5 +56,57 @@ $(document).ready(function() {
     // $('.donut-arrow').trigger('updatePercentage', 0);
     // $('.donut-arrow').eachtrigger('updatePercentage', $(this).data('percentage'));
 
+
+jQuery.fn.slideLeftOut = function(speed, easing, callback) {
+    return this.animate({opacity: 0, left: '-200'}, speed, easing, function() { $(this).removeClass('active'); });
+};
+jQuery.fn.slideRightIn = function(speed, easing, callback) {
+    return this.animate({opacity: 1.0, left: '0px'}, speed, easing, callback).addClass('active');
+};
+
+      $('#sidebar a').each(function() {
+        $(this).on('click', function(e) {
+          e.preventDefault();
+          var clicked = $(this).children()[0];
+          if (!$(clicked).hasClass('active')) {
+            $('#sidebar a').children().removeClass('active');
+            $(clicked).addClass('active');
+            if ($(clicked).is("#overview")) {
+                $("#dashboard.recent").slideLeftOut();
+                $("#dashboard.social").slideLeftOut();
+                $("#dashboard.economic").slideLeftOut();
+                window.setTimeout(function() {
+                    $("#dashboard.overview").slideRightIn();
+                }, 400);
+            } else if ($(clicked).is("#recent")) {
+                $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.social").slideLeftOut();
+                $("#dashboard.economic").slideLeftOut();
+                window.setTimeout(function() {
+                    $("#dashboard.recent").slideRightIn();
+                    google.maps.event.trigger(map, 'resize');
+                }, 400);
+
+            } else if ($(clicked).is("#economic")) {
+                $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.social").slideLeftOut();
+                $("#dashboard.recent").slideLeftOut();
+                window.setTimeout(function() {
+                    $("#dashboard.economic").slideRightIn();
+                }, 400);
+
+            } else if ($(clicked).is("#social")) {
+                $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.recent").slideLeftOut();
+                $("#dashboard.economic").slideLeftOut();
+                window.setTimeout(function() {
+                    $("#dashboard.social").slideRightIn();
+                }, 400);
+
+            }
+          }
+        });
+      });
+
 });
 

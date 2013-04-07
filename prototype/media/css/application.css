@@ -79,6 +79,14 @@ footer {
 
 #dashboard {
     margin-top: 32px;
+    position: relative;
+    display: none;
+    left: -200px;
+}
+
+#dashboard.active {
+    display: block;
+    left: 0;
 }
 /*
 #dashboard .span3 {
@@ -231,6 +239,45 @@ a[data-toggle="tooltip"] {
     top: 28px;
     position: relative;
 }*/
+
+
+
+#sidebar {
+    position: absolute;
+    left: 0;
+    top: 103px;
+    background-color: #95A5A6;
+    border: 4px solid #7F8C8D;
+    border-left: none;
+}
+
+#sidebar ul {
+    list-style-type: none;
+    margin: 0;
+}
+
+#sidebar li {
+    padding: 10px 20px;
+    text-transform: uppercase;
+}
+
+#sidebar a {
+    text-decoration: none;
+    color: white;
+}
+
+#sidebar a:hover li, #sidebar li.active {
+    background-color: #7F8C8D;
+}
+
+
+#map-canvas {
+    margin-top: 20px;
+    height: 500px;
+}
+
+
+
 
 /*////////////////////////////////////////////////
 --------------------------------------------------
