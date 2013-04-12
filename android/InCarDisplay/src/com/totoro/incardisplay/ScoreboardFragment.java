@@ -75,6 +75,9 @@ public class ScoreboardFragment extends Fragment {
 
 	private boolean simulate = false;
 
+	private long numberIterations = 0;
+	private final int NUM_UPDATE = 10;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -134,7 +137,7 @@ public class ScoreboardFragment extends Fragment {
 							if (fetchedScoreAsString != null) {
 								d = Double.parseDouble(fetchedScoreAsString);
 							}
-							
+
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -151,10 +154,25 @@ public class ScoreboardFragment extends Fragment {
 			DecimalFormat df = new DecimalFormat("####0.0");
 			yourScore.setText("" + df.format(d));
 			globalD = Double.parseDouble(df.format(d));
+			if(++numberIterations % NUM_UPDATE == 0)	{
+				TextView recommendation = (TextView) getView().findViewById(R.id.recommendation);
+				recommendation.setText(getRecommendation());
+			}
 			scoreHandler.postDelayed(updateScoreTask, 1000);
-
 		}
 	};
+
+	private String getRecommendation()	{
+		switch((int)(5 * Math.random()))	{
+		case 0: return "Try to avoid flooring the accelerator.\nSudden changes in acceleration produce significantly larger\n quantities of carbon dioxide.";
+		case 1: return "Try hitting the brake pedal more softly.\nThis will prevent degradation of your brakes.";
+		case 2: return "Try to turn more smoothly.";
+		case 3: return "Avoid accelerating or braking while on inclines.\nUse your momentum to carry you through inclines.";
+		case 4: return "Avoid idling your engine.\nTurn off your car if you're going to not use it for extended periods of time.";
+		default:
+			return "No recommendation.";
+		}
+	}
 
 	@TargetApi(13)
 	@Override
@@ -296,7 +314,7 @@ public class ScoreboardFragment extends Fragment {
 									String fetchedScoreAsString = currentUser.optString("highscore");
 									if (fetchedScoreAsString != null) {
 										userScore = Double.parseDouble(fetchedScoreAsString);
-										
+
 										/*double nextR = rgen.nextDouble();
 										boolean nextB = rgen.nextBoolean();
 										if (nextB) {
