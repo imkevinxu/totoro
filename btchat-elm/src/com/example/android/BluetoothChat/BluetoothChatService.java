@@ -481,15 +481,23 @@ public class BluetoothChatService {
 		                		ln = "Engine RPM: " + (value / 4) + " rpm";
 		                	} else if(header.equals("41 0D")) {
 		                		ln = "Speed: " + value + " kph";
-		                	} else if(header.equals("41 33")) {
-		                		ln = "Barometer: " + value + " kPa";
-		                	} else if(header.equals("41 49")) {
-		                		ln = "Throttle: " + (value * 100 / 255) + " %";
+		                	} else if(header.equals("41 0F")) {
+		                		ln = "Intake air temperature: " + (value-40) + " deg C";
 		                	} else if(header.equals("41 10")) {
 		                		ln = "MAF: " + (value / 100) + " g/s"; 
+		                	} else if(header.equals("41 1F")) {
+		                		ln = "Runtime seconds: " + (value) + " seconds";
+		                	} else if(header.equals("41 30")) {
+		                		ln = "Number of warmups: " + value;
+		                	} else if(header.equals("41 33")) {
+		                		ln = "Barometer: " + value + " kPa";
 		                	} else if(header.equals("41 46")) {
 		                		ln = "Ambient Temp: " + (value - 40) + " deg C";
-		                	}
+		                	} else if(header.equals("41 49")) {
+		                		ln = "Throttle: " + (value * 100 / 255) + " %";
+		                	} else if(header.equals("41 63")) {
+		                		ln = "Torque: " + (value) + " Nm";
+		                	} 
                 		} catch (NumberFormatException ignored) { }
                 	}
 
