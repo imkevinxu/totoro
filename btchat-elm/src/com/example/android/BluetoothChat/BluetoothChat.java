@@ -96,27 +96,6 @@ public class BluetoothChat extends Activity {
     // Member object for the chat services
     private BluetoothChatService mChatService = null;
 
-    private int counter = 0;
-
-    private static ELMTuple[] englishFields = new ELMTuple[]{
-    	new ELMTuple("rpm", "010C"),
-    	new ELMTuple("speed", "010D"),
-    	new ELMTuple("intakeAir", "010F"),
-    	new ELMTuple("engineTime", "011F"),
-    	new ELMTuple("warmupSinceCode", "0130"),
-    	new ELMTuple("torque", "0163")
-    	};
-
-    static class ELMTuple	{
-    	public String englishName;
-    	public String elmName;
-		public ELMTuple(String englishName, String elmName) {
-			super();
-			this.englishName = englishName;
-			this.elmName = elmName;
-		}
-    }
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -238,6 +217,8 @@ public class BluetoothChat extends Activity {
 
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
+        
+        new AutomaticQueryThread(mSendButton, this).start();
     }
 
     @Override
@@ -314,11 +295,6 @@ public class BluetoothChat extends Activity {
         	} else if(lmsg.equals("maf")) {
         		message = "0110";
         	}
-		}
-        else {
-        	counter++;
-        	counter %= englishFields.length;
-        	message = englishFields[counter].elmName;
 		}
 		// Get the message bytes and tell the BluetoothChatService to write
 		byte[] send = message.getBytes();
