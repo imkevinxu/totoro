@@ -29,6 +29,7 @@ public class DataGenerator {
 		odometer = 0;
 		brakingPressure = 0;
 		pedalForce = 0;
+		altitude = 0;
 		double goalSpeed = 0;
 		int numSpeedTurnsLeft = 0;
 		for(int line = 0; line < NUM_LINES; line++, numSpeedTurnsLeft--)	{
@@ -53,6 +54,7 @@ public class DataGenerator {
 			airConditioning += getNextAC(airConditioning);
 			steering += getNextSteering(steering);
 			odometer += currentSpeed / 3600;
+			altitude = 100 * rng.nextGaussian();
 			data[line] = generateDatum();
 		}
 	}
@@ -64,6 +66,7 @@ public class DataGenerator {
 	private double odometer;
 	private double brakingPressure;
 	private double pedalForce;
+	private double altitude;
 	
 	private TimeSlice generateDatum()	{
 		List<Datum> list = new ArrayList<Datum>();
@@ -74,6 +77,7 @@ public class DataGenerator {
 		list.add(new Datum("odometer", odometer));
 		list.add(new Datum("brakingPressure", brakingPressure));
 		list.add(new Datum("pedalForce", pedalForce));
+		list.add(new Datum("altitude", altitude));
 		return new TimeSlice(list);
 	}
 	
