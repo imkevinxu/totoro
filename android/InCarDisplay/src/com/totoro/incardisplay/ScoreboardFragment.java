@@ -73,7 +73,7 @@ public class ScoreboardFragment extends Fragment {
 	private TelnetClientOutput tco;
 	private Random rgen = new Random();
 
-	private boolean simulate = false;
+	private boolean simulate = true;
 
 	private long numberIterations = 0;
 	private final int NUM_UPDATE = 10;
