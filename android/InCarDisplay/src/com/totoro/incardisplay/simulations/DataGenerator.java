@@ -1,6 +1,11 @@
 package com.totoro.incardisplay.simulations;
 
 import java.util.*;
+
+/**
+ * Random data generator.
+ */
+
 public class DataGenerator {
 
 	private Random rng;
@@ -21,6 +26,18 @@ public class DataGenerator {
 		return data[time];
 	}
 	
+	public TimeSlice[] getAllData()	{
+		return data;
+	}
+	
+	// TODO(Nick): Add stopping feature.
+	// TODO(Nick): Latitude/longitude
+	// TODO(Nick): Fuel usage
+	// TODO(Nick): MPG
+	// TODO(Nick): Eco-score
+	// TODO(Nick): Trip-length
+	// TODO(Nick): Tell KX what units are
+	// TODO(Nick): Make output JSON
 	public void generateData(final int NUM_LINES) {
 		currentSpeed = 0;
 		acceleration = 0;
@@ -32,9 +49,10 @@ public class DataGenerator {
 		altitude = 0;
 		double goalSpeed = 0;
 		int numSpeedTurnsLeft = 0;
+		data = new TimeSlice[NUM_LINES];
 		for(int line = 0; line < NUM_LINES; line++, numSpeedTurnsLeft--)	{
 			if(numSpeedTurnsLeft == 0)	{
-				goalSpeed = 150 * rng.nextDouble();
+				goalSpeed = 80 * rng.nextDouble();
 				numSpeedTurnsLeft = 50+rng.nextInt(100);
 			}
 			double accelInc = getNextAccel(goalSpeed, acceleration, currentSpeed);
@@ -54,7 +72,7 @@ public class DataGenerator {
 			airConditioning += getNextAC(airConditioning);
 			steering += getNextSteering(steering);
 			odometer += currentSpeed / 3600;
-			altitude = 100 * rng.nextGaussian();
+			altitude = 20 * rng.nextGaussian();
 			data[line] = generateDatum();
 		}
 	}
