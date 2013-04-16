@@ -31,8 +31,6 @@ public class DataGenerator {
 	}
 	
 	// TODO(Nick): Latitude/longitude
-	// TODO(Nick): Eco-score
-	// TODO(Nick): Tell KX what units are
 	// TODO(Nick): Make output JSON
 	public void generateData(final int NUM_LINES) {
 		currentSpeed = 0;
@@ -82,6 +80,7 @@ public class DataGenerator {
 			fuelUsage += getFuelUsage(currentSpeed);
 			tripLength++;
 			mpg = odometer / fuelUsage;
+			ecoScore = computeEcoScore();
 			data[line] = generateDatum();
 		}
 	}
@@ -106,7 +105,19 @@ public class DataGenerator {
 	private double altitude;
 	private double fuelUsage;
 	private double mpg;
+	private double ecoScore;
 	private long tripLength;
+	
+	private double computeEcoScore() {
+		double ret = 100;
+		ret -= Math.abs(Math.pow(acceleration, 2));
+		ret -= Math.sqrt(Math.abs(steering));
+		ret -= Math.abs(Math.pow(brakingPressure, 3));
+		ret -= Math.abs(Math.pow(pedalForce, 3));
+		ret = Math.max(ret, 0);
+		return ret;
+	}
+
 	
 	private TimeSlice generateDatum()	{
 		List<Datum> list = new ArrayList<Datum>();
@@ -121,6 +132,7 @@ public class DataGenerator {
 		list.add(new Datum("fuelUsage", fuelUsage));
 		list.add(new Datum("mpg", mpg));
 		list.add(new Datum("tripLength", tripLength));
+		list.add(new Datum("ecoScore", ecoScore));
 		return new TimeSlice(list);
 	}
 	
