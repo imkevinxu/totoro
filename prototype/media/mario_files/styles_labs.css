@@ -1,0 +1,39 @@
+
+
+span.note {
+ background-color:#3F4647;
+ display:inline-block;
+ font-size:12px;
+ font-style:italic;
+ padding:5px;
+ border:1px dashed #747E7F;
+ margin:5px;
+}
+
+#main {
+  float: left;
+  width: 647px;
+  margin-top: 20px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding: 0;
+  line-height: 1.5em;
+  word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+  overflow: hidden;     /* fix for long non-text content breaking IE sidebar float */
+}
+
+#sidebar {
+  float: right;
+  width: 259px;
+  padding-top: 49px;
+  padding-right: 0px;
+  padding-bottom: 0;
+  padding-left: 0;
+  font-size: 90%;
+  line-height: 1.4em;
+  color: #f1f1f1;
+  word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+  overflow: hidden;     /* fix for long non-text content breaking IE sidebar float */
+}
+

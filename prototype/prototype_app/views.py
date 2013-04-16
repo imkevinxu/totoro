@@ -220,3 +220,6 @@ def get_last_trip(username, start_time, end_time):
     for e in fuel_query:
         fuel = e['fuel_used']
     return(date, duration, fuel)
+
+def mariokart(request):
+    return render(request, 'mario.html', locals())

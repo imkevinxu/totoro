@@ -1,0 +1,783 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-size: small;
+  text-align: center;
+  color: #666666;
+  background: #192629;
+}
+
+blockquote {
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 30px;
+  padding-top: 10px;
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: 20px;
+  font-size: 88%;
+  line-height: 1.5em;
+  color: #666;
+  background: url(http://www.nihilogic.dk/blog/quotes.gif) no-repeat top left;
+}
+
+blockquote p {
+  margin-top: 0;
+}
+
+post-body p {
+  margin-top: 0;
+}
+
+abbr, acronym {
+  cursor: help;
+  font-style: normal;
+  border-bottom: 1px dotted;
+}
+
+hr {
+  display: none;
+}
+
+h4 {
+  font-size : 15px;
+}
+
+img {
+  border: none;
+}
+
+#search-div {
+  float: right; 
+  position: relative; 
+  right: 23px;
+}
+
+ul {
+  list-style: none;
+  margin-left: 5px;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+  padding-left: 14px;
+  margin-bottom: 3px;
+  background: url(http://www.nihilogic.dk/blog/li_tic.gif) no-repeat left 6px;
+}
+
+a {
+  text-decoration : none;
+}
+
+#content-wrapper a:link {
+  color: #fa3;
+}
+
+#content-wrapper a:visited {
+  color: #fa3;
+}
+
+#content-wrapper a:hover {
+  color: #fa3;
+  /*text-decoration : underline;*/
+  background-color : #3F4647;
+  background-color : rgba(255, 255, 255, 0.1);
+}
+
+a:active {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+h5 {
+  font-size:100%;
+  font-weight:normal;
+  display:inline;
+}
+
+/* ---( layout structure )---*/
+
+#b-navbar {
+  background-color:404d4f;
+}
+
+#outer-wrapper {
+  width: 980px;
+  margin: 25px auto 0;
+  text-align: left;
+  font-family:"Trebuchet MS",Arial,sans-serif !important;
+  background: url(http://www.nihilogic.dk/blog/bg_wide.png) repeat-y;
+  }
+
+#content-wrapper {
+  margin-left: 25px; /* to avoid the border image */
+  width: 930px;
+}
+
+#main {
+  float: left;
+  width: 490px;
+  margin-top: 20px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: 24px;
+  line-height: 1.5em;
+  word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
+  overflow: hidden;     /* fix for long non-text content breaking IE sidebar float */
+  }
+
+
+/* ---( header and site name )--- */
+
+
+#header-wrapper {
+  margin: 0;
+  padding: 0;
+  background: #e0e0e0 url(http://www.nihilogic.dk/blog/header_wide_2.png) no-repeat left top;
+}
+
+#header {
+  margin: 0;
+  padding-top: 30px;
+  padding-right: 0px;
+  padding-bottom: 32px;
+  padding-left: 25px;
+}
+
+/* ---( main column )--- */
+
+
+.post-labels {
+  display:block;
+  font-weight:normal;
+  font-size:11px;
+  color:#d1d1d1;
+}
+
+.label, .label a:visited {
+  font-weight: bold;
+  color:#d1d1d1;
+}
+
+.descriptionwrapper {
+  padding-top: 5px;
+}
+.description {
+  font-family: "lucida console", "courier new";
+  font-size:12px;
+  color:#d1d1d1;
+  background-color:#3F4647;
+  border-bottom:1px solid #747E7F;
+  border-top:1px solid #747E7F;
+  display:block;
+  padding-left:5px;
+  position:absolute;
+  top:85px;
+  width:927px;
+  height:26px;
+}
+
+
+
+h2.date-header {
+  margin-top: 0;
+  padding-left: 2px;
+  font-size: 90%;
+  color: #999999;
+  }
+
+.post h3 {
+  margin-top: 0;
+  font-family:"Trebuchet MS",Arial,sans-serif !important;
+  font-size:18px;
+  color: #f1f1f1;
+  font-weight : bold;
+  background-color : #3f4647;
+  padding: 4px 8px 5px 10px;
+  }
+
+.post {
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 1.5em;
+  margin-left: 0;
+  border: 1px solid #747e7f;
+  background-color: #323b3c;
+  line-height : 1.7em;
+}
+
+
+
+.post-body {
+  font-family:"Trebuchet MS",Arial,sans-serif !important;
+  color: #f1f1f1;
+  padding: 4px 8px 5px 10px;
+}
+
+.post-body p {
+  margin : 0px;
+  margin-bottom : 1em;
+}
+
+.post-title {
+}
+
+.post h3 a,
+.post h3 a:visited { 
+  /*text-decoration: none;*/
+}
+
+.post-footer {
+  margin: 0;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 11px;
+  color: #f1f1f1;
+  background-color: #3f4647;
+}
+
+.post img {
+  padding: 6px;
+/*
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #c0c0c0;
+  border-right: 1px solid #c0c0c0;
+*/
+}
+
+
+.feed-links {
+  clear: both;
+  line-height: 2.5em;
+}
+
+
+
+.invisitag {
+  display:none;
+}
+
+#blog-pager-newer-link {
+  float: left;
+}
+
+#blog-pager-older-link { 
+  float: right;
+}
+ 
+#blog-pager {   
+  text-align: center; 
+}
+
+.spread-the-word {
+
+}
+
+/* comment styles */
+
+.comment-link {
+	font-size : 120%;
+	margin-left : 5px;
+}
+
+#comments {
+  padding-top: 0px;
+  font-size: 90%;
+  line-height: 1.5em;
+  color: #f1f1f1;
+}
+
+#comments h4 {
+  padding : 8px 8px 12px 10px;
+  font-family:"Trebuchet MS",Arial,sans-serif !important;
+  font-size:15px;
+  font-weight : bold;
+  color: #f1f1f1;
+  background-color:#3F4647;
+  border:1px solid #747E7F;
+  width : 470px;
+}
+  
+#comments ul {
+  margin-left: 0;
+  }
+
+#comments li {
+  background: none;
+  padding-left: 0;
+  }
+  
+
+.comment-container {
+  background-color: #3F4647;
+}
+
+.comment-body {
+  padding-top: 0;
+  padding-right: 10px;
+  padding-bottom: 0;
+  padding-left: 25px;
+  background: url(http://www.nihilogic.dk/blog/li_tic.gif) no-repeat 10px 10px;
+  color:#f1f1f1;
+  }
+
+.comment-body p {
+  margin-bottom: 0;
+  padding: 5px;
+  background-color: #323B3C;
+}
+
+.comment-author {
+  margin-top: 4px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 60px;
+  color: #d1d1d1;
+  }
+
+.comment-footer {
+  color: #d1d1d1;
+  padding-bottom: 1em;
+}
+
+
+.deleted-comment {
+  font-style:italic;
+  color:gray;
+  }
+
+/* ---( sidebar )--- */
+
+
+.sidebar .widget {
+  margin-bottom: 20px;
+  padding: 0;
+  border: 1px solid #747E7F;
+}
+
+.widget-content {
+  padding: 5px 15px 5px 15px;
+  background-color: #323b3c;
+}
+
+.sidebar li {
+  background: url(http://www.nihilogic.dk/blog/li_tic.gif) no-repeat left 7px;
+}
+
+.sidebar-titlebar {
+  margin: 0;
+  padding-top: 5px;
+  padding-left: 5px;
+  font-size: 12px;
+  color: #d1d1d1;
+  height: 25px;
+  height: 25px !important; /* for most browsers */
+  height /**/:57px; /* for IE5/Win */
+  background-color:#3f4647;
+  display: block;
+  font-family: "lucida console", "courier new";
+}
+
+.sidebar-bottom {
+  margin: 0;
+  padding-top: 5px;
+  padding-left: 5px;
+  color: #d1d1d1;
+  height: 20px;
+  height: 20px !important; /* for most browsers */
+  height /**/:57px; /* for IE5/Win */
+  background-color:#3f4647;
+  display: block;
+  font-family: "lucida console", "courier new";
+  font-size: 12px;
+}
+
+
+.sidebar-title {
+  font-family: "lucida console", "courier new";
+  font-weight: bold;
+  font-size: 13px;
+  color: #f1f1f1;
+}
+
+.profile-textblock { 
+  clear: both;
+  margin-left: 0;
+}
+
+.profile-img { 
+  float: left;
+  margin-top: 0;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-left: 0;
+  border: 1px solid #ddd;
+  padding: 4px;
+}
+
+/* ---( footer )--- */
+
+.clear { /* to fix IE6 padding-top issue */
+  clear: both;
+  }
+
+#footer-wrapper {
+  margin: 0;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 9px;
+  padding-left: 0;
+  font-size: 85%;
+  color: #ddd;
+  }
+
+#footer {
+  margin: 0;
+  padding-top: 20px;
+  padding-right: 320px;
+  padding-bottom: 20px;
+  padding-left: 95px;
+  background: url(http://www.nihilogic.dk/blog/tile.gif) no-repeat top left;
+  }
+
+
+/** Page structure tweaks for layout editor wireframe */
+body#layout #outer-wrapper, body#layout #main, body#layout #sidebar { 
+  padding-top: 0;
+  margin-top: 0;
+}
+
+body#layout #outer-wrapper, body#layout #content-wrapper { 
+  width: 740px;
+}
+
+body#layout #sidebar { 
+  margin-right: 0;
+  margin-bottom: 1em;
+}
+
+body#layout #header, body#layout #footer, body#layout #main {
+  padding: 0;
+}
+
+body#layout #content-wrapper { 
+  margin: 0px;
+}
+
+
+body, div, p, span, h1, h2, h3, h4, h5, h6, ul, li {
+  font-family:Trebuchet MS;
+}
+
+.sidebar-title {
+  font-family:&quot;lucida console&quot;,&quot;courier new&quot;;
+  font-size:12px;
+}
+
+
+.stbuttontext {
+  color : black;
+}
+#sharethis_0 {
+  display:none;
+}
+#navbar-iframe {
+height:0px;
+visibility:hidden;
+display:none
+}
+
+.status-msg-body {
+ color : #d1d1d1;
+}
+
+.post-comment-link-header {
+  font-size: 11px;
+  font-weight : bold;
+  position : relative;
+  right : 7px;
+  top : 3px;
+}
+
+img.image-plain {
+  padding : 0px;
+  margin : 0px;
+  border : none;
+}
+
+.numberingcomments{
+ float: right;
+ display: block;
+ width: 50px;
+ margin-right: 5px;
+ margin-top: -12px; /*comments-counter position*/
+ text-align: right;
+ font-family:"Trebuchet MS",Arial,sans-serif !important;
+ font-size: 30px;
+ font-weight: bold;
+}
+
+.numberingcomments a:link, .numberingcomments a:visited {
+  color: #666c6c !important; text-decoration: none !important;
+}
+.numberingcomments a:hover, .numberingcomments a:active {
+  color: #cccccc !important; text-decoration: none !important;
+}
+
+.owner-comment {
+  background-color : #4F5F5F;
+}
+
+
+.title-subtitle {
+  color:#848E8F;
+  display:inline-block;
+  float:left;
+  font-size:11px;
+  margin-left:2px;
+  margin-top:6px;
+  font-family: "lucida console", "courier new";
+}
+
+textarea[name=&quot;code&quot;] {
+ width : 100%;
+ height : 100px;
+}
+
+div.comment-author, div.comment-body, div.comment-footer {
+ margin : 15px;
+ line-height : 1.7em;
+}
+
+
+.topmenuwrapper {
+  display : block;
+  float : right;
+}
+
+.topmenuitem {
+}
+
+.topmenulink {
+  background-color:#3F4647;
+  display:-moz-inline-stack;
+  display:inline-block;
+  padding-bottom:4px;
+  padding-top:4px;
+  text-align:center;
+  text-decoration:none;
+  width:100px;
+  font-weight : bold;
+  font-family:"Trebuchet MS",Arial,sans-serif !important;
+  color:#f1f1f1;
+}
+
+.topmenulink:hover {
+background-color:#747E7F;
+color : #3F4647;
+}
+
+
+
+#cse-search-box input[type="submit"] {
+  font-family : Trebuchet MS, sans-serif;
+  background-color: #20282A; color: #d1d1d1; font-weight:bold; border: 1px solid #747E7F;
+}
+
+#cse-search-box input[type="text"] {
+  font-family : Trebuchet MS, sans-serif;
+  height : 16px;
+  position : relative;
+  top : 1px;
+}
+
+
+
+/* syntax highlight */
+
+.dp-highlighter
+{
+	font-family: "Consolas", "Courier New", Courier, mono, serif;
+	font-size: 12px;
+	background-color: #E7E5DC;
+	width: 99%;
+	overflow: auto;
+	margin: 18px 0 18px 0 !important;
+	padding-top: 1px; /* adds a little border on top when controls are hidden */
+}
+
+/* clear styles */
+.dp-highlighter ol, .dp-highlighter ol li, .dp-highlighter ol li span {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.dp-highlighter a, .dp-highlighter a:hover {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dp-highlighter .bar {
+  padding-left: 45px;
+}
+
+.dp-highlighter.collapsed .bar, .dp-highlighter.nogutter .bar {
+  padding-left: 0px;
+}
+
+.dp-highlighter ol {
+  list-style: decimal; /* for ie */
+  background-color: #fff;
+  margin: 0px 0px 1px 45px !important; /* 1px bottom margin seems to fix occasional Firefox scrolling */
+  padding: 0px;
+  color: #5C5C5C;
+}
+
+.dp-highlighter.nogutter ol, .dp-highlighter.nogutter ol li {
+  list-style: none !important;
+  margin-left: 0px !important;
+}
+
+.dp-highlighter ol li, .dp-highlighter .columns div {
+  list-style: decimal-leading-zero; /* better look for others, override cascade from OL */
+  list-style-position: outside !important;
+  border-left: 3px solid #6CE26C;
+  background-color: #F8F8F8;
+  color: #5C5C5C;
+  padding: 0 3px 0 10px !important;
+  margin: 0 !important;
+  line-height: 14px;
+}
+
+.dp-highlighter.nogutter ol li, .dp-highlighter.nogutter .columns div {
+  border: 0;
+}
+
+.dp-highlighter .columns {
+  background-color: #F8F8F8;
+  color: gray;
+  overflow: hidden;
+  width: 100%;
+}
+
+.dp-highlighter .columns div {
+  padding-bottom: 5px;
+}
+
+.dp-highlighter ol li.alt {
+  background-color: #FFF;
+  color: inherit;
+}
+
+.dp-highlighter ol li {
+  background-image : none;
+  font-family : 
+}
+
+.dp-highlighter ol li span {
+  color: black;
+  background-color: inherit;
+  font-family : "lucida console","courier new";
+}
+
+/* Adjust some properties when collapsed */
+
+.dp-highlighter.collapsed ol {
+  margin: 0px;
+}
+
+.dp-highlighter.collapsed ol li {
+  display: none;
+}
+
+/* Additional modifications when in print-view */
+
+.dp-highlighter.printing {
+  border: none;
+}
+
+.dp-highlighter.printing .tools {
+  display: none !important;
+}
+
+.dp-highlighter.printing li {
+  display: list-item !important;
+}
+
+/* Styles for the tools */
+
+.dp-highlighter .tools {
+  padding: 3px 8px 3px 10px;
+  font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: silver;
+  background-color: #f8f8f8;
+  padding-bottom: 10px;
+  border-left: 3px solid #6CE26C;
+}
+
+.dp-highlighter.nogutter .tools {
+  border-left: 0;
+}
+
+.dp-highlighter.collapsed .tools {
+  border-bottom: 0;
+}
+
+.dp-highlighter .tools a {
+  font-size: 9px;
+  color: #a0a0a0;
+  background-color: inherit;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.dp-highlighter .tools a:hover {
+  color: red;
+  background-color: inherit;
+  text-decoration: underline;
+}
+
+/* About dialog styles */
+
+.dp-about { background-color: #fff; color: #333; margin: 0px; padding: 0px; }
+.dp-about table { width: 100%; height: 100%; font-size: 11px; font-family: Tahoma, Verdana, Arial, sans-serif !important; }
+.dp-about td { padding: 10px; vertical-align: top; }
+.dp-about .copy { border-bottom: 1px solid #ACA899; height: 95%; }
+.dp-about .title { color: red; background-color: inherit; font-weight: bold; }
+.dp-about .para { margin: 0 0 4px 0; }
+.dp-about .footer { background-color: #ECEADB; color: #333; border-top: 1px solid #fff; text-align: right; }
+.dp-about .close { font-size: 11px; font-family: Tahoma, Verdana, Arial, sans-serif !important; background-color: #ECEADB; color: #333; width: 60px; height: 22px; }
+
+/* Language specific styles */
+
+.dp-highlighter .comment, .dp-highlighter .comments { color: #008200; background-color: inherit; }
+.dp-highlighter .string { color: blue; background-color: inherit; }
+.dp-highlighter .keyword { color: #069; font-weight: bold; background-color: inherit; }
+.dp-highlighter .preprocessor { color: gray; background-color: inherit; }
+
+.paging-control-container {
+  display:block;
+  font-size:90% !important;
+  margin-left:0;
+  margin-top:0;
+  padding-right:5px;
+  text-align:right;
+  width:auto;
+  float:none !important;
+}
