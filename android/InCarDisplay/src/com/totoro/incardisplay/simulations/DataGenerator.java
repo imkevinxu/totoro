@@ -31,7 +31,6 @@ public class DataGenerator {
 	}
 	
 	// TODO(Nick): Latitude/longitude
-	// TODO(Nick): Make output JSON
 	public void generateData(final int NUM_LINES) {
 		currentSpeed = 0;
 		acceleration = 0;
