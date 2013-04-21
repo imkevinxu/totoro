@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
@@ -25,6 +26,12 @@ public class AnimatedView extends ImageView{
 	private double amount = 1.0;
 	int scoreNum = 99;
 	int scoreDec = 0;
+	
+	String rec = "";
+	int recCountup = 0;
+	int status = 0;
+	boolean scrollIn = false;
+	
 
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
@@ -38,6 +45,18 @@ public class AnimatedView extends ImageView{
 			invalidate(); 
 		}
 	};
+	
+	private String getRecommendation()	{
+		switch((int)(5 * Math.random()))	{
+		case 0: return "Try to avoid flooring the accelerator";//.\nSudden changes in acceleration produce significantly larger\n quantities of carbon dioxide.";
+		case 1: return "Try hitting the brake pedal more softly.";//\nThis will prevent degradation of your brakes.";
+		case 2: return "Try to turn more smoothly.";
+		case 3: return "Avoid accelerating on inclines.";//\nUse your momentum to carry you through inclines.";
+		case 4: return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
+		default:
+			return "No recommendation.";
+		}
+	}
 	
 	private void drawCircles(BitmapDrawable greenCircle, BitmapDrawable grayCircle, Canvas c, double amt) {
 		Paint scorePaint = new Paint();
@@ -68,6 +87,47 @@ public class AnimatedView extends ImageView{
 		c.drawBitmap(transform, grayX, 28, null);  
 		
 		c.drawText(score, scoreX, scoreY, scorePaint);
+		
+		if (scoreNum < 85) {
+			if (rec.equals("")) {
+				rec = getRecommendation();
+				scrollIn = true;
+			} else {
+				if (scrollIn) {
+					if (status < 80) {
+						status += 10;
+					} else {
+						scrollIn = false;
+					}
+				} else {
+					recCountup++;
+					if (recCountup > 50) {
+						status -= 10;
+					}
+				}
+				
+				if (status > -10) {
+				
+					Rect notification = new Rect(0, getHeight() - status, getWidth(), getHeight());
+
+					scorePaint.setColor(Color.parseColor("#3498db"));
+					scorePaint.setStyle(Style.FILL);
+					c.drawRect(notification, scorePaint);
+					scorePaint.setTextSize(40);
+					scorePaint.setColor(Color.WHITE);
+					Rect recBounds = new Rect();
+					scorePaint.getTextBounds(rec, 0, rec.length(), recBounds);
+					c.drawText(rec, this.getWidth()/2 - recBounds.width() / 2, this.getHeight() - status + recBounds.height() + 12, scorePaint);
+				}
+			}
+		} else {
+			/* reset recommendation variables */
+			rec = "";
+			recCountup = 0;
+			scrollIn = false;
+			status = 0;
+		}
+		
 	}
 
 	protected void onDraw(Canvas c) {  
