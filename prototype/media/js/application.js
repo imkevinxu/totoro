@@ -73,6 +73,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
             $(clicked).addClass('active');
             if ($(clicked).is("#overview")) {
                 $("#dashboard.recent").slideLeftOut();
+                $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
                 window.setTimeout(function() {
@@ -80,6 +81,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 }, 400);
             } else if ($(clicked).is("#recent")) {
                 $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
                 window.setTimeout(function() {
@@ -89,6 +91,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
 
             } else if ($(clicked).is("#economic")) {
                 $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.recent").slideLeftOut();
                 window.setTimeout(function() {
@@ -97,10 +100,29 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
 
             } else if ($(clicked).is("#social")) {
                 $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.recent").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.social").slideRightIn();
+                }, 400);
+
+            } else if ($(clicked).is("#replay")) {
+                $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.social").slideLeftOut();
+                $("#dashboard.recent").slideLeftOut();
+                $("#dashboard.economic").slideLeftOut();
+                window.setTimeout(function() {
+                    $("#dashboard.replay").slideRightIn();
+                    var c = 0;
+                     var interval = setInterval(function() {
+                          $('#ecoscorereplay').html(Math.round(ecos[c]));
+                          $('#totalmilesreplay').html(Math.round(totals[c]));
+                          $('#secondsreplay').html(Math.round(c));
+                          $('#fuelreplay').html(Math.round(fuels[c]*1000)/100);
+                          c++;
+                          if(c >= ecos.length) clearInterval(interval);
+                   }, 50);
                 }, 400);
 
             }
@@ -108,5 +130,22 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
         });
       });
 
+
+    var ctx = $("#myChart").get(0).getContext("2d");
+    //This will get the first returned node in the jQuery collection.
+
+    var data = {
+        labels : ["January","February","March","April","May","June","July"],
+        datasets : [
+            {
+                fillColor : "rgba(29, 221, 184, 0.5)",
+                strokeColor : "#1ABC9C",
+                pointColor : "#1ABC9C",
+                pointStrokeColor : "#fff",
+                data : [70,56,60,66,70,90,88]
+            }
+        ]
+    }
+    var myNewChart = new Chart(ctx).Line(data);
 });
 

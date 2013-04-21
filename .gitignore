@@ -26,3 +26,5 @@ local.properties
 # Eclipse files
 .metadata
 .settings
+.classpath
+.project

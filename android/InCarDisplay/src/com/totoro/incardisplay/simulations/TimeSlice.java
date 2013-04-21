@@ -2,11 +2,17 @@ package com.totoro.incardisplay.simulations;
 
 import java.util.*;
 
+/**
+ * Single instance in time where data is collected.
+ */
+
 public class TimeSlice {
 	private List<Datum> dataList;
 	private Map<String, Double> map;
+	private static final double EPSILON_THRESHOLD = 1e-7;
 	public TimeSlice(List<Datum> dataListIn) {
 		dataList = new ArrayList<Datum>();
+		map = new HashMap<String, Double>();
 		for(Datum datum: dataListIn)		{
 			map.put(datum.getLabel(), datum.getValue());
 			dataList.add(datum);
@@ -37,6 +43,37 @@ public class TimeSlice {
 			ret.append(datum.toString() + "\n");
 		}
 		return ret.toString().trim();
+	}
+	
+	public boolean equals(Object o)	{
+		if(this == null ^ o == null)	{
+			return false;
+		}
+		if(this == null && o == null)	{
+			return true;
+		}
+		if(!(o instanceof TimeSlice))	{
+			return false;
+		}
+		TimeSlice t = (TimeSlice)o;
+		if(map == null ^ t.map == null)	{
+			return true;
+		}
+		if(map == null && t.map == null)	{
+			return true;
+		}
+		if(map.size() != t.map.size())	{
+			return false;
+		}
+		for(String key: map.keySet())	{
+			if(!t.map.containsKey(key))	{
+				return false;
+			}
+			if(Math.abs(map.get(key)-t.map.get(key)) > EPSILON_THRESHOLD)		{
+				return false;
+			}
+		}
+		return true;
 	}
 	
 }
