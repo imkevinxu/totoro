@@ -8,10 +8,11 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.os.Handler;
+import android.text.format.Time;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import android.media.MediaPlayer;
 
 public class AnimatedView extends ImageView{
 
@@ -46,7 +47,9 @@ public class AnimatedView extends ImageView{
 	private BitmapDrawable grayCircle = null;
 	private BitmapDrawable ball = null;
 	private MediaPlayer mp1;
-	
+	private long last;
+	private Bitmap grayMap;
+	private int[] grayPixels;
 
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
@@ -64,19 +67,19 @@ public class AnimatedView extends ImageView{
 	private String getRecommendation()	{
 		switch((int)(5 * Math.random()))	{
 		case 0: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			mp1 = MediaPlayer.create(mContext, R.raw.rec1);
 			return "Try to avoid flooring the accelerator";//.\nSudden changes in acceleration produce significantly larger\n quantities of carbon dioxide.";
 		case 1: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			mp1 = MediaPlayer.create(mContext, R.raw.rec2);
 			return "Try hitting the brake pedal more softly.";//\nThis will prevent degradation of your brakes.";
 		case 2: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			mp1 = MediaPlayer.create(mContext, R.raw.rec3);
 			return "Try to turn more smoothly.";
 		case 3: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			mp1 = MediaPlayer.create(mContext, R.raw.rec4);
 			return "Avoid accelerating on inclines.";//\nUse your momentum to carry you through inclines.";
 		case 4: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			mp1 = MediaPlayer.create(mContext, R.raw.rec5);
 			return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
 		default:
 			return "No recommendation.";
@@ -85,15 +88,29 @@ public class AnimatedView extends ImageView{
 	
 	private void drawCircles(BitmapDrawable greenCircle, BitmapDrawable grayCircle, Canvas c, double amt) {
 		Paint scorePaint = new Paint();
-		scorePaint.setColor(Color.WHITE);
+		if (scoreNum <=25) {
+			scorePaint.setColor(Color.RED);
+		} else {
+			scorePaint.setColor(Color.WHITE);
+		}
 		scorePaint.setTextSize(200);
+
 		
 		if (scoreDec == 4) {
 			scoreNum--;
 			scoreDec = 0;
+			if (scoreNum == 99) {
+				last = System.currentTimeMillis();
+			}
+			else if (scoreNum % 10 == 0) {
+				long curr = System.currentTimeMillis();
+				System.out.println(scoreNum + ": " + (curr - last));
+				last = curr;
+			}
 		} else {
 			scoreDec++;
 		}
+
 		
 		String score = "" + scoreNum;
 		winWidth = this.getWidth();
@@ -108,13 +125,13 @@ public class AnimatedView extends ImageView{
 		int endY = (int)(grayHeight * (1.0 - amt));
 		int greenX = winWidth/2  - greenWidth/2;
 		int grayX = winWidth/2  - grayWidth/2;
-		
-		Bitmap transform = Bitmap.createBitmap(grayCircle.getBitmap(), 0, 0, endX, endY);
+
 		c.drawBitmap(greenCircle.getBitmap(), greenX, 10, null);  
-		c.drawBitmap(transform, grayX, 10, null);  
-		
+		c.drawBitmap(grayPixels, 0, grayMap.getWidth(), grayX, 10, endX, endY, false, null);
+
+		//c.drawBitmap(transform, grayX, 10, null);  
+	
 		c.drawText(score, scoreX, scoreY, scorePaint);
-		
 		if (scoreNum < 85) {
 			if (rec.equals("")) {
 				rec = getRecommendation();
@@ -130,7 +147,7 @@ public class AnimatedView extends ImageView{
 					}
 				} else {
 					recCountup++;
-					if (recCountup > 50) {
+					if (recCountup > 80) {
 						status -= 10;
 					}
 				}
@@ -150,7 +167,7 @@ public class AnimatedView extends ImageView{
 				}
 			}
 		} else {
-			/* reset recommendation variables */
+			// reset recommendation variables 
 			rec = "";
 			recCountup = 0;
 			scrollIn = false;
@@ -164,6 +181,7 @@ public class AnimatedView extends ImageView{
 		if (greenCircle == null) {
 			greenCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.darkcircle1);
 			grayCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.graycircle);
+			grayMap = grayCircle.getBitmap();
 			ball = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.waterdrop);  
 			winWidth = this.getWidth();
 			winHeight = this.getHeight();
@@ -171,7 +189,9 @@ public class AnimatedView extends ImageView{
 			grayHeight = grayCircle.getBitmap().getHeight();
 			greenWidth = greenCircle.getBitmap().getWidth();
 			greenHeight = greenCircle.getBitmap().getHeight();
-			ballWidth = ball.getBitmap().getWidth();			
+			ballWidth = ball.getBitmap().getWidth();	
+			grayPixels = new int[grayMap.getWidth() * grayMap.getHeight()];
+			grayCircle.getBitmap().getPixels(grayPixels, 0, grayMap.getWidth(), 1, 1, grayMap.getWidth() - 1, grayMap.getHeight() - 1);
 		}
 		
 		if (flambe >= 15) {
