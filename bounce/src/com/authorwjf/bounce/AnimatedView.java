@@ -21,17 +21,29 @@ public class AnimatedView extends ImageView{
 	private int yVelocity = 5;
 	private Handler h;
 	private final int FRAME_RATE = 30;
-	int sashay = 0;
-	int flambe = 15;
+	private int sashay = 0;
+	private int flambe = 15;
 	private double amount = 1.0;
-	int scoreNum = 99;
-	int scoreDec = 0;
+	private int scoreNum = 99;
+	private int scoreDec = 0;
 	
 	String rec = "";
 	int recCountup = 0;
 	int status = 0;
 	boolean scrollIn = false;
 	
+	
+	// Image data
+	private int winWidth = -1;
+	private int winHeight = -1;
+	private int greenWidth = -1;
+	private int greenHeight = -1;
+	private int grayWidth = -1;
+	private int grayHeight = -1;
+	private int ballWidth = -1;
+	private BitmapDrawable greenCircle = null;
+	private BitmapDrawable grayCircle = null;
+	private BitmapDrawable ball = null;
 
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
@@ -71,20 +83,22 @@ public class AnimatedView extends ImageView{
 		}
 		
 		String score = "" + scoreNum;
+		winWidth = this.getWidth();
+		winHeight = this.getHeight();
 		
 		Rect bounds = new Rect();
 		scorePaint.getTextBounds(score, 0, score.length(), bounds);
-		int scoreX = this.getWidth()/2  - bounds.width()/2 - 15;
-		int scoreY = greenCircle.getBitmap().getWidth()/2 + bounds.height()/2 - 10;
+		int scoreX = winWidth/2  - bounds.width()/2 - 15;
+		int scoreY = greenWidth/2 + bounds.height()/2 - 10;
 		
-		int endX = grayCircle.getBitmap().getWidth();
-		int endY = (int)(grayCircle.getBitmap().getHeight() * (1.0 - amt));
-		int greenX = this.getWidth()/2  - greenCircle.getBitmap().getWidth()/2;
-		int grayX = this.getWidth()/2  - grayCircle.getBitmap().getWidth()/2;
+		int endX = grayWidth;
+		int endY = (int)(grayHeight * (1.0 - amt));
+		int greenX = winWidth/2  - greenWidth/2;
+		int grayX = winWidth/2  - grayWidth/2;
 		
 		Bitmap transform = Bitmap.createBitmap(grayCircle.getBitmap(), 0, 0, endX, endY);
 		c.drawBitmap(greenCircle.getBitmap(), greenX, 10, null);  
-		c.drawBitmap(transform, grayX, 28, null);  
+		c.drawBitmap(transform, grayX, 10, null);  
 		
 		c.drawText(score, scoreX, scoreY, scorePaint);
 		
@@ -131,14 +145,25 @@ public class AnimatedView extends ImageView{
 	}
 
 	protected void onDraw(Canvas c) {  
-		BitmapDrawable greenCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.darkcircle);
-		BitmapDrawable grayCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.graycircle);
+		
+		if (greenCircle == null) {
+			greenCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.darkcircle1);
+			grayCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.graycircle);
+			ball = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.waterdrop);  
+			winWidth = this.getWidth();
+			winHeight = this.getHeight();
+			grayWidth = grayCircle.getBitmap().getWidth();
+			grayHeight = grayCircle.getBitmap().getHeight();
+			greenWidth = greenCircle.getBitmap().getWidth();
+			greenHeight = greenCircle.getBitmap().getHeight();
+			ballWidth = ball.getBitmap().getWidth();			
+		}
+		
 		if (flambe >= 15) {
-			BitmapDrawable ball = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.waterdrop);  
 			
 			if (x<0 && y <0) {
-				x = this.getWidth()/2  - ball.getBitmap().getWidth()/2;
-				y = this.getHeight()/2;
+				x = winWidth/2  - ballWidth/2;
+				y = winHeight/2;
 				yVelocity *= 1.1;
 			} else {
 				y += yVelocity;
@@ -151,13 +176,12 @@ public class AnimatedView extends ImageView{
 				} else {
 					yVelocity *= 1.2;
 				}
-				if ((y > this.getHeight()/* - ball.getBitmap().getHeight()*/) || (y < 0)) {
+				if ((y > winHeight) || (y < 0)) {
 					yVelocity = 5;
-					x = this.getWidth()/2 - ball.getBitmap().getWidth()/2;
-					y = this.getHeight()/2;
+					x = winWidth/2 - ballWidth/2;
+					y = winHeight/2;
 					sashay = 0;
 					flambe = 0;
-					System.out.println("flambe: " + flambe);
 				}
 			}
 			if (flambe > 0) {
@@ -174,8 +198,6 @@ public class AnimatedView extends ImageView{
 
 			h.postDelayed(r, FRAME_RATE);
 
-			System.out.println("flambe: " + flambe);
-
 		} else {
 			flambe++;
 			amount -= .002;
@@ -188,7 +210,6 @@ public class AnimatedView extends ImageView{
 
 			h.postDelayed(r, FRAME_RATE);
 			
-			System.out.println("flambe: " + flambe);
 		}
 	} 
 
