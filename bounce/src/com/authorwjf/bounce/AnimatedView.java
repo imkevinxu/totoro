@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import android.media.MediaPlayer;
 
 public class AnimatedView extends ImageView{
 
@@ -44,6 +45,8 @@ public class AnimatedView extends ImageView{
 	private BitmapDrawable greenCircle = null;
 	private BitmapDrawable grayCircle = null;
 	private BitmapDrawable ball = null;
+	private MediaPlayer mp1;
+	
 
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
@@ -60,11 +63,21 @@ public class AnimatedView extends ImageView{
 	
 	private String getRecommendation()	{
 		switch((int)(5 * Math.random()))	{
-		case 0: return "Try to avoid flooring the accelerator";//.\nSudden changes in acceleration produce significantly larger\n quantities of carbon dioxide.";
-		case 1: return "Try hitting the brake pedal more softly.";//\nThis will prevent degradation of your brakes.";
-		case 2: return "Try to turn more smoothly.";
-		case 3: return "Avoid accelerating on inclines.";//\nUse your momentum to carry you through inclines.";
-		case 4: return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
+		case 0: 
+			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			return "Try to avoid flooring the accelerator";//.\nSudden changes in acceleration produce significantly larger\n quantities of carbon dioxide.";
+		case 1: 
+			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			return "Try hitting the brake pedal more softly.";//\nThis will prevent degradation of your brakes.";
+		case 2: 
+			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			return "Try to turn more smoothly.";
+		case 3: 
+			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			return "Avoid accelerating on inclines.";//\nUse your momentum to carry you through inclines.";
+		case 4: 
+			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
 		default:
 			return "No recommendation.";
 		}
@@ -105,6 +118,8 @@ public class AnimatedView extends ImageView{
 		if (scoreNum < 85) {
 			if (rec.equals("")) {
 				rec = getRecommendation();
+
+				mp1.start();
 				scrollIn = true;
 			} else {
 				if (scrollIn) {
