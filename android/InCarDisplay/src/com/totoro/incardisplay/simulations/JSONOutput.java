@@ -3,8 +3,8 @@ package com.totoro.incardisplay.simulations;
 import java.io.*;
 public class JSONOutput {
 	// Change these flags for number of files and number of seconds.
-	private static final int MIN_SECONDS = 100;
-	private static final int MAX_SECONDS = 1000;
+	private static final int MIN_SECONDS = 60*5;
+	private static final int MAX_SECONDS = 60*15;
 	private static final int NUM_FILES = 100;
 	public static void main(String[] args) throws IOException {
 		for(int i = 1; i <= NUM_FILES; i++)	{

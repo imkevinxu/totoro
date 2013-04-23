@@ -278,7 +278,7 @@ public class BluetoothChat extends Activity {
          */
         
         // Check that there's actually something to send
-        if (message.length() > 0) {
+        if (message != null && message.length() > 0) {
         	// PARSER
         	String lmsg = message.toLowerCase();
         	if(lmsg.equals("rpm")) {
@@ -294,15 +294,17 @@ public class BluetoothChat extends Activity {
         	} else if(lmsg.equals("maf")) {
         		message = "0110";
         	}
-        	
-            // Get the message bytes and tell the BluetoothChatService to write
-            byte[] send = message.getBytes();
-            mChatService.write(send);
+		}
+        else {
+			message = "0110";
+		}
+		// Get the message bytes and tell the BluetoothChatService to write
+		byte[] send = message.getBytes();
+		mChatService.write(send);
 
-            // Reset out string buffer to zero and clear the edit text field
-            mOutStringBuffer.setLength(0);
-            mOutEditText.setText(mOutStringBuffer);
-        }
+		// Reset out string buffer to zero and clear the edit text field
+		mOutStringBuffer.setLength(0);
+		mOutEditText.setText(mOutStringBuffer);
     }
 
     // The action listener for the EditText widget, to listen for the return key
