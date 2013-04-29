@@ -251,6 +251,10 @@ public class BluetoothChat extends Activity {
         }
     }
 
+    public void hackMessage(String str)	{
+    	sendMessage(str);
+    }
+    
     /**
      * Sends a message.
      * @param message  A string of text to send.
@@ -302,7 +306,7 @@ public class BluetoothChat extends Activity {
 
 		// Reset out string buffer to zero and clear the edit text field
 		mOutStringBuffer.setLength(0);
-		mOutEditText.setText(mOutStringBuffer);
+		//mOutEditText.setText(mOutStringBuffer);
     }
 
     // The action listener for the EditText widget, to listen for the return key
