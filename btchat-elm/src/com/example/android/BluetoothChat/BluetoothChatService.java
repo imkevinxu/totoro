@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.UUID;
 
 import org.apache.http.HttpResponse;
@@ -74,6 +75,8 @@ public class BluetoothChatService {
 	private double MAFval = 0.000001;
 	private double VSS = 0.000001;
 	
+	private ConcurrentHashMap<String, String> mapValues;
+	
 	// Constants that indicate the current connection state
 	public static final int STATE_NONE = 0;       // we're doing nothing
 	public static final int STATE_LISTEN = 1;     // now listening for incoming connections
@@ -89,6 +92,7 @@ public class BluetoothChatService {
 		mAdapter = BluetoothAdapter.getDefaultAdapter();
 		mState = STATE_NONE;
 		mHandler = handler;
+		mapValues = new ConcurrentHashMap<String, String>();
 	}
 
 	/**
@@ -473,12 +477,16 @@ public class BluetoothChatService {
 			return mpg;
 		}
 		
-		private void postMPG() {
+		private void postData() {
 			AsyncTask.execute(new Runnable() {
 				public void run() {
 					try {
 						HttpClient client = new DefaultHttpClient();
-						String getURL = "http://omnidrive.herokuapp.com/data?fbid=1566713904&data=" +  calculateMPG();
+						String getURL = "http://omnidrive.herokuapp.com/data?fbid=1566713904&mpg=" +  calculateMPG();
+						for(String out: mapValues.keySet()) {
+							getURL += out + "=" + mapValues.get(out);
+						}
+						mapValues.clear();
 						HttpGet get = new HttpGet(getURL);
 						HttpResponse responseGet = client.execute(get);
 						System.out.println("Success!!!!!");
@@ -513,29 +521,35 @@ public class BluetoothChatService {
 
 							if(header.equals("41 0C")) {
 								ln = "Engine RPM: " + (value / 4) + " rpm";
+								mapValues.put("rpm", Long.toString(value/4));
 							} else if(header.equals("41 0D")) {
 								ln = "Speed: " + value + " kph";
+								mapValues.put("speed", Long.toString(value));
 								VSS = value;
 							} else if(header.equals("41 0F")) {
 								ln = "Intake air temperature: " + (value-40) + " deg C";
+								mapValues.put("intakeTemp", Long.toString(value-40));
 							} else if(header.equals("41 10")) {
 								ln = "MAF: " + (value) + "hundreds of g/s"; 
 								MAFval = value;
-								//postMAF();
-								postMPG();
+								mapValues.put("MAF", Long.toString(value));
 							} else if(header.equals("41 1F")) {
 								ln = "Runtime seconds: " + (value) + " seconds";
+								mapValues.put("runSec", Long.toString(value));
 							} else if(header.equals("41 30")) {
 								ln = "Number of warmups: " + value;
+								mapValues.put("numWarmup", Long.toString(value));
 							} else if(header.equals("41 33")) {
 								ln = "Barometer: " + value + " kPa";
+								mapValues.put("baro", Long.toString(value));
 							} else if(header.equals("41 46")) {
 								ln = "Ambient Temp: " + (value - 40) + " deg C";
+								mapValues.put("ambTemp", Long.toString(value-40));
 							} else if(header.equals("41 49")) {
 								ln = "Throttle: " + (value * 100 / 255) + " %";
-							} else if(header.equals("41 63")) {
-								ln = "Torque: " + (value) + " Nm";
-							} 
+								mapValues.put("throttle", Long.toString(value * 100 / 255));
+								postData();
+							}
 						} catch (NumberFormatException ignored) { }
 					}
 
