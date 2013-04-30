@@ -83,6 +83,8 @@ def dashboard(request):
     last_trip_duration = ("%d" % (last_trip[1].seconds/3600), "%d" % (last_trip[1].seconds%3600/60))
     last_trip_fuel = last_trip[2]
 
+    friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'username' : user.get_facebook_profile()['username'], 'first_name' : user.get_facebook_profile()['name'], 'highscore' : user.highscore } for user in FacebookProfile.objects.all()]
+
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))
 

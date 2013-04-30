@@ -209,7 +209,28 @@
 
 <div id="dashboard" class="container social">
 
-    <h1>// Insert Social Stuff</h1>
+    <div class="leaderboard">
+        <div class="row header">
+            <div class="span6">
+                <h2>LEADERBOARD</h2>
+            </div>
+        </div>
+        {% for f in friends %}
+            <div class="row data">
+                <div class="span1">
+                    {{loop.index}}
+                </div>
+                <div class="span2">
+                    <img src="http://graph.facebook.com/{{ f.username }}/picture" />
+                    <h3>{{ f.first_name }}</h3>
+                </div>
+                <div class="span3">
+                    <h3>{{f.highscore}}</h3>
+                </div>
+                <div class="span6"></div>
+            </div>
+        {% endfor %}
+    </div>
 
 </div>
 
