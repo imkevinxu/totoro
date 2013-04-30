@@ -96,7 +96,6 @@ public class BluetoothChat extends Activity {
     // Member object for the chat services
     private BluetoothChatService mChatService = null;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,6 +217,8 @@ public class BluetoothChat extends Activity {
 
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
+        
+        new AutomaticQueryThread(mSendButton, this).start();
     }
 
     @Override
@@ -250,6 +251,10 @@ public class BluetoothChat extends Activity {
         }
     }
 
+    public void hackMessage(String str)	{
+    	sendMessage(str);
+    }
+    
     /**
      * Sends a message.
      * @param message  A string of text to send.
@@ -295,16 +300,13 @@ public class BluetoothChat extends Activity {
         		message = "0110";
         	}
 		}
-        else {
-			message = "0110";
-		}
 		// Get the message bytes and tell the BluetoothChatService to write
 		byte[] send = message.getBytes();
 		mChatService.write(send);
 
 		// Reset out string buffer to zero and clear the edit text field
 		mOutStringBuffer.setLength(0);
-		mOutEditText.setText(mOutStringBuffer);
+		//mOutEditText.setText(mOutStringBuffer);
     }
 
     // The action listener for the EditText widget, to listen for the return key
