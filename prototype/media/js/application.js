@@ -47,6 +47,7 @@ $(document).ready(function() {
         return false
     });
 
+
     // $(".score").countTo({
     //     "interval": 100,
     //     "startNumber": 0,
