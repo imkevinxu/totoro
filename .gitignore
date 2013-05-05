@@ -24,7 +24,7 @@ gen/
 local.properties
 
 # Eclipse files
-.metadata
-.settings
-.classpath
-.project
+*.metadata
+*.settings
+*.classpath
+*.project

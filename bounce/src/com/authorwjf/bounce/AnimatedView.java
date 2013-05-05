@@ -1,5 +1,17 @@
 package com.authorwjf.bounce;
 
+import java.io.IOException;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,10 +20,12 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import android.media.MediaPlayer;
+import android.widget.Toast;
 
 public class AnimatedView extends ImageView{
 
@@ -22,24 +36,46 @@ public class AnimatedView extends ImageView{
 	private int yVelocity = 5;
 	private Handler h;
 	private final int FRAME_RATE = 30;
-	int sashay = 0;
-	int flambe = 15;
-	private double amount = 1.0;
-	int scoreNum = 99;
-	int scoreDec = 0;
-	
+	private int sashay = 0;
+	private int flambe = 15;
+	private double scoreNum = 35;
+	private double amount = scoreNum/100;
+	private int scoreDec = 0;
+	private String getURL = "http://omnidrive.herokuapp.com/getscore?fbid=1566713904"; 
+
 	String rec = "";
 	int recCountup = 0;
 	int status = 0;
 	boolean scrollIn = false;
+	private double speed = 0;
+
+
+	// Image data
+	private int winWidth = -1;
+	private int winHeight = -1;
+	private int greenWidth = -1;
+	private int greenHeight = -1;
+	private int grayWidth = -1;
+	private int grayHeight = -1;
+	private int ballWidth = -1;
+	private BitmapDrawable greenCircle = null;
+	private BitmapDrawable grayCircle = null;
+	private BitmapDrawable ball = null;
+	private MediaPlayer mp1;
+	private long last;
+	private Bitmap grayMap;
+	private int[] grayPixels;
 	
-	MediaPlayer mp1;
+	private double lastMPG = 0;
 	
+	private int coinCounter = 0;
+	private double lastCoinCheck = 0;
 
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
 		mContext = context;  
 		h = new Handler();
+
 	} 
 
 	private Runnable r = new Runnable() {
@@ -48,59 +84,124 @@ public class AnimatedView extends ImageView{
 			invalidate(); 
 		}
 	};
-	
+
 	private String getRecommendation()	{
-		switch((int)(5 * Math.random()))	{
+		switch((int)(2))	{
 		case 0: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			mp1 = MediaPlayer.create(mContext, R.raw.rec1);
 			return "Try to avoid flooring the accelerator";//.\nSudden changes in acceleration produce significantly larger\n quantities of carbon dioxide.";
 		case 1: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			mp1 = MediaPlayer.create(mContext, R.raw.rec2);
 			return "Try hitting the brake pedal more softly.";//\nThis will prevent degradation of your brakes.";
-		case 2: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
-			return "Try to turn more smoothly.";
 		case 3: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
+			mp1 = MediaPlayer.create(mContext, R.raw.rec3);
+			return "Try to turn more smoothly.";
+		case 2: 
+			mp1 = MediaPlayer.create(mContext, R.raw.rec4);
 			return "Avoid accelerating on inclines.";//\nUse your momentum to carry you through inclines.";
-		case 4: 
-			mp1 = MediaPlayer.create(mContext, R.raw.test);
-			return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
+			//case 4: 
+			//mp1 = MediaPlayer.create(mContext, R.raw.rec5);
+			//return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
 		default:
 			return "No recommendation.";
 		}
 	}
+
 	
+
+	private void setScore() {
+		AsyncTask.execute(new Runnable() {
+
+			public void run() {
+				try {
+					HttpClient client = new DefaultHttpClient();
+					HttpGet get = new HttpGet(getURL);
+					HttpResponse responseGet = client.execute(get);
+					HttpEntity responseEntity = responseGet.getEntity();
+					String response = EntityUtils.toString(responseEntity);
+					if (!response.equals(null)) {
+						JSONObject currUser;
+						try {
+							currUser = new JSONObject(response);
+							String score = currUser.optString("highscore");
+							if(score != null) {
+								Double mpg = Double.parseDouble(score);
+								if (mpg * 2 != scoreNum) {
+									lastMPG = scoreNum;
+									scoreNum = mpg * 2;
+								}
+								System.out.println("Score num: " + scoreNum);
+								System.out.println("Last mpg: " + lastMPG);
+								scoreNum = mpg * 2; // scale from 0-50, to 0-100
+								
+
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	private void drawCircles(BitmapDrawable greenCircle, BitmapDrawable grayCircle, Canvas c, double amt) {
 		Paint scorePaint = new Paint();
-		scorePaint.setColor(Color.WHITE);
+		if (scoreNum <=25) {
+			scorePaint.setColor(Color.RED);
+		} else {
+			scorePaint.setColor(Color.WHITE);
+		}
 		scorePaint.setTextSize(200);
-		
+
+
 		if (scoreDec == 4) {
-			scoreNum--;
+			setScore();
+			double difference = scoreNum - lastMPG;
+			//amt = scoreNum/100;
+			//amount = amt;
+			if (difference < 0 ) {
+				speed = -.0001 * (-1) * difference;
+			} else {
+				speed = 0.0001 * difference;
+			}
 			scoreDec = 0;
+			if (scoreNum == 99) {
+				last = System.currentTimeMillis();
+			}
+			else if (scoreNum % 10 == 0) {
+				long curr = System.currentTimeMillis();
+				last = curr;
+			}
 		} else {
 			scoreDec++;
 		}
-		
+
+		System.out.println(speed);
 		String score = "" + scoreNum;
-		
+		winWidth = this.getWidth();
+		winHeight = this.getHeight();
+
 		Rect bounds = new Rect();
 		scorePaint.getTextBounds(score, 0, score.length(), bounds);
-		int scoreX = this.getWidth()/2  - bounds.width()/2 - 15;
-		int scoreY = greenCircle.getBitmap().getWidth()/2 + bounds.height()/2 - 10;
-		
-		int endX = grayCircle.getBitmap().getWidth();
-		int endY = (int)(grayCircle.getBitmap().getHeight() * (1.0 - amt));
-		int greenX = this.getWidth()/2  - greenCircle.getBitmap().getWidth()/2;
-		int grayX = this.getWidth()/2  - grayCircle.getBitmap().getWidth()/2;
-		
-		Bitmap transform = Bitmap.createBitmap(grayCircle.getBitmap(), 0, 0, endX, endY);
+		int scoreX = winWidth/2  - bounds.width()/2 - 15;
+		int scoreY = greenWidth/2 + bounds.height()/2 - 10;
+
+		int endX = grayWidth;
+		int endY = (int)(grayHeight * (1 - amount));
+		int greenX = winWidth/2  - greenWidth/2;
+		int grayX = winWidth/2  - grayWidth/2;
+
 		c.drawBitmap(greenCircle.getBitmap(), greenX, 10, null);  
-		c.drawBitmap(transform, grayX, 28, null);  
-		
+		c.drawBitmap(grayPixels, 0, grayMap.getWidth(), grayX, 10, endX, endY, false, null);
+
+		//c.drawBitmap(transform, grayX, 10, null);  
+
 		c.drawText(score, scoreX, scoreY, scorePaint);
-		
 		if (scoreNum < 85) {
 			if (rec.equals("")) {
 				rec = getRecommendation();
@@ -116,13 +217,13 @@ public class AnimatedView extends ImageView{
 					}
 				} else {
 					recCountup++;
-					if (recCountup > 50) {
+					if (recCountup > 80) {
 						status -= 10;
 					}
 				}
-				
+
 				if (status > -10) {
-				
+
 					Rect notification = new Rect(0, getHeight() - status, getWidth(), getHeight());
 
 					scorePaint.setColor(Color.parseColor("#3498db"));
@@ -136,24 +237,59 @@ public class AnimatedView extends ImageView{
 				}
 			}
 		} else {
-			/* reset recommendation variables */
+			// reset recommendation variables 
 			rec = "";
 			recCountup = 0;
 			scrollIn = false;
 			status = 0;
 		}
 		
+		if (coinCounter == 50) {
+			double diff = scoreNum - lastCoinCheck;
+			if (diff > 0) {
+				makeToast(diff);
+			}
+			coinCounter = 0;
+			lastCoinCheck = scoreNum;
+
+		}
+		
+		coinCounter++;
+	}
+	
+	private void makeToast(double diff) {
+		Context context = mContext;
+		CharSequence text = "Great job!! + " + (int)diff + " coins!";
+		int duration = Toast.LENGTH_LONG;
+		
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 	}
 
 	protected void onDraw(Canvas c) {  
-		BitmapDrawable greenCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.darkcircle);
-		BitmapDrawable grayCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.graycircle);
+
+		if (greenCircle == null) {
+			greenCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.darkcircle1);
+			grayCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.graycircle);
+			grayMap = grayCircle.getBitmap();
+			ball = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.waterdrop);  
+			winWidth = this.getWidth();
+			winHeight = this.getHeight();
+			grayWidth = grayCircle.getBitmap().getWidth();
+			grayHeight = grayCircle.getBitmap().getHeight();
+			greenWidth = greenCircle.getBitmap().getWidth();
+			greenHeight = greenCircle.getBitmap().getHeight();
+			ballWidth = ball.getBitmap().getWidth();	
+			grayPixels = new int[grayMap.getWidth() * grayMap.getHeight()];
+			grayCircle.getBitmap().getPixels(grayPixels, 0, grayMap.getWidth(), 1, 1, grayMap.getWidth() - 1, grayMap.getHeight() - 1);
+
+		}
+
 		if (flambe >= 15) {
-			BitmapDrawable ball = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.waterdrop);  
-			
+
 			if (x<0 && y <0) {
-				x = this.getWidth()/2  - ball.getBitmap().getWidth()/2;
-				y = this.getHeight()/2;
+				x = winWidth/2  - ballWidth/2;
+				y = winHeight/2;
 				yVelocity *= 1.1;
 			} else {
 				y += yVelocity;
@@ -166,44 +302,40 @@ public class AnimatedView extends ImageView{
 				} else {
 					yVelocity *= 1.2;
 				}
-				if ((y > this.getHeight()/* - ball.getBitmap().getHeight()*/) || (y < 0)) {
+				if ((y > winHeight) || (y < 0)) {
 					yVelocity = 5;
-					x = this.getWidth()/2 - ball.getBitmap().getWidth()/2;
-					y = this.getHeight()/2;
+					x = winWidth/2 - ballWidth/2;
+					y = winHeight/2;
 					sashay = 0;
 					flambe = 0;
-					System.out.println("flambe: " + flambe);
 				}
 			}
 			if (flambe > 0) {
 				c.drawBitmap(ball.getBitmap(), x, y, null);  
 
 			}
-			amount -= .002;
+			amount += speed;
 			if (amount < 0.01) {
+				amount = 0.01;
+			} else if (amount > 0.99) {
 				amount = 0.99;
-				scoreNum = 99;
-
 			}
 			drawCircles(greenCircle, grayCircle, c, amount);
 
 			h.postDelayed(r, FRAME_RATE);
-
-			System.out.println("flambe: " + flambe);
 
 		} else {
 			flambe++;
-			amount -= .002;
-			if (amount < 0.01) {
+			amount += speed;
+			if (amount < 0.0000001) {
+				amount = 0.0;
+			} else if (amount > 0.999999) {
 				amount = 0.99;
-				scoreNum = 99;
-
 			}
 			drawCircles(greenCircle, grayCircle, c, amount);
 
 			h.postDelayed(r, FRAME_RATE);
-			
-			System.out.println("flambe: " + flambe);
+
 		}
 	} 
 
