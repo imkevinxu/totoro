@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -41,7 +42,7 @@ public class AnimatedView extends ImageView{
 	private double scoreNum = 35;
 	private double amount = scoreNum/100;
 	private int scoreDec = 0;
-	private String getURL = "http://omnidrive.herokuapp.com/getscore?fbid=1566713904"; 
+	private String getURL = "http://omnidrive.herokuapp.com/getscore?fbid="; 
 
 	String rec = "";
 	int recCountup = 0;
@@ -75,7 +76,10 @@ public class AnimatedView extends ImageView{
 		super(context, attrs);  
 		mContext = context;  
 		h = new Handler();
+		getURL += Main.fbid;
 
+		
+		
 	} 
 
 	private Runnable r = new Runnable() {
@@ -327,9 +331,9 @@ public class AnimatedView extends ImageView{
 		} else {
 			flambe++;
 			amount += speed;
-			if (amount < 0.0000001) {
-				amount = 0.0;
-			} else if (amount > 0.999999) {
+			if (amount < 0.001) {
+				amount = 0.001;
+			} else if (amount > 0.99) {
 				amount = 0.99;
 			}
 			drawCircles(greenCircle, grayCircle, c, amount);

@@ -110,6 +110,7 @@ public class BluetoothChat extends Service {
 			Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
 			return;
 		}
+		Intent serverIntent = new Intent(this, DeviceListActivity.class);
 
 	}
 

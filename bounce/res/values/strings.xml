@@ -19,5 +19,7 @@
     <string name="none_found">No devices found</string>
     <string name="secure_connect">Connect a device - Secure</string>
     <string name="insecure_connect">Connect a device - Insecure</string>
-    <string name="discoverable">Make discoverable</string>  
+    <string name="discoverable">Make discoverable</string>
+    <string name="app_id">343797409063510</string>
+    <string name="logo">OmniDrive</string>  
 </resources>
