@@ -25,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class AnimatedView extends ImageView{
 
@@ -66,11 +67,15 @@ public class AnimatedView extends ImageView{
 	private int[] grayPixels;
 	
 	private double lastMPG = 0;
+	
+	private int coinCounter = 0;
+	private double lastCoinCheck = 0;
 
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
 		mContext = context;  
 		h = new Handler();
+
 	} 
 
 	private Runnable r = new Runnable() {
@@ -238,7 +243,27 @@ public class AnimatedView extends ImageView{
 			scrollIn = false;
 			status = 0;
 		}
+		
+		if (coinCounter == 50) {
+			double diff = scoreNum - lastCoinCheck;
+			if (diff > 0) {
+				makeToast(diff);
+			}
+			coinCounter = 0;
+			lastCoinCheck = scoreNum;
 
+		}
+		
+		coinCounter++;
+	}
+	
+	private void makeToast(double diff) {
+		Context context = mContext;
+		CharSequence text = "Great job!! + " + (int)diff + " coins!";
+		int duration = Toast.LENGTH_LONG;
+		
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 	}
 
 	protected void onDraw(Canvas c) {  
@@ -305,7 +330,7 @@ public class AnimatedView extends ImageView{
 			if (amount < 0.0000001) {
 				amount = 0.0;
 			} else if (amount > 0.999999) {
-				amount = 0.99999;
+				amount = 0.99;
 			}
 			drawCircles(greenCircle, grayCircle, c, amount);
 

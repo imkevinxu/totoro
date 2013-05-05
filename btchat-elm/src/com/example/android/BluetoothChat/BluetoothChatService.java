@@ -484,8 +484,9 @@ public class BluetoothChatService {
 						HttpClient client = new DefaultHttpClient();
 						String getURL = "http://omnidrive.herokuapp.com/data?fbid=1566713904&mpg=" +  calculateMPG();
 						for(String out: mapValues.keySet()) {
-							getURL += out + "=" + mapValues.get(out);
+							getURL += "&" + out + "=" + mapValues.get(out);
 						}
+						System.out.println(getURL);
 						mapValues.clear();
 						HttpGet get = new HttpGet(getURL);
 						HttpResponse responseGet = client.execute(get);
