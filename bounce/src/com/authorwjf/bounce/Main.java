@@ -46,15 +46,14 @@ public class Main extends Activity {
 
 								System.out.println("Acquired fbid of " + fbid);
 								System.out.println("Now attempting to start BT service");
-								while(macAddress != null)	{
-									startService(new Intent(new BluetoothChat(), BluetoothChat.class));
+								while(macAddress == null)	{
+									Thread.yield();
 								}
+								startService(new Intent(new BluetoothChat(), BluetoothChat.class));
 
 								System.out.println("Service successfully started?");
 
 								setContentView(R.layout.main);
-
-
 
 							}
 						}
