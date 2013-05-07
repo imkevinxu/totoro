@@ -134,8 +134,8 @@ public class AnimatedView extends ImageView{
 									lastMPG = scoreNum;
 									scoreNum = mpg * 2;
 								}
-								System.out.println("Score num: " + scoreNum);
-								System.out.println("Last mpg: " + lastMPG);
+								//System.out.println("Score num: " + scoreNum);
+								//System.out.println("Last mpg: " + lastMPG);
 								scoreNum = mpg * 2; // scale from 0-50, to 0-100
 								
 
@@ -185,7 +185,7 @@ public class AnimatedView extends ImageView{
 			scoreDec++;
 		}
 
-		System.out.println(speed);
+		//System.out.println(speed);
 		String score = "" + scoreNum;
 		winWidth = this.getWidth();
 		winHeight = this.getHeight();
