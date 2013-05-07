@@ -162,6 +162,8 @@ public class DeviceListActivity extends Activity {
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
 
+            Main.macAddress = address;
+            
             // Create the result Intent and include the MAC address
             Intent intent = new Intent();
             intent.putExtra(EXTRA_DEVICE_ADDRESS, address);

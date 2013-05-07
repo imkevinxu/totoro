@@ -16,6 +16,7 @@
 
 package com.authorwjf.bounce;
 
+import java.io.IOException;
 import java.util.Random;
 
 import org.apache.http.HttpResponse;
@@ -28,6 +29,7 @@ import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
@@ -110,8 +112,6 @@ public class BluetoothChat extends Service {
 			Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
 			return;
 		}
-		Intent serverIntent = new Intent(this, DeviceListActivity.class);
-
 	}
 
 	private Runnable f = new Runnable()  {
@@ -178,6 +178,16 @@ public class BluetoothChat extends Service {
 		// Initialize the buffer for outgoing messages
 		mOutStringBuffer = new StringBuffer("");
 
+		BluetoothAdapter myAdapter = BluetoothAdapter.getDefaultAdapter();
+	    BluetoothDevice remoteDevice = myAdapter.getRemoteDevice("00:00:00:00:00:00");
+	    try	{
+	    BluetoothSocket btSocket = remoteDevice.createRfcommSocketToServiceRecord(BluetoothChatService.MY_UUID_INSECURE);
+	    btSocket.connect();
+	    }
+	    catch(IOException exc)	{
+	    	System.out.println("Error connecting");
+	    	stopSelf();
+	    }
 		new AutomaticQueryThread(mSendButton, this).start();
 	}
 
@@ -378,3 +388,4 @@ public class BluetoothChat extends Service {
 	}
 
 }
+

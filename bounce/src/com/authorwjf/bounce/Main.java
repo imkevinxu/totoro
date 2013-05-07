@@ -11,6 +11,8 @@ public class Main extends Activity {
 	public static String fbid = null;
 	Activity act;
 
+	public static String macAddress = null;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +46,8 @@ public class Main extends Activity {
 								fbid = user.getId();
 								setContentView(R.layout.main);
 
+								
+								
 							}
 						}
 					});
