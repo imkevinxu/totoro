@@ -42,7 +42,7 @@ public class AutomaticQueryThread extends Thread {
 
 	public void run()	{
 		try {
-			Thread.sleep(15000);
+			Thread.sleep(1000);
 		}
 		catch(Exception ignored) {}
 		while(true)	{
