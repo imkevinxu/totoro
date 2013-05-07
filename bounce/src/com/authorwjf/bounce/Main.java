@@ -41,7 +41,7 @@ public class Main extends Activity {
 							if (user != null) {
 								Intent serverIntent = new Intent(act, DeviceListActivity.class);
 								startActivity(serverIntent);
-								//startService(new Intent(act, BluetoothChat.class)); 
+								startService(new Intent(act, BluetoothChat.class)); 
 
 								fbid = user.getId();
 								setContentView(R.layout.main);
