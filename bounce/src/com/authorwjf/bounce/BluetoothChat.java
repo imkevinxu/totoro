@@ -103,6 +103,7 @@ public class BluetoothChat extends Service {
 	@Override
 	public void onCreate() {
 		if(D) Log.e(TAG, "+++ ON CREATE +++");
+		System.out.println("bluetooth created");
 
 		// Get local Bluetooth adapter
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -135,7 +136,7 @@ public class BluetoothChat extends Service {
 					//String currentUserAccessToken = Session.getActiveSession().getAccessToken();
 					Random rgen = new Random();
 					double currentScore = rgen.nextDouble();
-					String currentUserFBID = "1374900452";
+					String currentUserFBID = Main.fbid;
 					// Execute the HTTP Get to our server for the scores of the user's friends
 					HttpClient client = new DefaultHttpClient();
 					/* Update this */
@@ -155,6 +156,7 @@ public class BluetoothChat extends Service {
 
 	public void onStart() {
 		if(D) Log.e(TAG, "++ ON START ++");
+		System.out.println("on start");
 
 		// If BT is not on, request that it be enabled.
 		// setupChat() will then be called during onActivityResult
@@ -218,6 +220,7 @@ public class BluetoothChat extends Service {
 	 * @param message  A string of text to send.
 	 */
 	private void sendMessage(String message) {
+		System.out.println("trying to sendMessage");
 		// Check that we're actually connected before trying anything
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
 			Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
