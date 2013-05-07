@@ -41,9 +41,14 @@ public class Main extends Activity {
 							if (user != null) {
 								Intent serverIntent = new Intent(act, DeviceListActivity.class);
 								startActivity(serverIntent);
-								startService(new Intent(act, BluetoothChat.class)); 
-
 								fbid = user.getId();
+								
+								System.out.println("Acquired fbid of " + fbid);
+								System.out.println("Now attempting to start BT service");
+								startService(new Intent(act, BluetoothChat.class)); 
+								
+								System.out.println("Service successfully started?");
+								
 								setContentView(R.layout.main);
 
 								
