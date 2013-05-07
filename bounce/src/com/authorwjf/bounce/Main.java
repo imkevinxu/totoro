@@ -12,7 +12,7 @@ public class Main extends Activity {
 	Activity act;
 
 	public static String macAddress = null;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,20 +39,23 @@ public class Main extends Activity {
 						@Override
 						public void onCompleted(GraphUser user, Response response) {
 							if (user != null) {
+								macAddress = null;
 								Intent serverIntent = new Intent(act, DeviceListActivity.class);
 								startActivity(serverIntent);
 								fbid = user.getId();
-								
+
 								System.out.println("Acquired fbid of " + fbid);
 								System.out.println("Now attempting to start BT service");
-								startService(new Intent(act, BluetoothChat.class)); 
-								
+								while(macAddress != null)	{
+									startService(new Intent(act, BluetoothChat.class));
+								}
+
 								System.out.println("Service successfully started?");
-								
+
 								setContentView(R.layout.main);
 
-								
-								
+
+
 							}
 						}
 					});
