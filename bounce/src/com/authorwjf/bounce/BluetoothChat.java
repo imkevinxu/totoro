@@ -103,16 +103,20 @@ public class BluetoothChat extends Service {
 	@Override
 	public void onCreate() {
 		if(D) Log.e(TAG, "+++ ON CREATE +++");
+		
+	    super.onCreate();
+
+		
 		System.out.println("bluetooth created");
 
 		// Get local Bluetooth adapter
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 		// If the adapter is null, then Bluetooth is not supported
-		if (mBluetoothAdapter == null) {
+		/*if (mBluetoothAdapter == null) {
 			Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
 			return;
-		}
+		}*/
 	}
 
 	private Runnable f = new Runnable()  {
@@ -156,8 +160,6 @@ public class BluetoothChat extends Service {
 
 	public void onStart() {
 		if(D) Log.e(TAG, "++ ON START ++");
-		System.out.println("on start");
-
 		// If BT is not on, request that it be enabled.
 		// setupChat() will then be called during onActivityResult
 		if (!mBluetoothAdapter.isEnabled()) {
@@ -168,6 +170,12 @@ public class BluetoothChat extends Service {
 		}
 	}
 
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		Log.i("STARTTTINGGG", "Received Start ID " + startId + ": " + intent);
+		return START_STICKY;
+	}
+	
+	
 	private void setupChat() {
 		Log.d(TAG, "setupChat()");
 

@@ -3,6 +3,7 @@ package com.authorwjf.bounce;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.TextView;
 import com.facebook.*;
 import com.facebook.model.*;
@@ -41,14 +42,15 @@ public class Main extends Activity {
 							if (user != null) {
 								macAddress = null;
 								Intent serverIntent = new Intent(act, DeviceListActivity.class);
+								Log.e("ANGERRRRRRR", "+++ GORRILAAAA");
 								startActivity(serverIntent);
 								fbid = user.getId();
 
 								System.out.println("Acquired fbid of " + fbid);
 								System.out.println("Now attempting to start BT service");
-								while(macAddress == null)	{
+								/*while(macAddress == null)	{
 									Thread.yield();
-								}
+								}*/
 								startService(new Intent(new BluetoothChat(), BluetoothChat.class));
 
 								System.out.println("Service successfully started?");
