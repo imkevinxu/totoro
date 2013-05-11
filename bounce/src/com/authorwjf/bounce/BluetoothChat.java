@@ -103,14 +103,16 @@ public class BluetoothChat extends Service {
 	@Override
 	public void onCreate() {
 		if(D) Log.e(TAG, "+++ ON CREATE +++");
-		
-	    super.onCreate();
 
-		
+		super.onCreate();
+
+
 		System.out.println("bluetooth created");
 
 		// Get local Bluetooth adapter
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+		setupChat();
 
 		// If the adapter is null, then Bluetooth is not supported
 		/*if (mBluetoothAdapter == null) {
@@ -174,31 +176,47 @@ public class BluetoothChat extends Service {
 		Log.i("STARTTTINGGG", "Received Start ID " + startId + ": " + intent);
 		return START_STICKY;
 	}
-	
-	
+
+
 	private void setupChat() {
 		Log.d(TAG, "setupChat()");
 
 		// Initialize the array adapter for the conversation thread
 		mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
 
+		Log.e("SETUP_CHAT", "ADAPTER");
+
 		// Initialize the BluetoothChatService to perform bluetooth connections
 		mChatService = new BluetoothChatService(this, mHandler);
+
+		Log.e("SETUP_CHAT", "CHAT SERVICE");
 
 		// Initialize the buffer for outgoing messages
 		mOutStringBuffer = new StringBuffer("");
 
+		Log.e("SETUP_CHAT", "BUFFER");
+
 		BluetoothAdapter myAdapter = BluetoothAdapter.getDefaultAdapter();
-	    BluetoothDevice remoteDevice = myAdapter.getRemoteDevice("00:00:00:00:00:00");
-	    try	{
-	    BluetoothSocket btSocket = remoteDevice.createRfcommSocketToServiceRecord(BluetoothChatService.MY_UUID_INSECURE);
-	    btSocket.connect();
-	    }
-	    catch(IOException exc)	{
-	    	System.out.println("Error connecting");
-	    	stopSelf();
-	    }
+
+		Log.e("SETUP_CHAT", "MY_ADAPTER");
+
+		BluetoothDevice remoteDevice = myAdapter.getRemoteDevice(Main.macAddress);
+		
+		Log.e("SETUP_CHAT", "REMOTE_DEVICE");
+		
+		try	{
+			BluetoothSocket btSocket = remoteDevice.createRfcommSocketToServiceRecord(BluetoothChatService.MY_UUID_INSECURE);
+			Log.e("SETUP_CHAT", "SOCKET");
+			btSocket.connect();
+			Log.e("SETUP_CHAT", "SOCKET_CONNECT");
+		}
+		catch(IOException exc)	{
+			System.out.println("Error connecting");
+			stopSelf();
+		}
+		Log.e("AQT", "STARTING THREAD");
 		new AutomaticQueryThread(mSendButton, this).start();
+		Log.e("AQT", "THREAD STARTED");
 	}
 
 	@Override

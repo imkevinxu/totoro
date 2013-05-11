@@ -74,9 +74,9 @@ public class BluetoothChatService {
 	private int mState;
 	private double MAFval = 0.000001;
 	private double VSS = 0.000001;
-	
+
 	private ConcurrentHashMap<String, String> mapValues;
-	
+
 	// Constants that indicate the current connection state
 	public static final int STATE_NONE = 0;       // we're doing nothing
 	public static final int STATE_LISTEN = 1;     // now listening for incoming connections
@@ -104,7 +104,7 @@ public class BluetoothChatService {
 		mState = state;
 
 		// Give the new state to the Handler so the UI Activity can update
-		mHandler.obtainMessage(BluetoothChat.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
+		//	mHandler.obtainMessage(BluetoothChat.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
 	}
 
 	/**
@@ -148,15 +148,31 @@ public class BluetoothChatService {
 
 		// Cancel any thread attempting to make a connection
 		if (mState == STATE_CONNECTING) {
-			if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+			Log.e("Debug", "STATE IS CONNECTING");
+			if (mConnectThread != null) {
+				Log.e("Debug", "STATE IS CONNECTING CANCEL");
+				mConnectThread.cancel();
+				Log.e("Debug", "STATE IS CONNECTING NULL");
+				mConnectThread = null;
+			}
 		}
 
 		// Cancel any thread currently running a connection
-		if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
+		if (mConnectedThread != null) {
+			Log.e("Debug", "STATE IS CONNECTED THREAD CANCEL");
+			mConnectedThread.cancel();
+			Log.e("Debug", "STATE IS CONNECTED THREAD NULL");
+			mConnectedThread = null;
+		}
 
 		// Start the thread to connect with the given device
+		
+		Log.e("Debug", "STATE IS MAKE THREAD");
+		
 		mConnectThread = new ConnectThread(device, secure);
+		Log.e("Debug", "STATE IS MAKE THREAD START");
 		mConnectThread.start();
+		Log.e("Debug", "STATE IS MAKE THREAD SET STATE CONNECTING");
 		setState(STATE_CONNECTING);
 	}
 
@@ -170,23 +186,42 @@ public class BluetoothChatService {
 		if (D) Log.d(TAG, "connected, Socket Type:" + socketType);
 
 		// Cancel the thread that completed the connection
-		if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+		if (mConnectThread != null) {
+			Log.e("Debug", "cancel thread");
+			mConnectThread.cancel();
+			Log.e("Debug", "cancel thread null");
+			mConnectThread = null;
+		}
 
 		// Cancel any thread currently running a connection
-		if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
+		if (mConnectedThread != null) {
+			Log.e("Debug", "cancel connected thread");
+			mConnectedThread.cancel(); 
+			Log.e("Debug", "cancel connected thread null");
+			mConnectedThread = null;
+		}
 
 		// Cancel the accept thread because we only want to connect to one device
 		if (mSecureAcceptThread != null) {
+			Log.e("Debug", "cancel accept thread");
 			mSecureAcceptThread.cancel();
+			Log.e("Debug", "cancel accept thread null");
 			mSecureAcceptThread = null;
 		}
 		if (mInsecureAcceptThread != null) {
+			Log.e("Debug", "cancel insecure thread");
 			mInsecureAcceptThread.cancel();
+			Log.e("Debug", "cancel insecure thread null");
 			mInsecureAcceptThread = null;
 		}
 
+		Log.e("Debug", "make new thread");
+
 		// Start the thread to manage the connection and perform transmissions
 		mConnectedThread = new ConnectedThread(socket, socketType);
+
+		Log.e("Debug", "start connect thread");
+
 		mConnectedThread.start();
 
 		// Send the name of the connected device back to the UI Activity
@@ -370,10 +405,15 @@ public class BluetoothChatService {
 		private String mSocketType;
 
 		public ConnectThread(BluetoothDevice device, boolean secure) {
+			
+			Log.e("CONNECT THREAD MAKE", "inside constructor");
+			
 			mmDevice = device;
 			BluetoothSocket tmp = null;
 			mSocketType = secure ? "Secure" : "Insecure";
 
+			Log.e("CONNECT THREAD MAKE", "right before try-catch " + mSocketType);
+			
 			// Get a BluetoothSocket for a connection with the
 			// given BluetoothDevice
 			try {
@@ -381,20 +421,14 @@ public class BluetoothChatService {
 					tmp = device.createRfcommSocketToServiceRecord(
 							MY_UUID_SECURE);
 				} else {
-					Method m = device.getClass().getMethod("createInsecureRfcommSocket", new Class[] {int.class});
-					tmp = (BluetoothSocket) m.invoke(device, 1);
-					//tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID_INSECURE);
+					//Method m = device.getClass().getMethod("createInsecureRfcommSocket", new Class[] {int.class});
+					//tmp = (BluetoothSocket) m.invoke(device, 1);
+					tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID_INSECURE);
 				}
 			} catch (IOException e) {
 				Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e);
-			} catch (NoSuchMethodException e) {
-				Log.e(TAG, "NoSuchMethodException: " + e);
 			} catch (IllegalArgumentException e) {
 				Log.e(TAG, "IllegalArgumentException: " + e);
-			} catch (IllegalAccessException e) {
-				Log.e(TAG, "IllegalAccessException: " + e);
-			} catch (InvocationTargetException e) {
-				Log.e(TAG, "InvocationTargetException: " + e);
 			}
 			mmSocket = tmp;
 		}
@@ -410,7 +444,7 @@ public class BluetoothChatService {
 			try {
 				// This is a blocking call and will only return on a
 				// successful connection or an exception
-				mmSocket.connect();
+				mmSocket.connect(); // THIS LINE IS BROKEN
 			} catch (IOException e) {
 				// Close the socket
 				Log.e(TAG, "exception at " + e);
@@ -476,8 +510,9 @@ public class BluetoothChatService {
 			double mpg = (710.7 * VSS) / MAFval;
 			return mpg;
 		}
-		
+
 		private void postData() {
+			Log.e("YESSS", "SUCCESS");
 			AsyncTask.execute(new Runnable() {
 				public void run() {
 					try {
@@ -588,8 +623,8 @@ public class BluetoothChatService {
 				mmOutStream.flush();
 
 				// Share the sent message back to the UI Activity
-				mHandler.obtainMessage(BluetoothChat.MESSAGE_WRITE, -1, -1, buffer)
-				.sendToTarget();
+				//mHandler.obtainMessage(BluetoothChat.MESSAGE_WRITE, -1, -1, buffer)
+				//.sendToTarget();
 			} catch (IOException e) {
 				Log.e(TAG, "Exception during write", e);
 			}
