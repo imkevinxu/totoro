@@ -272,6 +272,28 @@ public class AnimatedView extends ImageView{
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
 	}
+	
+	/* Adjust flambe speed around a mean of 15.  Note: The speed of the droplet descent isn't changed.
+	 * Only the amount of time between droplets is changed. The higher this amount of time, the "slower"
+	 * the droplets, and the more your score is improving at the moment. */
+	private void adjustFlambe() {
+		if (scoreNum > 0 && lastMPG > 0) {
+			int improvement = (int) (scoreNum - lastMPG);
+			/* only change flambe if a reasonable number is found for scoreNum - lastMPG.  If
+			 * an out-of-range improvement is found, it is likely because the car is just starting up. The
+			 * droplets should not change their speed in this case.
+			 */
+			if (Math.abs(improvement) < 5) {
+				flambe += improvement; 
+			}
+		}
+		/* Last check to ensure flambe is within a reasonable range */
+		if (flambe < 5) {
+			flambe = 5;
+		} else if (flambe > 25) {
+			flambe = 25;
+		}
+	}
 
 	protected void onDraw(Canvas c) {  
 
@@ -348,6 +370,7 @@ public class AnimatedView extends ImageView{
 			h.postDelayed(r, FRAME_RATE);
 
 		}
+		adjustFlambe();
 	} 
 
 }
