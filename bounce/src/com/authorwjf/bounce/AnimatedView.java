@@ -44,6 +44,8 @@ public class AnimatedView extends ImageView{
 	private int scoreDec = 0;
 	private String getURL = "http://omnidrive.herokuapp.com/getscore?fbid="; 
 
+	private long counter = 0;
+	
 	String rec = "";
 	int recCountup = 0;
 	int status = 0;
@@ -66,9 +68,9 @@ public class AnimatedView extends ImageView{
 	private long last;
 	private Bitmap grayMap;
 	private int[] grayPixels;
-	
+
 	private double lastMPG = 0;
-	
+
 	private int coinCounter = 0;
 	private double lastCoinCheck = 0;
 
@@ -77,9 +79,6 @@ public class AnimatedView extends ImageView{
 		mContext = context;  
 		h = new Handler();
 		getURL += Main.fbid;
-
-		
-		
 	} 
 
 	private Runnable r = new Runnable() {
@@ -111,7 +110,7 @@ public class AnimatedView extends ImageView{
 		}
 	}
 
-	
+
 
 	private void setScore() {
 		AsyncTask.execute(new Runnable() {
@@ -137,7 +136,7 @@ public class AnimatedView extends ImageView{
 								//System.out.println("Score num: " + scoreNum);
 								//System.out.println("Last mpg: " + lastMPG);
 								scoreNum = mpg * 2; // scale from 0-50, to 0-100
-								
+
 
 							}
 						} catch (JSONException e) {
@@ -151,6 +150,20 @@ public class AnimatedView extends ImageView{
 				}
 			}
 		});
+	}
+
+	private void drawRecommendation(Canvas c, Paint scorePaint)	{
+		Rect notification = new Rect(0, getHeight() - status, getWidth(), getHeight());
+
+		scorePaint.setColor(Color.parseColor("#3498db"));
+		scorePaint.setStyle(Style.FILL);
+		c.drawRect(notification, scorePaint);
+		scorePaint.setTextSize(40);
+		scorePaint.setColor(Color.WHITE);
+		Rect recBounds = new Rect();
+		scorePaint.getTextBounds(rec, 0, rec.length(), recBounds);
+		c.drawText(rec, this.getWidth()/2 - recBounds.width() / 2, this.getHeight() - status + recBounds.height() + 12, scorePaint);
+
 	}
 
 	private void drawCircles(BitmapDrawable greenCircle, BitmapDrawable grayCircle, Canvas c, double amt) {
@@ -227,17 +240,7 @@ public class AnimatedView extends ImageView{
 				}
 
 				if (status > -10) {
-
-					Rect notification = new Rect(0, getHeight() - status, getWidth(), getHeight());
-
-					scorePaint.setColor(Color.parseColor("#3498db"));
-					scorePaint.setStyle(Style.FILL);
-					c.drawRect(notification, scorePaint);
-					scorePaint.setTextSize(40);
-					scorePaint.setColor(Color.WHITE);
-					Rect recBounds = new Rect();
-					scorePaint.getTextBounds(rec, 0, rec.length(), recBounds);
-					c.drawText(rec, this.getWidth()/2 - recBounds.width() / 2, this.getHeight() - status + recBounds.height() + 12, scorePaint);
+					drawRecommendation(c, scorePaint);
 				}
 			}
 		} else {
@@ -247,7 +250,7 @@ public class AnimatedView extends ImageView{
 			scrollIn = false;
 			status = 0;
 		}
-		
+
 		if (coinCounter == 50) {
 			double diff = scoreNum - lastCoinCheck;
 			if (diff > 0) {
@@ -257,21 +260,25 @@ public class AnimatedView extends ImageView{
 			lastCoinCheck = scoreNum;
 
 		}
-		
+
 		coinCounter++;
 	}
-	
+
 	private void makeToast(double diff) {
 		Context context = mContext;
 		CharSequence text = "Great job!! + " + (int)diff + " coins!";
 		int duration = Toast.LENGTH_LONG;
-		
+
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
 	}
 
 	protected void onDraw(Canvas c) {  
 
+		if(++counter % 10 == 0)	{
+			drawRecommendation(c, new Paint());
+		}
+		
 		if (greenCircle == null) {
 			greenCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.darkcircle1);
 			grayCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.graycircle);
