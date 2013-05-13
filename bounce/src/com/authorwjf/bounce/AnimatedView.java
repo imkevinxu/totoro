@@ -44,6 +44,8 @@ public class AnimatedView extends ImageView{
 	private int scoreDec = 0;
 	private String getURL = "http://omnidrive.herokuapp.com/getscore?fbid="; 
 
+	private long counter = 0;
+	
 	String rec = "";
 	int recCountup = 0;
 	int status = 0;
@@ -66,9 +68,9 @@ public class AnimatedView extends ImageView{
 	private long last;
 	private Bitmap grayMap;
 	private int[] grayPixels;
-	
+
 	private double lastMPG = 0;
-	
+
 	private int coinCounter = 0;
 	private double lastCoinCheck = 0;
 
@@ -79,8 +81,7 @@ public class AnimatedView extends ImageView{
 		getURL += Main.fbid;
 		Log.e("FBID", "FBID: " + Main.fbid);
 
-		
-		
+
 	} 
 
 	private Runnable r = new Runnable() {
@@ -161,6 +162,20 @@ public class AnimatedView extends ImageView{
 		(new setScoreTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getURL);
 	}
 
+	private void drawRecommendation(Canvas c, Paint scorePaint)	{
+		Rect notification = new Rect(0, getHeight() - status, getWidth(), getHeight());
+
+		scorePaint.setColor(Color.parseColor("#3498db"));
+		scorePaint.setStyle(Style.FILL);
+		c.drawRect(notification, scorePaint);
+		scorePaint.setTextSize(40);
+		scorePaint.setColor(Color.WHITE);
+		Rect recBounds = new Rect();
+		scorePaint.getTextBounds(rec, 0, rec.length(), recBounds);
+		c.drawText(rec, this.getWidth()/2 - recBounds.width() / 2, this.getHeight() - status + recBounds.height() + 12, scorePaint);
+
+	}
+
 	private void drawCircles(BitmapDrawable greenCircle, BitmapDrawable grayCircle, Canvas c, double amt) {
 		Paint scorePaint = new Paint();
 		if (scoreNum <=25) {
@@ -235,17 +250,7 @@ public class AnimatedView extends ImageView{
 				}
 
 				if (status > -10) {
-
-					Rect notification = new Rect(0, getHeight() - status, getWidth(), getHeight());
-
-					scorePaint.setColor(Color.parseColor("#3498db"));
-					scorePaint.setStyle(Style.FILL);
-					c.drawRect(notification, scorePaint);
-					scorePaint.setTextSize(40);
-					scorePaint.setColor(Color.WHITE);
-					Rect recBounds = new Rect();
-					scorePaint.getTextBounds(rec, 0, rec.length(), recBounds);
-					c.drawText(rec, this.getWidth()/2 - recBounds.width() / 2, this.getHeight() - status + recBounds.height() + 12, scorePaint);
+					drawRecommendation(c, scorePaint);
 				}
 			}
 		} else {
@@ -255,7 +260,7 @@ public class AnimatedView extends ImageView{
 			scrollIn = false;
 			status = 0;
 		}
-		
+
 		if (coinCounter == 50) {
 			double diff = scoreNum - lastCoinCheck;
 			if (diff > 0) {
@@ -265,21 +270,47 @@ public class AnimatedView extends ImageView{
 			lastCoinCheck = scoreNum;
 
 		}
-		
+
 		coinCounter++;
 	}
-	
+
 	private void makeToast(double diff) {
 		Context context = mContext;
 		CharSequence text = "Great job!! + " + (int)diff + " coins!";
 		int duration = Toast.LENGTH_LONG;
-		
+
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
+	}
+	
+	/* Adjust flambe speed around a mean of 15.  Note: The speed of the droplet descent isn't changed.
+	 * Only the amount of time between droplets is changed. The higher this amount of time, the "slower"
+	 * the droplets, and the more your score is improving at the moment. */
+	private void adjustFlambe() {
+		if (scoreNum > 0 && lastMPG > 0) {
+			int improvement = (int) (scoreNum - lastMPG);
+			/* only change flambe if a reasonable number is found for scoreNum - lastMPG.  If
+			 * an out-of-range improvement is found, it is likely because the car is just starting up. The
+			 * droplets should not change their speed in this case.
+			 */
+			if (Math.abs(improvement) < 5) {
+				flambe += improvement; 
+			}
+		}
+		/* Last check to ensure flambe is within a reasonable range */
+		if (flambe < 5) {
+			flambe = 5;
+		} else if (flambe > 25) {
+			flambe = 25;
+		}
 	}
 
 	protected void onDraw(Canvas c) {  
 
+		if(++counter % 10 == 0)	{
+			drawRecommendation(c, new Paint());
+		}
+		
 		if (greenCircle == null) {
 			greenCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.darkcircle1);
 			grayCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.graycircle);
@@ -349,6 +380,7 @@ public class AnimatedView extends ImageView{
 			h.postDelayed(r, FRAME_RATE);
 
 		}
+		adjustFlambe();
 	} 
 
 }
