@@ -526,7 +526,7 @@ public class BluetoothChatService {
 				public void run() {
 					try {
 						HttpClient client = new DefaultHttpClient();
-						String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&mpg=" +  calculateMPG();
+						String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&highscore=" +  calculateMPG();
 						for(String out: mapValues.keySet()) {
 							getURL += "&" + out + "=" + mapValues.get(out);
 						}
