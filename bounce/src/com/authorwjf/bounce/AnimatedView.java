@@ -43,6 +43,8 @@ public class AnimatedView extends ImageView{
 	private double amount = scoreNum/100;
 	private int scoreDec = 0;
 	private String getURL = "http://omnidrive.herokuapp.com/getscore?fbid="; 
+	
+	private int timeSinceLastRec = 0;
 
 	private long counter = 0;
 	
@@ -133,13 +135,13 @@ public class AnimatedView extends ImageView{
 						if(score != null) {
 							Double mpg = Double.parseDouble(score);
 							Log.e("FBID", "Mpg" + " " + mpg);
-							if (mpg * 2 != scoreNum) {
+							if (mpg != scoreNum) {
 								lastMPG = scoreNum;
-								scoreNum = mpg * 2;
+								scoreNum = mpg;
 							}
 							//System.out.println("Score num: " + scoreNum);
 							//System.out.println("Last mpg: " + lastMPG);
-							scoreNum = mpg * 2; // scale from 0-50, to 0-100
+							scoreNum = mpg; // scale from 0-50, to 0-100
 							
 
 						}
@@ -227,11 +229,13 @@ public class AnimatedView extends ImageView{
 		c.drawBitmap(grayPixels, 0, grayMap.getWidth(), grayX, 10, endX, endY, false, null);
 
 		//c.drawBitmap(transform, grayX, 10, null);  
+		timeSinceLastRec++;
 
 		c.drawText(score, scoreX, scoreY, scorePaint);
-		if (scoreNum < 85) {
+		if (lastMPG > 0 && (scoreNum - lastMPG < 0) && timeSinceLastRec > 600) {
 			if (rec.equals("")) {
 				rec = getRecommendation();
+				timeSinceLastRec = 0;
 
 				mp1.start();
 				scrollIn = true;
