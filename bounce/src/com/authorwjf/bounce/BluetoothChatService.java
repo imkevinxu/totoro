@@ -128,13 +128,17 @@ public class BluetoothChatService {
 		setState(STATE_LISTEN);
 
 		// Start the thread to listen on a BluetoothServerSocket
-		if (mSecureAcceptThread == null) {
+		/*if (mSecureAcceptThread == null) {
 			mSecureAcceptThread = new AcceptThread(true);
 			mSecureAcceptThread.start();
-		}
+		}*/
+		Log.e("Cheese", "is it null???");
 		if (mInsecureAcceptThread == null) {
-			mInsecureAcceptThread = new AcceptThread(false);
+			Log.e("Cheese", "YES IT IS");
+
 			mInsecureAcceptThread.start();
+		} else {
+			Log.e("Cheese", "NO IT'S NOT..");
 		}
 	}
 
@@ -144,7 +148,7 @@ public class BluetoothChatService {
 	 * @param secure Socket Security type - Secure (true) , Insecure (false)
 	 */
 	public synchronized void connect(BluetoothDevice device, boolean secure) {
-		if (D) Log.d(TAG, "connect to: " + device);
+		if (D) Log.d(TAG, "connect to: " + device); 
 
 		// Cancel any thread attempting to make a connection
 		if (mState == STATE_CONNECTING) {
@@ -335,11 +339,11 @@ public class BluetoothChatService {
 			} catch (IOException e) {
 				Log.e(TAG, "Socket Type: " + mSocketType + "listen() failed", e);
 			}
-			mmServerSocket = tmp;
+			mmServerSocket = tmp;  
 		}
 
 		public void run() {
-			if (D) Log.d(TAG, "Socket Type: " + mSocketType +
+			if (D) Log.d("Cheese", "Socket Type: " + mSocketType +
 					"BEGIN mAcceptThread" + this);
 			setName("AcceptThread" + mSocketType);
 
@@ -350,7 +354,9 @@ public class BluetoothChatService {
 				try {
 					// This is a blocking call and will only return on a
 					// successful connection or an exception
+					Log.e("Cheese", "BEGIN BLOCKING CALL");
 					socket = mmServerSocket.accept();
+					Log.e("Cheese", "END BLOCKING CALL");
 				} catch (IOException e) {
 					Log.e(TAG, "Socket Type: " + mSocketType + "accept() failed", e);
 					break;
@@ -363,6 +369,7 @@ public class BluetoothChatService {
 						case STATE_LISTEN:
 						case STATE_CONNECTING:
 							// Situation normal. Start the connected thread.
+							Log.e("Cheese", "GOING INTO CONNECTED!!!!!!!!");
 							connected(socket, socket.getRemoteDevice(),
 									mSocketType);
 							break;
@@ -379,7 +386,8 @@ public class BluetoothChatService {
 					}
 				}
 			}
-			if (D) Log.i(TAG, "END mAcceptThread, socket Type: " + mSocketType);
+			Log.e("Cheese", "mAcceptThread");
+			if (D) Log.i("Cheese", "END mAcceptThread, socket Type: " + mSocketType);
 
 		}
 
@@ -417,18 +425,19 @@ public class BluetoothChatService {
 			// Get a BluetoothSocket for a connection with the
 			// given BluetoothDevice
 			try {
-				if (secure) {
-					tmp = device.createRfcommSocketToServiceRecord(
-							MY_UUID_SECURE);
-				} else {
-					//Method m = device.getClass().getMethod("createInsecureRfcommSocket", new Class[] {int.class});
-					//tmp = (BluetoothSocket) m.invoke(device, 1);
-					tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID_INSECURE);
-				}
-			} catch (IOException e) {
-				Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e);
+				Method m = device.getClass().getMethod("createInsecureRfcommSocket", new Class[] {int.class});
+				tmp = (BluetoothSocket) m.invoke(device, 1);
 			} catch (IllegalArgumentException e) {
 				Log.e(TAG, "IllegalArgumentException: " + e);
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			mmSocket = tmp;
 		}
@@ -447,7 +456,7 @@ public class BluetoothChatService {
 				mmSocket.connect(); // THIS LINE IS BROKEN
 			} catch (IOException e) {
 				// Close the socket
-				Log.e(TAG, "exception at " + e);
+				Log.e(TAG, "Exception at " + e);
 				try {
 					mmSocket.close();
 				} catch (IOException e2) {
@@ -526,9 +535,6 @@ public class BluetoothChatService {
 						HttpGet get = new HttpGet(getURL);
 						HttpResponse responseGet = client.execute(get);
 						System.out.println("Success!!!!!");
-						/*HttpEntity responseEntity = responseGet.getEntity();
-                	String response = EntityUtils.toString(responseEntity);
-                	JSONObject jObject = new JSONObject(response);*/
 					} catch (Exception e) {
 						Log.e(TAG, "FAILURE");
 					}
@@ -611,14 +617,12 @@ public class BluetoothChatService {
 		 */
 		public void write(byte[] buffer) {
 			try {
-				Log.i(TAG, "writing byte array of length " + buffer.length);
-
 				byte[] actualBuffer = new byte[buffer.length + 1];
 				for(int i = 0; i < buffer.length; i++)
 					actualBuffer[i] = buffer[i];
 
 				actualBuffer[buffer.length] = 0x0d;
-
+				
 				mmOutStream.write(actualBuffer);
 				mmOutStream.flush();
 

@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,6 +24,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,7 +39,7 @@ public class AnimatedView extends ImageView{
 	private final int FRAME_RATE = 30;
 	private int sashay = 0;
 	private int flambe = 15;
-	private double scoreNum = 35;
+	private double scoreNum = 0; 
 	private double amount = scoreNum/100;
 	private int scoreDec = 0;
 	private String getURL = "http://omnidrive.herokuapp.com/getscore?fbid="; 
@@ -77,6 +77,7 @@ public class AnimatedView extends ImageView{
 		mContext = context;  
 		h = new Handler();
 		getURL += Main.fbid;
+		Log.e("FBID", "FBID: " + Main.fbid);
 
 		
 		
@@ -111,46 +112,53 @@ public class AnimatedView extends ImageView{
 		}
 	}
 
-	
+	private class setScoreTask extends AsyncTask<String, Integer, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... params) {
+			try {
+				HttpClient client = new DefaultHttpClient();
+				HttpGet get = new HttpGet(getURL);
+				Log.e("FBID", "url: " + getURL);
+				HttpResponse responseGet = client.execute(get);
+				HttpEntity responseEntity = responseGet.getEntity();
+				String response = EntityUtils.toString(responseEntity);
+				if (!response.equals(null)) {
+					JSONObject currUser;
+					try {
+						currUser = new JSONObject(response);
+						String score = currUser.optString("highscore");
+						Log.e("FBID", "score: " + score);
+						if(score != null) {
+							Double mpg = Double.parseDouble(score);
+							Log.e("FBID", "Mpg" + " " + mpg);
+							if (mpg * 2 != scoreNum) {
+								lastMPG = scoreNum;
+								scoreNum = mpg * 2;
+							}
+							//System.out.println("Score num: " + scoreNum);
+							//System.out.println("Last mpg: " + lastMPG);
+							scoreNum = mpg * 2; // scale from 0-50, to 0-100
+							
+
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return 0;
+		}
+		
+	}
 
 	private void setScore() {
-		AsyncTask.execute(new Runnable() {
-
-			public void run() {
-				try {
-					HttpClient client = new DefaultHttpClient();
-					HttpGet get = new HttpGet(getURL);
-					HttpResponse responseGet = client.execute(get);
-					HttpEntity responseEntity = responseGet.getEntity();
-					String response = EntityUtils.toString(responseEntity);
-					if (!response.equals(null)) {
-						JSONObject currUser;
-						try {
-							currUser = new JSONObject(response);
-							String score = currUser.optString("highscore");
-							if(score != null) {
-								Double mpg = Double.parseDouble(score);
-								if (mpg * 2 != scoreNum) {
-									lastMPG = scoreNum;
-									scoreNum = mpg * 2;
-								}
-								//System.out.println("Score num: " + scoreNum);
-								//System.out.println("Last mpg: " + lastMPG);
-								scoreNum = mpg * 2; // scale from 0-50, to 0-100
-								
-
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-				} catch (ClientProtocolException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		
+		(new setScoreTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getURL);
 	}
 
 	private void drawCircles(BitmapDrawable greenCircle, BitmapDrawable grayCircle, Canvas c, double amt) {

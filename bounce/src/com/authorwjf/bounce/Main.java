@@ -1,5 +1,13 @@
 package com.authorwjf.bounce;
 
+import java.math.BigInteger;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -30,6 +38,9 @@ public class Main extends Activity {
 	private BluetoothChatService mChatService = null;
 
 	private int counter = 0;
+	private ConcurrentHashMap<String, String> mapValues;
+	private double MAFval = 0.000001;
+	private double VSS = 0.000001;
 
 	private static ELMTuple[] englishFields = new ELMTuple[]{
 		new ELMTuple("rpm", "010C"),
@@ -52,14 +63,22 @@ public class Main extends Activity {
 			this.elmName = elmName;
 		}
 	}
-
+	
+	private double calculateMPG() {
+		double mpg = (710.7 * VSS) / MAFval;
+		return mpg;
+	}
+	
 	private final Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			//System.out.println("HEEELLLLLLOOOOO");
 			case MESSAGE_READ:
-				System.out.println("HELLLO");
+				byte[] readBuf = (byte[]) msg.obj;
+				// construct a string from the valid bytes in the buffer
+				String readMessage = new String(readBuf, 0, msg.arg1);
+				Log.e("Handler", "Message: "+ readMessage);
+
 				break;
 			}
 		}
@@ -103,23 +122,46 @@ public class Main extends Activity {
 					Log.e("LOOP", "LET US QUERY!");
 					long lastTime = System.currentTimeMillis();
 					for(ELMTuple tuple: englishFields){
+						Log.e("MESSAGE", tuple.elmName);
 						sendMessage(tuple.elmName);
 						try {
 							Thread.sleep(800);
 						}
-						catch(Exception ignored) {}
+						catch(Exception ignored) {
+							Log.e("LOOP", "ELM SEND EXCEPTION");
+
+						}
 					}
 					long query = 1000 - (System.currentTimeMillis() - lastTime);
 					if(query > 0)	{
 						try	{
 							Thread.sleep(query);
 						}
-						catch(Exception ignored) {}
+						catch(Exception ignored) {
+							Log.e("LOOP", "SLEEP FAILED");
+						}
 					}
 				}
 			}
 		});
 	}
+    @Override
+    public synchronized void onResume() {
+        super.onResume();
+        // Performing this check in onResume() covers the case in which BT was
+        // not enabled during onStart(), so we were paused to enable it...
+        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
+        Log.e("Cheese", "RESUMING");
+        if (mChatService != null) {
+            // Only if the state is STATE_NONE, do we know that we haven't started already
+        	Log.e("Cheese", "service is not null");
+            if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
+              // Start the Bluetooth chat services
+            	Log.e("Cheese", "Starting mChatService");
+             // mChatService.start();
+            }
+        }
+    }
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +169,7 @@ public class Main extends Activity {
 		act = this;
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		mChatService = new BluetoothChatService(this, mHandler);
+		mapValues = new ConcurrentHashMap<String, String>();
 
 		if (fbid == null) {
 			setContentView(R.layout.login);     
@@ -150,7 +193,9 @@ public class Main extends Activity {
 						@Override
 						public void onCompleted(GraphUser user, Response response) {
 							if (user != null) {
-								macAddress = "14:10:9F:D2:6F:3E";
+								macAddress = "00:0D:18:28:08:C8";
+								//macAddress = "00:0D:18:00:7A:BE";
+								fbid = user.getId();  
 
 								// Get the device MAC address
 								String address = macAddress;
@@ -164,9 +209,13 @@ public class Main extends Activity {
 
 								mChatService.connect(device, false);
 								Log.e(TAG, "POST-CONNECTION");
-
+								try	{
+									Thread.sleep(500);
+								} catch(Exception ignored) {
+								}
+								//mChatService.start();
 								loopQuery();
-								//setContentView(R.layout.main);
+								setContentView(R.layout.main);
 
 							}
 						}
