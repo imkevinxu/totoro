@@ -81,13 +81,13 @@ public class BluetoothChatService {
 	private int mState;
 	private double MAFval = 0.000001;
 	private double VSS = 0.000001;
-	
+
 	public static long last_data_collection = 0;
 	public static boolean end_game = false;
 	public static double currentMPG = 0;
 	public static ArrayList<Double> allMPG = new ArrayList<Double>();
 
-	private ConcurrentHashMap<String, String> mapValues;
+	private static ConcurrentHashMap<String, String> mapValues;
 
 	// Constants that indicate the current connection state
 	public static final int STATE_NONE = 0;       // we're doing nothing
@@ -182,9 +182,9 @@ public class BluetoothChatService {
 		}
 
 		// Start the thread to connect with the given device
-		
+
 		Log.e("Debug", "STATE IS MAKE THREAD");
-		
+
 		mConnectThread = new ConnectThread(device, secure);
 		Log.e("Debug", "STATE IS MAKE THREAD START");
 		mConnectThread.start();
@@ -294,6 +294,24 @@ public class BluetoothChatService {
 		// Perform the write unsynchronized
 		r.write(out);
 	}
+
+	/**
+	 * Used to obtain data so other services can calculate quantities.
+	 * Valid values to retrieve are the following:
+	 * rpm
+	 * speed
+	 * intakeTemp
+	 * MAF
+	 * runSec
+	 * numWarmup
+	 * baro
+	 * ambTemp
+	 * throttle
+	 */
+	public static String retrieveDatum(String key)	{
+		return mapValues.get(key);
+	}
+
 
 	/**
 	 * Indicate that the connection attempt failed and notify the UI Activity.
@@ -425,15 +443,15 @@ public class BluetoothChatService {
 		private String mSocketType;
 
 		public ConnectThread(BluetoothDevice device, boolean secure) {
-			
+
 			Log.e("CONNECT THREAD MAKE", "inside constructor");
-			
+
 			mmDevice = device;
 			BluetoothSocket tmp = null;
 			mSocketType = secure ? "Secure" : "Insecure";
 
 			Log.e("CONNECT THREAD MAKE", "right before try-catch " + mSocketType);
-			
+
 			// Get a BluetoothSocket for a connection with the
 			// given BluetoothDevice
 			try {
@@ -531,7 +549,7 @@ public class BluetoothChatService {
 			double mpg = (710.7 * VSS) / MAFval;
 			return mpg;
 		}
-		
+
 		private class postDataTask extends AsyncTask<String, Integer, Integer> {
 
 			@Override
@@ -562,7 +580,7 @@ public class BluetoothChatService {
 				}
 				return 0;
 			}
-			
+
 		}
 
 		private void postData() {
@@ -649,7 +667,7 @@ public class BluetoothChatService {
 					actualBuffer[i] = buffer[i];
 
 				actualBuffer[buffer.length] = 0x0d;
-				
+
 				mmOutStream.write(actualBuffer);
 				mmOutStream.flush();
 
