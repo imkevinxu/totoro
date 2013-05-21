@@ -13,6 +13,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -121,7 +122,7 @@ public class AnimatedView extends ImageView{
 
 		@Override
 		protected Integer doInBackground(String... params) {
-			try {
+			/*try {
 				HttpClient client = new DefaultHttpClient();
 				HttpGet get = new HttpGet(getURL);
 				Log.e("FBID", "url: " + getURL);
@@ -141,15 +142,7 @@ public class AnimatedView extends ImageView{
 								lastMPG = scoreNum;
 								scoreNum = mpg;
 							}
-							//System.out.println("Score num: " + scoreNum);
-							//System.out.println("Last mpg: " + lastMPG);
-							scoreNum = mpg; // scale from 0-50, to 0-100
-							if (scoreNum > 0) {
-								avgMpgThisDrive.add(scoreNum);
-								//Log.e("avg_mpg", avgMpgThisDrive.toString());
-							}
-							
-
+							scoreNum = mpg; 
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -160,6 +153,13 @@ public class AnimatedView extends ImageView{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			return 0; */
+			double mpg = BluetoothChatService.currentMPG;
+			if (mpg != scoreNum) {
+				lastMPG = scoreNum;
+				scoreNum = mpg;
+			}
+			scoreNum = mpg;
 			return 0;
 		}
 		
@@ -329,6 +329,10 @@ public class AnimatedView extends ImageView{
 	}
 
 	protected void onDraw(Canvas c) {  
+		if (BluetoothChatService.end_game) {
+			Activity a = (Activity) mContext;
+			a.setContentView(R.layout.summary);
+		}
 
 		if(++counter % 10 == 0)	{
 			drawRecommendation(c, new Paint());

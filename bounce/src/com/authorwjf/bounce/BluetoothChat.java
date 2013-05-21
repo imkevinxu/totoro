@@ -247,6 +247,17 @@ public class BluetoothChat extends Service {
 	 */
 	private void sendMessage(String message) {
 		System.out.println("trying to sendMessage");
+		if (System.currentTimeMillis() - BluetoothChatService.last_data_collection > 5000) {
+			BluetoothChatService.end_game = true;
+			try {
+				HttpClient client = new DefaultHttpClient();
+				String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&recordmpg=" +  BluetoothChatService.allMPG.toString();
+				HttpGet get = new HttpGet(getURL);
+				HttpResponse responseGet = client.execute(get);
+			} catch (Exception e) {
+				Log.e(TAG, "FAILURE");
+			}
+		}
 		// Check that we're actually connected before trying anything
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
 			Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
