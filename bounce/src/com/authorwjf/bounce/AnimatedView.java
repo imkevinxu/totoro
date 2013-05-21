@@ -2,6 +2,8 @@ package com.authorwjf.bounce;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -78,8 +80,11 @@ public class AnimatedView extends ImageView{
 	private int coinCounter = 0;
 	private double lastCoinCheck = 0;
 	private ArrayList<Double> avgMpgThisDrive = new ArrayList<Double>();
+	private HashMap<String, Integer> recTracker = new HashMap<String, Integer>();
 	
 	public static int totalCoinsWon = 0;
+	public static String recommendedTip = "";
+	public static double avgMpg = 0;
 
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
@@ -223,6 +228,7 @@ public class AnimatedView extends ImageView{
 				scoreNum = mpg;
 			}
 			scoreNum = mpg;
+			avgMpgThisDrive.add(mpg);
 			return 0;
 		}
 		
@@ -325,6 +331,12 @@ public class AnimatedView extends ImageView{
 		if (lastMPG > 0 && (scoreNum - lastMPG < 0) && timeSinceLastRec > 600) {
 			if (rec.equals("")) {
 				rec = getRecommendation();
+				if (recTracker.containsKey(rec)) {
+					int curNumber = recTracker.get(rec);
+					recTracker.put(rec, curNumber++);
+				} else {
+					recTracker.put(rec, 1);
+				}
 				timeSinceLastRec = 0;
 
 				mp1.start();
@@ -399,10 +411,25 @@ public class AnimatedView extends ImageView{
 			flambe = 25;
 		}
 	}
+	
+	private String updateBestTip() {
+	    String bestRec = "";
+	    int maxHits = 0;    
+	    for(String key : recTracker.keySet()) {
+	    	int currentHits = recTracker.get(key);
+	    	if (currentHits > maxHits) {
+	    		bestRec = key;
+	    		maxHits = currentHits;
+	    	}
+	    }
+	    return bestRec;
+	}
 
 	protected void onDraw(Canvas c) {  
 		if (BluetoothChatService.end_game) {
+			recommendedTip = updateBestTip();
 			updateCoins(true);
+			avgMpg = calculateAverageMPG();
 			Activity a = (Activity) mContext;
 			a.setContentView(R.layout.summary);
 		}
