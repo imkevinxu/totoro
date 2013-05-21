@@ -21,5 +21,9 @@
     <string name="insecure_connect">Connect a device - Insecure</string>
     <string name="discoverable">Make discoverable</string>
     <string name="app_id">343797409063510</string>
-    <string name="logo">OmniDrive</string>  
+    <string name="logo">OmniDrive</string>
+    <string name="avg_mpg"/>
+    <string name="total_coins"/>
+    <string name="top_tip"/>
+    <string name="level_progress"/>  
 </resources>

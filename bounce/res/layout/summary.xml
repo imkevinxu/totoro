@@ -3,6 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <RelativeLayout
+        android:layout_width="467dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/top_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/total_coins"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="82dp"
+            android:text="tip" />
+
+        <TextView
+            android:id="@+id/total_coins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/avg_mpg"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="38dp"
+            android:text="coins" />
+
+        <TextView
+            android:id="@+id/avg_mpg"
+            android:layout_width="177dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/total_coins"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="84dp"
+            android:text="mpg" />
+
+        <ProgressBar
+            android:id="@+id/level_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="31dp"
+            android:max="100"
+            android:paddingTop="10px" />
+
+    </RelativeLayout>
 
 </LinearLayout>
