@@ -86,6 +86,12 @@ public class AnimatedView extends ImageView{
 	public static String recommendedTip = "";
 	public static double avgMpg = 0;
 
+	private double currentSpeed = -1;
+	private double speedDeltaTolerance = 100;
+	private final double TOLERANCE_SCALE_DECREASE = 0.999;
+	
+	private final int MAX_TOLERANCE = 100;
+	
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
 		mContext = context;  
@@ -105,6 +111,28 @@ public class AnimatedView extends ImageView{
 	};
 
 	private String getRecommendation()	{
+		
+		String speed = BluetoothChatService.retrieveDatum("speed");
+		if(speed != null)	{
+			double now = Double.parseDouble(speed);
+			double delta = now - currentSpeed;
+			if(currentSpeed < 0)	{
+				delta = 0;
+			}
+			currentSpeed = now;
+			if(delta >= speedDeltaTolerance)	{
+				speedDeltaTolerance = MAX_TOLERANCE;
+				return "Try to avoid flooring the accelerator.";
+			}
+			else if(delta <= -speedDeltaTolerance) {
+				speedDeltaTolerance = MAX_TOLERANCE;
+				return "Try to avoid flooring the brake pedal.";
+			}
+		}
+		
+		return "No recommendation.";
+		
+		/*
 		switch((int)(2))	{
 		case 0: 
 			mp1 = MediaPlayer.create(mContext, R.raw.rec1);
@@ -123,7 +151,7 @@ public class AnimatedView extends ImageView{
 			//return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
 		default:
 			return "No recommendation.";
-		}
+		}*/
 	}
 	
 	/* Updates the player's total number of coins to the database once the drive
