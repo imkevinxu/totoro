@@ -87,6 +87,7 @@ public class AnimatedView extends ImageView{
 		h = new Handler();
 		getURL += Main.fbid;
 		Log.e("FBID", "FBID: " + Main.fbid);
+		updateCoins(false);
 
 
 	} 
@@ -117,6 +118,66 @@ public class AnimatedView extends ImageView{
 			//return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
 		default:
 			return "No recommendation.";
+		}
+	}
+	
+	/* Updates the player's total number of coins to the database once the drive
+	 * has concluded
+	 */
+	
+	private class updateCoinsTask extends AsyncTask<String, Integer, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... params) {
+			try {
+				HttpClient client = new DefaultHttpClient();
+				String url = "http://omnidrive.herokuapp.com/getcoins?coins=" + totalCoinsWon;
+				HttpGet get = new HttpGet(url);
+				HttpResponse responseGet = client.execute(get);
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return 0; 
+		}
+	}
+	
+	/* Gets the initial number of coins from the database.  The total number of coins won
+	 * is updated based on this initial number.
+	 */
+	private class getInitialCoinsTask extends AsyncTask<String, Integer, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... params) {
+			try {
+				HttpClient client = new DefaultHttpClient();
+				String url = "http://omnidrive.herokuapp.com/getcoins";
+				HttpGet get = new HttpGet(url);
+				HttpResponse responseGet = client.execute(get);
+				HttpEntity responseEntity = responseGet.getEntity();
+				String response = EntityUtils.toString(responseEntity);
+				if (!response.equals(null)) {
+					JSONObject currUser;
+					try {
+						currUser = new JSONObject(response);
+						String curCoinsString = currUser.optString("coins");
+						Log.e("FBID", "coins: " + curCoinsString);
+						if(curCoinsString != null) {
+							int initialCoins = Integer.parseInt(curCoinsString);
+							Log.e("FBID", "Coins" + " " + initialCoins);
+							totalCoinsWon += initialCoins;
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return 0; 
 		}
 	}
 
@@ -165,6 +226,14 @@ public class AnimatedView extends ImageView{
 			return 0;
 		}
 		
+	}
+	
+	private void updateCoins(boolean update) {
+		if (update) {
+			(new updateCoinsTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getURL);
+		} else {
+			(new getInitialCoinsTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getURL);
+		}
 	}
 
 	private void setScore() {
@@ -333,6 +402,7 @@ public class AnimatedView extends ImageView{
 
 	protected void onDraw(Canvas c) {  
 		if (BluetoothChatService.end_game) {
+			updateCoins(true);
 			Activity a = (Activity) mContext;
 			a.setContentView(R.layout.summary);
 		}
