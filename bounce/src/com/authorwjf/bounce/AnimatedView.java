@@ -129,7 +129,7 @@ public class AnimatedView extends ImageView{
 				return "Try to avoid flooring the brake pedal.";
 			}
 		}
-		
+		speedDeltaTolerance *= TOLERANCE_SCALE_DECREASE;
 		return "No recommendation.";
 		
 		/*
