@@ -27,10 +27,16 @@ import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.UUID;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -519,27 +525,36 @@ public class BluetoothChatService {
 			double mpg = (710.7 * VSS) / MAFval;
 			return mpg;
 		}
+		
+		private class postDataTask extends AsyncTask<String, Integer, Integer> {
+
+			@Override
+			protected Integer doInBackground(String... params) {
+				try {
+					Log.e("ISITHERE", "HERE");
+					HttpClient client = new DefaultHttpClient();
+					String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&data=" + calculateMPG();
+					
+					/*for(String out: mapValues.keySet()) {
+						getURL += "&" + out + "=" + mapValues.get(out);
+					}*/
+					System.out.println(getURL);
+					mapValues.clear();
+					HttpGet get = new HttpGet(getURL);
+					HttpResponse responseGet = client.execute(get);
+					Log.e("SDF", "Success!!!!!");
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return 0;
+			}
+			
+		}
 
 		private void postData() {
-			Log.e("YESSS", "SUCCESS");
-			AsyncTask.execute(new Runnable() {
-				public void run() {
-					try {
-						HttpClient client = new DefaultHttpClient();
-						String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&highscore=" +  calculateMPG();
-						for(String out: mapValues.keySet()) {
-							getURL += "&" + out + "=" + mapValues.get(out);
-						}
-						System.out.println(getURL);
-						mapValues.clear();
-						HttpGet get = new HttpGet(getURL);
-						HttpResponse responseGet = client.execute(get);
-						System.out.println("Success!!!!!");
-					} catch (Exception e) {
-						Log.e(TAG, "FAILURE");
-					}
-				}
-			});
+			(new postDataTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
 		}
 
 

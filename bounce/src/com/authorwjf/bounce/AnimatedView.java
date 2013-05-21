@@ -1,6 +1,7 @@
 package com.authorwjf.bounce;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -75,6 +76,7 @@ public class AnimatedView extends ImageView{
 
 	private int coinCounter = 0;
 	private double lastCoinCheck = 0;
+	private ArrayList<Double> avgMpgThisDrive = new ArrayList<Double>();
 
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
@@ -142,6 +144,10 @@ public class AnimatedView extends ImageView{
 							//System.out.println("Score num: " + scoreNum);
 							//System.out.println("Last mpg: " + lastMPG);
 							scoreNum = mpg; // scale from 0-50, to 0-100
+							if (scoreNum > 0) {
+								avgMpgThisDrive.add(scoreNum);
+								//Log.e("avg_mpg", avgMpgThisDrive.toString());
+							}
 							
 
 						}
@@ -178,6 +184,14 @@ public class AnimatedView extends ImageView{
 
 	}
 
+	private double calculateAverageMPG() {
+		int sum = 0;
+		for (int i=0; i< avgMpgThisDrive.size(); i++) {
+			sum += i;
+		}
+		return sum / (avgMpgThisDrive.size() + 0.1);
+	}
+
 	private void drawCircles(BitmapDrawable greenCircle, BitmapDrawable grayCircle, Canvas c, double amt) {
 		Paint scorePaint = new Paint();
 		if (scoreNum <=25) {
@@ -211,12 +225,17 @@ public class AnimatedView extends ImageView{
 		}
 
 		//System.out.println(speed);
-		String score = "" + scoreNum;
+
+		//double averageMPG 
+		String score = String.format("%.2g%n", calculateAverageMPG());
+		//String score = String.format("%.2g%n", averageMPG);
+		//String score = "" + scoreNum;
 		winWidth = this.getWidth();
 		winHeight = this.getHeight();
 
 		Rect bounds = new Rect();
 		scorePaint.getTextBounds(score, 0, score.length(), bounds);
+		
 		int scoreX = winWidth/2  - bounds.width()/2 - 15;
 		int scoreY = greenWidth/2 + bounds.height()/2 - 10;
 
