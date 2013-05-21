@@ -78,6 +78,8 @@ public class AnimatedView extends ImageView{
 	private int coinCounter = 0;
 	private double lastCoinCheck = 0;
 	private ArrayList<Double> avgMpgThisDrive = new ArrayList<Double>();
+	
+	public static int totalCoinsWon = 0;
 
 	private double currentSpeed = -1;
 	private double speedDeltaTolerance = 100;
@@ -329,6 +331,7 @@ public class AnimatedView extends ImageView{
 		Context context = mContext;
 		CharSequence text = "Great job!! + " + (int)diff + " coins!";
 		int duration = Toast.LENGTH_LONG;
+		totalCoinsWon += (int)diff;
 
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
