@@ -1,30 +1,20 @@
 package com.authorwjf.bounce;
 
-import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.Window;
+import android.widget.TextView;
 
-import com.authorwjf.bounce.AutomaticQueryThread.ELMTuple;
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.model.GraphUser;
 
 public class Main extends Activity {
 	public static String fbid = null;
@@ -166,7 +156,13 @@ public class Main extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		act = this;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+       /* TextView myTextView=(TextView)findViewById(R.id.avg_mpg);
+        Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/mytruetypefont.ttf");
+        myTextView.setTypeface(typeFace);*/
+		setContentView(R.layout.summary);
+
+		/*act = this;
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		mChatService = new BluetoothChatService(this, mHandler);
 		mapValues = new ConcurrentHashMap<String, String>();
@@ -222,7 +218,7 @@ public class Main extends Activity {
 					});
 				} 
 			}
-		});
+		});*/
 	}
 
 	@Override
