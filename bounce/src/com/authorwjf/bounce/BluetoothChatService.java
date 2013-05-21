@@ -93,7 +93,7 @@ public class BluetoothChatService {
 	
 	private static long lastTime = 0;
 	
-	private static final double KILOMETERS_IN_A_MILE = 1.609344;
+	public static final double KILOMETERS_IN_A_MILE = 1.609344;
 	
 	private static ConcurrentHashMap<String, String> mapValues;
 
