@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.apache.http.HttpResponse;
@@ -74,6 +75,11 @@ public class BluetoothChatService {
 	private int mState;
 	private double MAFval = 0.000001;
 	private double VSS = 0.000001;
+	
+	public static long last_data_collection = 0;
+	public static boolean end_game = false;
+	public static double currentMPG = 0;
+	public static ArrayList<Double> allMPG = new ArrayList<Double>();
 
 	private ConcurrentHashMap<String, String> mapValues;
 
@@ -521,19 +527,26 @@ public class BluetoothChatService {
 		}
 
 		private void postData() {
-			Log.e("YESSS", "SUCCESS");
+			last_data_collection = System.currentTimeMillis();
 			AsyncTask.execute(new Runnable() {
 				public void run() {
 					try {
 						HttpClient client = new DefaultHttpClient();
-						String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&highscore=" +  calculateMPG();
-						for(String out: mapValues.keySet()) {
+						double cur_mpg = calculateMPG();
+						//String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&highscore=" +  cur_mpg;
+						currentMPG = cur_mpg;
+						allMPG.add(currentMPG);
+						/*for(String out: mapValues.keySet()) {
 							getURL += "&" + out + "=" + mapValues.get(out);
 						}
-						System.out.println(getURL);
+						System.out.println(getURL);*/
 						mapValues.clear();
-						HttpGet get = new HttpGet(getURL);
-						HttpResponse responseGet = client.execute(get);
+						/* Dont send MPG every time; wait until a number of values are accumulated and then send them all at once */
+						if (allMPG.size() > 30) {
+							String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&recordmpg=" +  allMPG.toString();
+							HttpGet get = new HttpGet(getURL);
+							HttpResponse responseGet = client.execute(get);
+						}
 						System.out.println("Success!!!!!");
 					} catch (Exception e) {
 						Log.e(TAG, "FAILURE");
