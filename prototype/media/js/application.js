@@ -77,6 +77,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.overview").slideRightIn();
                 }, 400);
@@ -85,6 +86,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.recent").slideRightIn();
                     google.maps.event.trigger(map, 'resize');
@@ -95,6 +97,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.recent").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.economic").slideRightIn();
                 }, 400);
@@ -104,6 +107,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.recent").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.social").slideRightIn();
                 }, 400);
@@ -113,6 +117,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.recent").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.replay").slideRightIn();
                     var c = 0;
@@ -124,6 +129,16 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                           c++;
                           if(c >= ecos.length) clearInterval(interval);
                    }, 50);
+                }, 400);
+
+            } else if ($(clicked).is("#rewards")) {
+                $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.social").slideLeftOut();
+                $("#dashboard.recent").slideLeftOut();
+                $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.replay").slideLeftOut();
+                window.setTimeout(function() {
+                    $("#dashboard.rewards").slideRightIn();
                 }, 400);
 
             }
