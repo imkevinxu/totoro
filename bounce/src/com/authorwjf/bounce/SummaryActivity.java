@@ -2,6 +2,7 @@ package com.authorwjf.bounce;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -9,6 +10,8 @@ public class SummaryActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.summary);
         
         TextView mpgText = (TextView)findViewById(R.id.avg_mpg);

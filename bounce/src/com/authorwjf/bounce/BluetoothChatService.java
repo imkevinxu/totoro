@@ -87,6 +87,14 @@ public class BluetoothChatService {
 	public static double currentMPG = 0;
 	public static ArrayList<Double> allMPG = new ArrayList<Double>();
 
+	private static double averageMPG = 0;
+	private static double milesTraveled = 0;
+	private static double gallonsUsed = 0;
+	
+	private static long lastTime = 0;
+	
+	public static final double KILOMETERS_IN_A_MILE = 1.609344;
+	
 	private static ConcurrentHashMap<String, String> mapValues;
 
 	// Constants that indicate the current connection state
@@ -587,8 +595,23 @@ public class BluetoothChatService {
 			(new postDataTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
 		}
 
-
-
+		private void updateAverageMPG()	{
+			if(!mapValues.containsKey("speed")) return;
+			if(lastTime == 0)	{
+				lastTime = System.currentTimeMillis();
+				return;
+			}
+			double instantMPG = calculateMPG();
+			double travelMiles = Double.parseDouble(mapValues.get("speed")) * (System.currentTimeMillis() - lastTime) / KILOMETERS_IN_A_MILE / 3600 / 1000;
+			double usedGallons = milesTraveled / instantMPG;
+			lastTime = System.currentTimeMillis();
+			milesTraveled += travelMiles;
+			gallonsUsed += usedGallons;
+			if(gallonsUsed != 0)	{
+				averageMPG = milesTraveled / gallonsUsed;
+			}
+		}
+		
 		public void run() {
 			Log.i(TAG, "BEGIN mConnectedThread");
 			byte[] buffer = new byte[1024];
@@ -606,7 +629,11 @@ public class BluetoothChatService {
 							String rest = ln.substring(6).replace(" ", "");
 							long value = new BigInteger(rest, 16).longValue();
 
-							if(header.equals("41 0C")) {
+							if(header.equals("41 04")) {
+								ln = "Load: " + (value*100/255) + " %";
+								mapValues.put("engine load", Long.toString(value*100/255));
+							}
+							else if(header.equals("41 0C")) {
 								ln = "Engine RPM: " + (value / 4) + " rpm";
 								mapValues.put("rpm", Long.toString(value/4));
 							} else if(header.equals("41 0D")) {
@@ -635,6 +662,7 @@ public class BluetoothChatService {
 							} else if(header.equals("41 49")) {
 								ln = "Throttle: " + (value * 100 / 255) + " %";
 								mapValues.put("throttle", Long.toString(value * 100 / 255));
+								updateAverageMPG();
 								postData();
 							}
 						} catch (NumberFormatException ignored) { }

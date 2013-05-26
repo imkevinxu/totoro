@@ -4,51 +4,68 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="467dp"
+   <!--<RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/endscreen"
+        android:gravity="center_vertical"
         android:orientation="vertical" >
+    </RelativeLayout> --> 
 
-        <TextView
-            android:id="@+id/top_tip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/total_coins"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="82dp"
-            android:text="tip" />
-
-        <TextView
-            android:id="@+id/total_coins"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/avg_mpg"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="38dp"
-            android:text="coins" />
-
-        <TextView
-            android:id="@+id/avg_mpg"
-            android:layout_width="177dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/total_coins"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="84dp"
-            android:text="mpg" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|left"
+        android:background="@drawable/endscreen"
+        android:orientation="vertical" >
 
         <ProgressBar
             android:id="@+id/level_progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="31dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/avg_mpg"
             android:max="100"
-            android:paddingTop="10px" />
+            android:paddingTop="10px"
+            android:layout_marginTop="400dp"
+            android:paddingLeft="115px"
+            android:paddingRight="115px"
+            android:progress="25"
+            android:visibility="visible" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/total_coins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/avg_mpg"
+            android:layout_marginLeft="643dp"
+            android:layout_marginTop="220dp"
+            android:layout_toRightOf="@+id/top_tip"
+            android:text="84239"
+            android:textColor="#ffffff"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/avg_mpg"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="175dp"
+            android:text="36.2"
+            android:textColor="#ffd200"
+            android:textSize="100dp" />
+
+        <TextView
+            android:id="@+id/top_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="148dp"
+            android:layout_marginLeft="84dp"
+            android:text="Try to ease up on the throttle if you see the light turning red."
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+
+    </FrameLayout>
 
 </LinearLayout>
