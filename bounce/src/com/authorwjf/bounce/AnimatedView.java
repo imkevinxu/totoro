@@ -91,7 +91,8 @@ public class AnimatedView extends ImageView{
 	private double currentSpeed = -1;
 	private double speedDeltaTolerance = 100;
 	private final double TOLERANCE_SCALE_DECREASE = 0.999;
-
+	private double engineLoadTolerance = 100;
+	
 	private int slowSpeed = 0;
 	private long speedingWarning = 0;
 	
@@ -142,6 +143,12 @@ public class AnimatedView extends ImageView{
 				speedDeltaTolerance = MAX_TOLERANCE;
 				return "Try to avoid flooring the brake pedal.";
 			}
+		}
+		engineLoadTolerance *= TOLERANCE_SCALE_DECREASE;
+		String engineLoad = BluetoothChatService.retrieveDatum("engine load");
+		if(engineLoad != null && Double.parseDouble(engineLoad) >= engineLoadTolerance) {
+			engineLoadTolerance = 100;
+			return "Don't push the engine too hard - avoid sudden changes in speed.";
 		}
 		speedDeltaTolerance *= TOLERANCE_SCALE_DECREASE;
 		return "No recommendation.";
