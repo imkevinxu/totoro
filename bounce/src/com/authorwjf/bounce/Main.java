@@ -4,17 +4,20 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Window;
-import android.widget.TextView;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 
 public class Main extends Activity {
 	public static String fbid = null;
@@ -157,12 +160,9 @@ public class Main extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-       /* TextView myTextView=(TextView)findViewById(R.id.avg_mpg);
-        Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/mytruetypefont.ttf");
-        myTextView.setTypeface(typeFace);*/
-		setContentView(R.layout.summary);
+		//setContentView(R.layout.summary);
 
-		/*act = this;
+		act = this;
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		mChatService = new BluetoothChatService(this, mHandler);
 		mapValues = new ConcurrentHashMap<String, String>();
@@ -218,7 +218,7 @@ public class Main extends Activity {
 					});
 				} 
 			}
-		});*/
+		});
 	}
 
 	@Override

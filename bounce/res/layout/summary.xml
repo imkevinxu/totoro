@@ -26,12 +26,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/avg_mpg"
-            android:max="100"
             android:paddingTop="10px"
             android:layout_marginTop="400dp"
             android:paddingLeft="115px"
             android:paddingRight="115px"
-            android:progress="25"
             android:visibility="visible" />
 
         <TextView
@@ -42,7 +40,6 @@
             android:layout_marginLeft="643dp"
             android:layout_marginTop="220dp"
             android:layout_toRightOf="@+id/top_tip"
-            android:text="84239"
             android:textColor="#ffffff"
             android:textSize="30dp" />
 
@@ -52,7 +49,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginTop="175dp"
-            android:text="36.2"
             android:textColor="#ffd200"
             android:textSize="100dp" />
 
@@ -62,10 +58,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="148dp"
             android:layout_marginLeft="84dp"
-            android:text="Try to ease up on the throttle if you see the light turning red."
             android:textColor="#ffffff"
             android:textSize="18dp" />
-
+        
+        <TextView
+            android:id="@+id/rep_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/avg_mpg"
+            android:layout_marginLeft="643dp"
+            android:layout_marginTop="270dp"
+            android:textColor="#ffffff"
+            android:textSize="30dp" />
+	
     </FrameLayout>
 
 </LinearLayout>

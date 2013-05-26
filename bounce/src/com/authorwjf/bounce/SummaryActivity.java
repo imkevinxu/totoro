@@ -23,6 +23,9 @@ public class SummaryActivity extends Activity {
         TextView coinText = (TextView)findViewById(R.id.total_coins);
         coinText.setText(AnimatedView.totalCoinsWon);
         
+        TextView repText = (TextView)findViewById(R.id.rep_field);
+        repText.setText(AnimatedView.rep);
+        
         ProgressBar progress = (ProgressBar)findViewById(R.id.level_progress);
         progress.setMax(levelUp(AnimatedView.totalCoinsWon));
         progress.setProgress(AnimatedView.totalCoinsWon);
@@ -30,14 +33,14 @@ public class SummaryActivity extends Activity {
     
     private int levelUp(int curCoins) {
     	// level 1
-    	if (curCoins < 500) {
-    		return 500;
-    	} else if (curCoins < 1000) {
-    		return 1000;
-    	} else if (curCoins < 5000) {
-    		return 5000;
-    	} else if (curCoins < 10000) {
-    		return 10000;
+    	if (curCoins < 50000) {
+    		return 50000;
+    	} else if (curCoins < 100000) {
+    		return 100000;
+    	} else if (curCoins < 500000) {
+    		return 500000;
+    	} else if (curCoins < 1000000) {
+    		return 1000000;
     	} else {
     		return 0;
     	}
