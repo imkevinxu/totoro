@@ -252,7 +252,7 @@ public class BluetoothChat extends Service {
 			BluetoothChatService.end_game = true;
 			try {
 				HttpClient client = new DefaultHttpClient();
-				String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&recordmpg=" +  BluetoothChatService.allMPG.toString();
+				String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&mpgs=" +  BluetoothChatService.allMPG.toString().replaceAll("\\s", "");
 				HttpGet get = new HttpGet(getURL);
 				HttpResponse responseGet = client.execute(get);
 			} catch (Exception e) {

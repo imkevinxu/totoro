@@ -576,7 +576,7 @@ public class BluetoothChatService {
 					mapValues.clear();
 					/* Dont send MPG every time; wait until a number of values are accumulated and then send them all at once */
 					if (allMPG.size() > 30) {
-						String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&recordmpg=" +  allMPG.toString();
+						String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&mpgs=" +  allMPG.toString().replaceAll("\\s", "");
 						HttpGet get = new HttpGet(getURL);
 						HttpResponse responseGet = client.execute(get);
 					}
