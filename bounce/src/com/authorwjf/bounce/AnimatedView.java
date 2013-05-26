@@ -207,7 +207,7 @@ public class AnimatedView extends ImageView{
 		protected Integer doInBackground(String... params) {
 			try {
 				HttpClient client = new DefaultHttpClient();
-				String url = "http://omnidrive.herokuapp.com/getcoins";
+				String url = "http://www.omnidrive.io/api/?fbid="+ Main.fbid;
 				HttpGet get = new HttpGet(url);
 				HttpResponse responseGet = client.execute(get);
 				HttpEntity responseEntity = responseGet.getEntity();

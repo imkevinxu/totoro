@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/avg_mpg"
             android:layout_marginLeft="643dp"
-            android:layout_marginTop="270dp"
+            android:layout_marginTop="308dp"
             android:textColor="#ffffff"
             android:textSize="30dp" />
 	
