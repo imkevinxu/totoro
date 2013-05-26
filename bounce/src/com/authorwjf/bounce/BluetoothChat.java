@@ -148,6 +148,7 @@ public class BluetoothChat extends Service {
 					/* Update this */
 					//String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
 					String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + currentUserFBID + "&currentScore=" + currentScore;
+					//String getURL = "http://www.omnidrive.io/api/?fbid=" + currentUserFBID + "&currentScore=" + mpg;
 					System.out.println(getURL);
 					HttpGet get = new HttpGet(getURL);
 					HttpResponse responseGet = client.execute(get);
@@ -251,7 +252,7 @@ public class BluetoothChat extends Service {
 			BluetoothChatService.end_game = true;
 			try {
 				HttpClient client = new DefaultHttpClient();
-				String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&recordmpg=" +  BluetoothChatService.allMPG.toString();
+				String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&recordmpg=" +  BluetoothChatService.allMPG.toString();
 				HttpGet get = new HttpGet(getURL);
 				HttpResponse responseGet = client.execute(get);
 			} catch (Exception e) {
