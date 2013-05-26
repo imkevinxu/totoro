@@ -88,6 +88,9 @@ public class AnimatedView extends ImageView{
 	public static int rep = 0;
 	public static String recommendedTip = "";
 	public static double avgMpg = 0;
+	public static long totalDriveTime = 0;
+	
+	private long startDriveTime = 0;
 
 	private double currentSpeed = -1;
 	private double speedDeltaTolerance = 100;
@@ -106,6 +109,7 @@ public class AnimatedView extends ImageView{
 		getURL += Main.fbid;
 		Log.e("FBID", "FBID: " + Main.fbid);
 		updateCoins(false);
+		startDriveTime = System.currentTimeMillis();
 
 
 	} 
@@ -478,6 +482,9 @@ public class AnimatedView extends ImageView{
 
 	protected void onDraw(Canvas c) {  
 		if (BluetoothChatService.end_game) {
+			totalDriveTime = System.currentTimeMillis() - startDriveTime;
+			// convert to minutes
+			totalDriveTime = totalDriveTime/(1000 * 60);
 			recommendedTip = updateBestTip();
 			updateCoins(true);
 			avgMpg = calculateAverageMPG();
