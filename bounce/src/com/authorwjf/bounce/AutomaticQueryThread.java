@@ -14,6 +14,7 @@ public class AutomaticQueryThread extends Thread {
 	private int counter = 0;
 
 	private static ELMTuple[] englishFields = new ELMTuple[]{
+		new ELMTuple("engine load", "0104"),
 		new ELMTuple("rpm", "010C"),
 		new ELMTuple("speed", "010D"),
 		new ELMTuple("intakeAir", "010F"),

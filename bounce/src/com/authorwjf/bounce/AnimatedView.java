@@ -1,5 +1,7 @@
 package com.authorwjf.bounce;
 
+import static com.authorwjf.bounce.BluetoothChatService.KILOMETERS_IN_A_MILE;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,12 +85,17 @@ public class AnimatedView extends ImageView{
 	private HashMap<String, Integer> recTracker = new HashMap<String, Integer>();
 	
 	public static int totalCoinsWon = 0;
+	public static int rep = 0;
 	public static String recommendedTip = "";
 	public static double avgMpg = 0;
 
 	private double currentSpeed = -1;
 	private double speedDeltaTolerance = 100;
 	private final double TOLERANCE_SCALE_DECREASE = 0.999;
+	private double engineLoadTolerance = 100;
+	
+	private int slowSpeed = 0;
+	private long speedingWarning = 0;
 	
 	private final int MAX_TOLERANCE = 100;
 	
@@ -111,10 +118,19 @@ public class AnimatedView extends ImageView{
 	};
 
 	private String getRecommendation()	{
-		
+		speedingWarning++;
 		String speed = BluetoothChatService.retrieveDatum("speed");
 		if(speed != null)	{
 			double now = Double.parseDouble(speed);
+			if(now > 65 * KILOMETERS_IN_A_MILE && speedingWarning > 100){
+				speedingWarning = 0;
+				return "Try to avoid going too quickly.";
+			}
+			else if(now < 5 * KILOMETERS_IN_A_MILE && ++slowSpeed > 100){
+				slowSpeed = 0;
+				return "Avoid idling your engine.";
+			}
+			slowSpeed = 0;
 			double delta = now - currentSpeed;
 			if(currentSpeed < 0)	{
 				delta = 0;
@@ -128,6 +144,12 @@ public class AnimatedView extends ImageView{
 				speedDeltaTolerance = MAX_TOLERANCE;
 				return "Try to avoid flooring the brake pedal.";
 			}
+		}
+		engineLoadTolerance *= TOLERANCE_SCALE_DECREASE;
+		String engineLoad = BluetoothChatService.retrieveDatum("engine load");
+		if(engineLoad != null && Double.parseDouble(engineLoad) >= engineLoadTolerance) {
+			engineLoadTolerance = 100;
+			return "Don't push the engine too hard - avoid sudden changes in speed.";
 		}
 		speedDeltaTolerance *= TOLERANCE_SCALE_DECREASE;
 		return "No recommendation.";
@@ -413,6 +435,7 @@ public class AnimatedView extends ImageView{
 		CharSequence text = "Great job!! + " + (int)diff + " coins!";
 		int duration = Toast.LENGTH_LONG;
 		totalCoinsWon += (int)diff;
+		rep += (int) diff;
 
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();

@@ -93,7 +93,7 @@ public class BluetoothChatService {
 	
 	private static long lastTime = 0;
 	
-	private static final double KILOMETERS_IN_A_MILE = 1.609344;
+	public static final double KILOMETERS_IN_A_MILE = 1.609344;
 	
 	private static ConcurrentHashMap<String, String> mapValues;
 
@@ -629,7 +629,11 @@ public class BluetoothChatService {
 							String rest = ln.substring(6).replace(" ", "");
 							long value = new BigInteger(rest, 16).longValue();
 
-							if(header.equals("41 0C")) {
+							if(header.equals("41 04")) {
+								ln = "Load: " + (value*100/255) + " %";
+								mapValues.put("engine load", Long.toString(value*100/255));
+							}
+							else if(header.equals("41 0C")) {
 								ln = "Engine RPM: " + (value / 4) + " rpm";
 								mapValues.put("rpm", Long.toString(value/4));
 							} else if(header.equals("41 0D")) {
