@@ -132,7 +132,6 @@ def data(request):
 
 from django.core import serializers
 
-# COINSSS
 # api needs to accept batched json
 
 def api(request):
@@ -144,10 +143,22 @@ def api(request):
             fbid = parameters.pop('fbid')[0]
             fb = FacebookProfile.objects.get(facebook_id=fbid)
             if len(parameters):
+                if "mpgs" in parameters.keys():
+                    mpgs = parameters.pop('mpgs')[0].split(',')
+                    for mpg in mpgs:
+                        d = Drive(fb=fb, mpg=mpg)
+                        d.save()
                 for key, value in parameters.items():
                     setattr(fb, key, value)
                 fb.save()
+            drives = json.loads(serializers.serialize("json", Drive.objects.filter(fb=fb), ensure_ascii=False))
+            real_drives = [d['fields'] for d in drives]
+            for d in real_drives:
+                d.pop('fb')
             serial = json.loads(serializers.serialize("json", [fb], ensure_ascii=False))
+            serial[0]['fields']['average_mpg'] = fb.average_mpg
+            serial[0]['fields']['drives'] = real_drives
+            serial[0]['fields'].pop('access_token')
             results = json.dumps(serial[0]['fields'], ensure_ascii=False)
         except FacebookProfile.DoesNotExist:
             results = json.dumps({'error': 'User not found'}, ensure_ascii=False)
@@ -204,7 +215,7 @@ SUN_INTENSITY_WEIGHTING_FACTOR = 1
 
 # Given a list of values, returns the average value of the function.
 def average_linear_value(list):
-	reduce(lambda x,y:x+y,list)
+    reduce(lambda x,y:x+y,list)
     #return integrate_linear(list) / len(list)
 
 def integrate_quadratic(list):

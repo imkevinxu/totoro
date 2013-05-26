@@ -3,6 +3,8 @@ import json, urllib
 from django.db import models
 from django.contrib.auth.models import User
 
+from prototype_app.models import Drive
+
 class FacebookProfile(models.Model):
     user = models.OneToOneField(User)
     facebook_id = models.BigIntegerField()
@@ -23,3 +25,9 @@ class FacebookProfile(models.Model):
     def get_facebook_profile(self):
         fb_profile = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % self.access_token)
         return json.load(fb_profile)
+
+    def _average_mpg(self):
+        drives = Drive.objects.filter(fb=self)
+        return sum([d.mpg for d in drives]) / len(drives)
+
+    average_mpg = property(_average_mpg)
