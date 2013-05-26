@@ -83,6 +83,7 @@ public class AnimatedView extends ImageView{
 	private HashMap<String, Integer> recTracker = new HashMap<String, Integer>();
 	
 	public static int totalCoinsWon = 0;
+	public static int rep = 0;
 	public static String recommendedTip = "";
 	public static double avgMpg = 0;
 
@@ -413,6 +414,7 @@ public class AnimatedView extends ImageView{
 		CharSequence text = "Great job!! + " + (int)diff + " coins!";
 		int duration = Toast.LENGTH_LONG;
 		totalCoinsWon += (int)diff;
+		rep += (int) diff;
 
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
