@@ -145,11 +145,10 @@ def api(request):
             fb = FacebookProfile.objects.get(facebook_id=fbid)
             if len(parameters):
                 for key, value in parameters.items():
-
-                    print key, value
-            else:
-                serial = json.loads(serializers.serialize("json", [fb], ensure_ascii=False))
-                results = json.dumps(serial[0]['fields'], ensure_ascii=False)
+                    setattr(fb, key, value)
+                fb.save()
+            serial = json.loads(serializers.serialize("json", [fb], ensure_ascii=False))
+            results = json.dumps(serial[0]['fields'], ensure_ascii=False)
         except FacebookProfile.DoesNotExist:
             results = json.dumps({'error': 'User not found'}, ensure_ascii=False)
     return HttpResponse(results, mimetype='application/json')
