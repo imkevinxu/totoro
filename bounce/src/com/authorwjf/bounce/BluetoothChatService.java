@@ -563,11 +563,11 @@ public class BluetoothChatService {
 			@Override
 			protected Integer doInBackground(String... params) {
 				try {
-					last_data_collection = System.currentTimeMillis();
 					HttpClient client = new DefaultHttpClient();
 					double cur_mpg = calculateMPG();
 					//String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&highscore=" +  cur_mpg;
 					currentMPG = cur_mpg;
+					System.out.print("" + cur_mpg);
 					allMPG.add(currentMPG);
 					/*for(String out: mapValues.keySet()) {
 						getURL += "&" + out + "=" + mapValues.get(out);
@@ -577,10 +577,14 @@ public class BluetoothChatService {
 					/* Dont send MPG every time; wait until a number of values are accumulated and then send them all at once */
 					if (allMPG.size() > 30) {
 						String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&mpgs=" +  allMPG.toString().replaceAll("\\s", "");
+						getURL = getURL.replace("[", "");
+						getURL = getURL.replace("]", "");
 						HttpGet get = new HttpGet(getURL);
 						HttpResponse responseGet = client.execute(get);
 					}
-					System.out.println("Success!!!!!");
+					System.out.println("Succesdfdsfsss!!!!!");
+					Log.e("Syste", "WTF updated");
+					last_data_collection = System.currentTimeMillis();
 				} catch (ClientProtocolException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -616,12 +620,26 @@ public class BluetoothChatService {
 			Log.i(TAG, "BEGIN mConnectedThread");
 			byte[] buffer = new byte[1024];
 			int bytes = 0;
+			last_data_collection = System.currentTimeMillis();
 
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
 					// Read from the InputStream
 					String ln = mmInStreamBuf.readLine();
+					if (System.currentTimeMillis() - last_data_collection > 12000) {
+						end_game = true;
+						try {
+							HttpClient client = new DefaultHttpClient();
+							String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&mpgs=" +  allMPG.toString().replaceAll("\\s", "");
+							getURL = getURL.replace("[", "");
+							getURL = getURL.replace("]", "");
+							HttpGet get = new HttpGet(getURL);
+							HttpResponse responseGet = client.execute(get);
+						} catch (Exception e) {
+							Log.e(TAG, "FAILURE");
+						}
+					}
 
 					if(ln.length() > 6) {
 						try {

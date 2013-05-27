@@ -358,9 +358,9 @@ public class AnimatedView extends ImageView{
 		//System.out.println(speed);
 
 		//double averageMPG 
-		String score = String.format("%.2g%n", calculateAverageMPG());
+		//String score = String.format("%.2g%n", calculateAverageMPG());
 		//String score = String.format("%.2g%n", averageMPG);
-		//String score = "" + scoreNum;
+		String score = String.format("%.2g%n", scoreNum);
 		winWidth = this.getWidth();
 		winHeight = this.getHeight();
 

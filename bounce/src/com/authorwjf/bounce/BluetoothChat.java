@@ -247,12 +247,15 @@ public class BluetoothChat extends Service {
 	 * @param message  A string of text to send.
 	 */
 	private void sendMessage(String message) {
+		Log.e("Syste", "trying to sendMessage");
 		System.out.println("trying to sendMessage");
-		if (System.currentTimeMillis() - BluetoothChatService.last_data_collection > 5000) {
+		if (System.currentTimeMillis() - BluetoothChatService.last_data_collection > 2000) {
 			BluetoothChatService.end_game = true;
 			try {
 				HttpClient client = new DefaultHttpClient();
 				String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&mpgs=" +  BluetoothChatService.allMPG.toString().replaceAll("\\s", "");
+				getURL = getURL.replace("[", "");
+				getURL = getURL.replace("]", "");
 				HttpGet get = new HttpGet(getURL);
 				HttpResponse responseGet = client.execute(get);
 			} catch (Exception e) {

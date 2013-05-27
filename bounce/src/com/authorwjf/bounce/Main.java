@@ -189,7 +189,7 @@ public class Main extends Activity {
 						@Override
 						public void onCompleted(GraphUser user, Response response) {
 							if (user != null) {
-								macAddress = "00:0D:18:28:08:C8";
+								macAddress = "00:0D:18:28:04:F4";
 								//macAddress = "00:0D:18:00:7A:BE";
 								fbid = user.getId();  
 
