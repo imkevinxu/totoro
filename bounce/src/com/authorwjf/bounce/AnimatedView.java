@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -481,6 +482,9 @@ public class AnimatedView extends ImageView{
 	}
 
 	protected void onDraw(Canvas c) {  
+		Activity a = (Activity) mContext;
+		Intent k = new Intent(a, SummaryActivity.class);
+		a.startActivity(k);
 		if (BluetoothChatService.end_game) {
 			totalDriveTime = System.currentTimeMillis() - startDriveTime;
 			// convert to minutes
@@ -488,8 +492,10 @@ public class AnimatedView extends ImageView{
 			recommendedTip = updateBestTip();
 			updateCoins(true);
 			avgMpg = calculateAverageMPG();
-			Activity a = (Activity) mContext;
-			a.setContentView(R.layout.summary);
+			/*Activity a = (Activity) mContext;
+			Intent k = new Intent(a.this, SummaryActivity.class);
+			a.startActivity(k);*/
+			//a.setContentView(R.layout.summary);
 		}
 
 		if(++counter % 10 == 0)	{

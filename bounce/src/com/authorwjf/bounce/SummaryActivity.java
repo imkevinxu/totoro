@@ -2,6 +2,7 @@ package com.authorwjf.bounce;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,16 +16,16 @@ public class SummaryActivity extends Activity {
         setContentView(R.layout.summary);
         
         TextView mpgText = (TextView)findViewById(R.id.avg_mpg);
-        mpgText.setText(Double.toString(AnimatedView.avgMpg));
+        mpgText.setText("" + Double.toString(AnimatedView.avgMpg));
         
         TextView recText = (TextView)findViewById(R.id.top_tip);
-        recText.setText(AnimatedView.recommendedTip);
+        recText.setText("" + AnimatedView.recommendedTip);
         
         TextView coinText = (TextView)findViewById(R.id.total_coins);
-        coinText.setText(AnimatedView.totalCoinsWon);
+        coinText.setText("" + AnimatedView.totalCoinsWon);
         
         TextView repText = (TextView)findViewById(R.id.rep_field);
-        repText.setText(AnimatedView.rep);
+        repText.setText("" + AnimatedView.rep);
         
         ProgressBar progress = (ProgressBar)findViewById(R.id.level_progress);
         progress.setMax(levelUp(AnimatedView.totalCoinsWon));
