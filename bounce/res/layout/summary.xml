@@ -75,20 +75,20 @@
 
         <ImageButton
             android:id="@+id/exitButton"
-			android:layout_width="205dp"
+			android:layout_width="210dp"
 			android:layout_height="45dp"
 			android:background="@null"
 			android:scaleType="centerCrop"
-            android:layout_marginLeft="523dp"
+            android:layout_marginLeft="518dp"
             android:layout_marginTop="468dp"
             android:src="@drawable/endbutton" />
 
         <ImageButton
             android:id="@+id/nextButton"
-            android:layout_width="205dp"
+            android:layout_width="210dp"
             android:layout_height="45dp"
             android:background="@null"
-            android:layout_marginLeft="743dp"
+            android:layout_marginLeft="738dp"
             android:layout_marginTop="468dp"
             android:scaleType="centerCrop"
             android:src="@drawable/nextdrive" />
