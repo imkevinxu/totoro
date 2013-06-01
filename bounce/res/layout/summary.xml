@@ -72,10 +72,16 @@
             android:textSize="30dp" />
 
         <ImageButton
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/nextdrive" />
+        
+        <ImageButton
             android:id="@+id/exitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/next_button" />
+            android:src="@drawable/endbutton" />
 	
     </FrameLayout>
 
