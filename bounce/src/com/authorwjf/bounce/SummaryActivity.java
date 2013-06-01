@@ -40,6 +40,7 @@ public class SummaryActivity extends Activity {
             @Override
             public void onClick(View v) {
                moveTaskToBack(true);
+               Log.e("sdf", "here");
                finish();
             }
         });
@@ -48,7 +49,6 @@ public class SummaryActivity extends Activity {
         nextButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		finish();
         		setContentView(R.layout.main);
         	}
         });
