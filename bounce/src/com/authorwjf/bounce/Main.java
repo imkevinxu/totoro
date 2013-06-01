@@ -211,7 +211,10 @@ public class Main extends Activity {
 								}
 								//mChatService.start();
 								loopQuery();
-								setContentView(R.layout.main);
+								//setContentView(R.layout.main);
+								//Activity a = (Activity) mContext;
+								Intent k = new Intent(act, SummaryActivity.class);
+								act.startActivity(k);
 
 							}
 						}

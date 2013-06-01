@@ -3,7 +3,11 @@ package com.authorwjf.bounce;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,6 +34,16 @@ public class SummaryActivity extends Activity {
         ProgressBar progress = (ProgressBar)findViewById(R.id.level_progress);
         progress.setMax(levelUp(AnimatedView.totalCoinsWon));
         progress.setProgress(AnimatedView.totalCoinsWon);
+        
+        ImageButton exitButton = (ImageButton) findViewById(R.id.exitButton);
+        exitButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               moveTaskToBack(true);
+               finish();
+            }
+        });
+        
     }
     
     private int levelUp(int curCoins) {

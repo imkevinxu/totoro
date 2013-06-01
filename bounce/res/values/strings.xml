@@ -26,4 +26,5 @@
     <string name="total_coins"/>
     <string name="top_tip"/>
     <string name="level_progress"/>  
+    <string name="exitButton"/>
 </resources>
