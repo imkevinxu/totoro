@@ -44,6 +44,15 @@ public class SummaryActivity extends Activity {
             }
         });
         
+        ImageButton nextButton = (ImageButton) findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		finish();
+        		setContentView(R.layout.main);
+        	}
+        });
+        
     }
     
     private int levelUp(int curCoins) {
