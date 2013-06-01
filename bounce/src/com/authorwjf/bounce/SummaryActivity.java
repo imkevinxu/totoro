@@ -44,6 +44,8 @@ public class SummaryActivity extends Activity {
             }
         });
         
+        
+        
     }
     
     private int levelUp(int curCoins) {
