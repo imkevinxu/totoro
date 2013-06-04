@@ -95,7 +95,7 @@ public class AnimatedView extends ImageView{
 
 	private double currentSpeed = -1;
 	private double speedDeltaTolerance = 100;
-	private final double TOLERANCE_SCALE_DECREASE = 0.999;
+	private final double TOLERANCE_SCALE_DECREASE = 0.9;
 	private double engineLoadTolerance = 100;
 	
 	private int slowSpeed = 0;
