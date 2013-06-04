@@ -1,12 +1,12 @@
 package com.authorwjf.bounce;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,14 +33,14 @@ public class SummaryActivity extends Activity {
         
         ProgressBar progress = (ProgressBar)findViewById(R.id.level_progress);
         progress.setMax(levelUp(AnimatedView.totalCoinsWon));
-        progress.setProgress(AnimatedView.totalCoinsWon);
+        progress.setProgress(25000);
+
         
         ImageButton exitButton = (ImageButton) findViewById(R.id.exitButton);
         exitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                moveTaskToBack(true);
-               Log.e("sdf", "here");
                finish();
             }
         });
@@ -53,7 +53,14 @@ public class SummaryActivity extends Activity {
         	}
         });
 
-        
+        ImageButton viewButton = (ImageButton) findViewById(R.id.viewButton);
+        viewButton.setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.omnidrive.io"));
+        		startActivity(browserIntent);
+        	}
+        });
     }
     
     private int levelUp(int curCoins) {
