@@ -30,7 +30,7 @@
 
         </LinearLayout>
 
-        <com.facebook.widget.LoginButton
+          <com.facebook.widget.LoginButton
             android:id="@+id/login_button"
                         android:paddingRight="10dp"
             
@@ -42,7 +42,7 @@
             android:paddingBottom="15dp"
             android:paddingTop="15dp" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/logo"
             android:layout_width="335dp"
             android:layout_height="wrap_content"
@@ -51,7 +51,16 @@
             android:ems="10"
             android:text="@string/logo"
             android:textColor="#E74C3C"
-            android:textSize="70sp" />
+            android:textSize="70sp" />-->
+        
+        <ImageView
+            android:id="@+id/title"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="120dp"
+            android:ems="10"
+            android:src="@drawable/title"/>
 
     </FrameLayout>
 
