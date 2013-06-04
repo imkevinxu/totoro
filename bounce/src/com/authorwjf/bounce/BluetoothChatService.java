@@ -90,11 +90,11 @@ public class BluetoothChatService {
 	private static double averageMPG = 0;
 	private static double milesTraveled = 0;
 	private static double gallonsUsed = 0;
-	
+
 	private static long lastTime = 0;
-	
+
 	public static final double KILOMETERS_IN_A_MILE = 1.609344;
-	
+
 	private static ConcurrentHashMap<String, String> mapValues;
 
 	// Constants that indicate the current connection state
@@ -120,9 +120,7 @@ public class BluetoothChatService {
 	 * @param state  An integer defining the current connection state
 	 */
 	private synchronized void setState(int state) {
-		if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
 		mState = state;
-
 		// Give the new state to the Handler so the UI Activity can update
 		//	mHandler.obtainMessage(BluetoothChat.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
 	}
@@ -137,13 +135,17 @@ public class BluetoothChatService {
 	 * Start the chat service. Specifically start AcceptThread to begin a
 	 * session in listening (server) mode. Called by the Activity onResume() */
 	public synchronized void start() {
-		if (D) Log.d(TAG, "start");
-
 		// Cancel any thread attempting to make a connection
-		if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+		if (mConnectThread != null) {
+			mConnectThread.cancel();
+			mConnectThread = null;
+		}
 
 		// Cancel any thread currently running a connection
-		if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
+		if (mConnectedThread != null) {
+			mConnectedThread.cancel(); 
+			mConnectedThread = null;
+		}
 
 		setState(STATE_LISTEN);
 
@@ -152,13 +154,8 @@ public class BluetoothChatService {
 			mSecureAcceptThread = new AcceptThread(true);
 			mSecureAcceptThread.start();
 		}*/
-		Log.e("Cheese", "is it null???");
 		if (mInsecureAcceptThread == null) {
-			Log.e("Cheese", "YES IT IS");
-
 			mInsecureAcceptThread.start();
-		} else {
-			Log.e("Cheese", "NO IT'S NOT..");
 		}
 	}
 
@@ -168,35 +165,24 @@ public class BluetoothChatService {
 	 * @param secure Socket Security type - Secure (true) , Insecure (false)
 	 */
 	public synchronized void connect(BluetoothDevice device, boolean secure) {
-		if (D) Log.d(TAG, "connect to: " + device); 
-
 		// Cancel any thread attempting to make a connection
 		if (mState == STATE_CONNECTING) {
-			Log.e("Debug", "STATE IS CONNECTING");
 			if (mConnectThread != null) {
-				Log.e("Debug", "STATE IS CONNECTING CANCEL");
 				mConnectThread.cancel();
-				Log.e("Debug", "STATE IS CONNECTING NULL");
 				mConnectThread = null;
 			}
 		}
 
 		// Cancel any thread currently running a connection
 		if (mConnectedThread != null) {
-			Log.e("Debug", "STATE IS CONNECTED THREAD CANCEL");
 			mConnectedThread.cancel();
-			Log.e("Debug", "STATE IS CONNECTED THREAD NULL");
 			mConnectedThread = null;
 		}
 
 		// Start the thread to connect with the given device
 
-		Log.e("Debug", "STATE IS MAKE THREAD");
-
 		mConnectThread = new ConnectThread(device, secure);
-		Log.e("Debug", "STATE IS MAKE THREAD START");
 		mConnectThread.start();
-		Log.e("Debug", "STATE IS MAKE THREAD SET STATE CONNECTING");
 		setState(STATE_CONNECTING);
 	}
 
@@ -207,44 +193,30 @@ public class BluetoothChatService {
 	 */
 	public synchronized void connected(BluetoothSocket socket, BluetoothDevice
 			device, final String socketType) {
-		if (D) Log.d(TAG, "connected, Socket Type:" + socketType);
-
 		// Cancel the thread that completed the connection
 		if (mConnectThread != null) {
-			Log.e("Debug", "cancel thread");
 			mConnectThread.cancel();
-			Log.e("Debug", "cancel thread null");
 			mConnectThread = null;
 		}
 
 		// Cancel any thread currently running a connection
 		if (mConnectedThread != null) {
-			Log.e("Debug", "cancel connected thread");
 			mConnectedThread.cancel(); 
-			Log.e("Debug", "cancel connected thread null");
 			mConnectedThread = null;
 		}
 
 		// Cancel the accept thread because we only want to connect to one device
 		if (mSecureAcceptThread != null) {
-			Log.e("Debug", "cancel accept thread");
 			mSecureAcceptThread.cancel();
-			Log.e("Debug", "cancel accept thread null");
 			mSecureAcceptThread = null;
 		}
 		if (mInsecureAcceptThread != null) {
-			Log.e("Debug", "cancel insecure thread");
 			mInsecureAcceptThread.cancel();
-			Log.e("Debug", "cancel insecure thread null");
 			mInsecureAcceptThread = null;
 		}
 
-		Log.e("Debug", "make new thread");
-
 		// Start the thread to manage the connection and perform transmissions
 		mConnectedThread = new ConnectedThread(socket, socketType);
-
-		Log.e("Debug", "start connect thread");
 
 		mConnectedThread.start();
 
@@ -381,8 +353,6 @@ public class BluetoothChatService {
 		}
 
 		public void run() {
-			if (D) Log.d("Cheese", "Socket Type: " + mSocketType +
-					"BEGIN mAcceptThread" + this);
 			setName("AcceptThread" + mSocketType);
 
 			BluetoothSocket socket = null;
@@ -392,9 +362,7 @@ public class BluetoothChatService {
 				try {
 					// This is a blocking call and will only return on a
 					// successful connection or an exception
-					Log.e("Cheese", "BEGIN BLOCKING CALL");
 					socket = mmServerSocket.accept();
-					Log.e("Cheese", "END BLOCKING CALL");
 				} catch (IOException e) {
 					Log.e(TAG, "Socket Type: " + mSocketType + "accept() failed", e);
 					break;
@@ -407,7 +375,6 @@ public class BluetoothChatService {
 						case STATE_LISTEN:
 						case STATE_CONNECTING:
 							// Situation normal. Start the connected thread.
-							Log.e("Cheese", "GOING INTO CONNECTED!!!!!!!!");
 							connected(socket, socket.getRemoteDevice(),
 									mSocketType);
 							break;
@@ -424,13 +391,9 @@ public class BluetoothChatService {
 					}
 				}
 			}
-			Log.e("Cheese", "mAcceptThread");
-			if (D) Log.i("Cheese", "END mAcceptThread, socket Type: " + mSocketType);
-
 		}
 
 		public void cancel() {
-			if (D) Log.d(TAG, "Socket Type" + mSocketType + "cancel " + this);
 			try {
 				mmServerSocket.close();
 			} catch (IOException e) {
@@ -452,13 +415,9 @@ public class BluetoothChatService {
 
 		public ConnectThread(BluetoothDevice device, boolean secure) {
 
-			Log.e("CONNECT THREAD MAKE", "inside constructor");
-
 			mmDevice = device;
 			BluetoothSocket tmp = null;
 			mSocketType = secure ? "Secure" : "Insecure";
-
-			Log.e("CONNECT THREAD MAKE", "right before try-catch " + mSocketType);
 
 			// Get a BluetoothSocket for a connection with the
 			// given BluetoothDevice
@@ -481,7 +440,6 @@ public class BluetoothChatService {
 		}
 
 		public void run() {
-			Log.i(TAG, "BEGIN mConnectThread SocketType:" + mSocketType);
 			setName("ConnectThread" + mSocketType);
 
 			// Always cancel discovery because it will slow down a connection
@@ -535,7 +493,6 @@ public class BluetoothChatService {
 		private final BufferedReader mmInStreamBuf;
 
 		public ConnectedThread(BluetoothSocket socket, String socketType) {
-			Log.d(TAG, "create ConnectedThread: " + socketType);
 			mmSocket = socket;
 			InputStream tmpIn = null;
 			OutputStream tmpOut = null;
@@ -567,7 +524,6 @@ public class BluetoothChatService {
 					double cur_mpg = calculateMPG();
 					//String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&highscore=" +  cur_mpg;
 					currentMPG = cur_mpg;
-					System.out.print("" + cur_mpg);
 					allMPG.add(currentMPG);
 					/*for(String out: mapValues.keySet()) {
 						getURL += "&" + out + "=" + mapValues.get(out);
@@ -582,8 +538,6 @@ public class BluetoothChatService {
 						HttpGet get = new HttpGet(getURL);
 						HttpResponse responseGet = client.execute(get);
 					}
-					System.out.println("Succesdfdsfsss!!!!!");
-					Log.e("Syste", "WTF updated");
 					last_data_collection = System.currentTimeMillis();
 				} catch (ClientProtocolException e) {
 					e.printStackTrace();
@@ -615,9 +569,8 @@ public class BluetoothChatService {
 				averageMPG = milesTraveled / gallonsUsed;
 			}
 		}
-		
+
 		public void run() {
-			Log.i(TAG, "BEGIN mConnectedThread");
 			byte[] buffer = new byte[1024];
 			int bytes = 0;
 			last_data_collection = System.currentTimeMillis();
@@ -650,8 +603,7 @@ public class BluetoothChatService {
 							if(header.equals("41 04")) {
 								ln = "Load: " + (value*100/255) + " %";
 								mapValues.put("engine load", Long.toString(value*100/255));
-							}
-							else if(header.equals("41 0C")) {
+							} else if(header.equals("41 0C")) {
 								ln = "Engine RPM: " + (value / 4) + " rpm";
 								mapValues.put("rpm", Long.toString(value/4));
 							} else if(header.equals("41 0D")) {
