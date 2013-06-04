@@ -56,12 +56,12 @@ public class Main extends Activity {
 			this.elmName = elmName;
 		}
 	}
-	
+
 	private double calculateMPG() {
 		double mpg = (710.7 * VSS) / MAFval;
 		return mpg;
 	}
-	
+
 	private final Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -110,19 +110,15 @@ public class Main extends Activity {
 	private void loopQuery() {
 		AsyncTask.execute(new Runnable() {
 			public void run() {
-				Log.e(TAG, "LOOPING");
 				while(true)	{
-					Log.e("LOOP", "LET US QUERY!");
 					long lastTime = System.currentTimeMillis();
 					for(ELMTuple tuple: englishFields){
-						Log.e("MESSAGE", tuple.elmName);
 						sendMessage(tuple.elmName);
 						try {
 							Thread.sleep(800);
 						}
 						catch(Exception ignored) {
 							Log.e("LOOP", "ELM SEND EXCEPTION");
-
 						}
 					}
 					long query = 1000 - (System.currentTimeMillis() - lastTime);
@@ -138,28 +134,25 @@ public class Main extends Activity {
 			}
 		});
 	}
-    @Override
-    public synchronized void onResume() {
-        super.onResume();
-        // Performing this check in onResume() covers the case in which BT was
-        // not enabled during onStart(), so we were paused to enable it...
-        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-        Log.e("Cheese", "RESUMING");
-        if (mChatService != null) {
-            // Only if the state is STATE_NONE, do we know that we haven't started already
-        	Log.e("Cheese", "service is not null");
-            if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
-              // Start the Bluetooth chat services
-            	Log.e("Cheese", "Starting mChatService");
-             // mChatService.start();
-            }
-        }
-    }
+	@Override
+	public synchronized void onResume() {
+		super.onResume();
+		// Performing this check in onResume() covers the case in which BT was
+		// not enabled during onStart(), so we were paused to enable it...
+		// onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
+		if (mChatService != null) {
+			// Only if the state is STATE_NONE, do we know that we haven't started already
+			if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
+				// Start the Bluetooth chat services
+				// mChatService.start();
+			}
+		}
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		//setContentView(R.layout.summary);
 
 		act = this;
@@ -201,10 +194,7 @@ public class Main extends Activity {
 									throw new RuntimeException("This thing is null");
 								}
 								// Attempt to connect to the device
-								Log.e(TAG, "ABOUT TO CONNECT");
-
 								mChatService.connect(device, false);
-								Log.e(TAG, "POST-CONNECTION");
 								try	{
 									Thread.sleep(500);
 								} catch(Exception ignored) {
@@ -215,7 +205,6 @@ public class Main extends Activity {
 								//Activity a = (Activity) mContext;
 								Intent k = new Intent(act, SummaryActivity.class);
 								act.startActivity(k);
-
 							}
 						}
 					});
