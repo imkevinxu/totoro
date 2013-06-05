@@ -70,7 +70,7 @@
             android:textSize="30dp" />
 
         <ImageButton 
-          	android:id="@+id/exitButton"
+          	android:id="@+id/viewButton"
 			android:layout_width="210dp"
 			android:layout_height="45dp"
 			android:background="@null"

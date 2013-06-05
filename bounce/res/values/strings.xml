@@ -27,4 +27,5 @@
     <string name="top_tip"/>
     <string name="level_progress"/>  
     <string name="exitButton"/>
+    <string name="view_button"/>
 </resources>
