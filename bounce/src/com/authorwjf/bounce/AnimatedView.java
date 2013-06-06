@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -49,11 +50,11 @@ public class AnimatedView extends ImageView{
 	private double amount = scoreNum/100;
 	private int scoreDec = 0;
 	private String getURL = "http://omnidrive.herokuapp.com/getscore?fbid="; 
-	
+
 	private int timeSinceLastRec = 0;
 
 	private long counter = 0;
-	
+
 	String rec = "";
 	int recCountup = 0;
 	int status = 0;
@@ -83,29 +84,32 @@ public class AnimatedView extends ImageView{
 	private double lastCoinCheck = 0;
 	private ArrayList<Double> avgMpgThisDrive = new ArrayList<Double>();
 	private HashMap<String, Integer> recTracker = new HashMap<String, Integer>();
-	
+
 	public static int totalCoinsWon = 0;
+	public static int rep = 0;
 	public static String recommendedTip = "";
 	public static double avgMpg = 0;
+	public static long totalDriveTime = 0;
+
+	private long startDriveTime = 0;
 
 	private double currentSpeed = -1;
 	private double speedDeltaTolerance = 100;
-	private final double TOLERANCE_SCALE_DECREASE = 0.999;
+	private final double TOLERANCE_SCALE_DECREASE = 0.9;
+	private double engineLoadTolerance = 100;
 
 	private int slowSpeed = 0;
 	private long speedingWarning = 0;
-	
+
 	private final int MAX_TOLERANCE = 100;
-	
+
 	public AnimatedView(Context context, AttributeSet attrs)  {  
 		super(context, attrs);  
 		mContext = context;  
 		h = new Handler();
 		getURL += Main.fbid;
-		Log.e("FBID", "FBID: " + Main.fbid);
 		updateCoins(false);
-
-
+		startDriveTime = System.currentTimeMillis();
 	} 
 
 	private Runnable r = new Runnable() {
@@ -143,9 +147,15 @@ public class AnimatedView extends ImageView{
 				return "Try to avoid flooring the brake pedal.";
 			}
 		}
+		engineLoadTolerance *= TOLERANCE_SCALE_DECREASE;
+		String engineLoad = BluetoothChatService.retrieveDatum("engine load");
+		if(engineLoad != null && Double.parseDouble(engineLoad) >= engineLoadTolerance) {
+			engineLoadTolerance = 100;
+			return "Don't push the engine too hard - avoid sudden changes in speed.";
+		}
 		speedDeltaTolerance *= TOLERANCE_SCALE_DECREASE;
 		return "No recommendation.";
-		
+
 		/*
 		switch((int)(2))	{
 		case 0: 
@@ -167,11 +177,11 @@ public class AnimatedView extends ImageView{
 			return "No recommendation.";
 		}*/
 	}
-	
+
 	/* Updates the player's total number of coins to the database once the drive
 	 * has concluded
 	 */
-	
+
 	private class updateCoinsTask extends AsyncTask<String, Integer, Integer> {
 
 		@Override
@@ -189,7 +199,7 @@ public class AnimatedView extends ImageView{
 			return 0; 
 		}
 	}
-	
+
 	/* Gets the initial number of coins from the database.  The total number of coins won
 	 * is updated based on this initial number.
 	 */
@@ -199,7 +209,7 @@ public class AnimatedView extends ImageView{
 		protected Integer doInBackground(String... params) {
 			try {
 				HttpClient client = new DefaultHttpClient();
-				String url = "http://omnidrive.herokuapp.com/getcoins";
+				String url = "http://www.omnidrive.io/api/?fbid="+ Main.fbid;
 				HttpGet get = new HttpGet(url);
 				HttpResponse responseGet = client.execute(get);
 				HttpEntity responseEntity = responseGet.getEntity();
@@ -209,10 +219,8 @@ public class AnimatedView extends ImageView{
 					try {
 						currUser = new JSONObject(response);
 						String curCoinsString = currUser.optString("coins");
-						Log.e("FBID", "coins: " + curCoinsString);
 						if(curCoinsString != null) {
 							int initialCoins = Integer.parseInt(curCoinsString);
-							Log.e("FBID", "Coins" + " " + initialCoins);
 							totalCoinsWon += initialCoins;
 						}
 					} catch (JSONException e) {
@@ -273,9 +281,9 @@ public class AnimatedView extends ImageView{
 			avgMpgThisDrive.add(mpg);
 			return 0;
 		}
-		
+
 	}
-	
+
 	private void updateCoins(boolean update) {
 		if (update) {
 			(new updateCoinsTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getURL);
@@ -285,7 +293,7 @@ public class AnimatedView extends ImageView{
 	}
 
 	private void setScore() {
-		
+
 		(new setScoreTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getURL);
 	}
 
@@ -346,15 +354,15 @@ public class AnimatedView extends ImageView{
 		//System.out.println(speed);
 
 		//double averageMPG 
-		String score = String.format("%.2g%n", calculateAverageMPG());
+		//String score = String.format("%.2g%n", calculateAverageMPG());
 		//String score = String.format("%.2g%n", averageMPG);
-		//String score = "" + scoreNum;
+		String score = String.format("%.2g%n", scoreNum);
 		winWidth = this.getWidth();
 		winHeight = this.getHeight();
 
 		Rect bounds = new Rect();
 		scorePaint.getTextBounds(score, 0, score.length(), bounds);
-		
+
 		int scoreX = winWidth/2  - bounds.width()/2 - 15;
 		int scoreY = greenWidth/2 + bounds.height()/2 - 10;
 
@@ -427,11 +435,12 @@ public class AnimatedView extends ImageView{
 		CharSequence text = "Great job!! + " + (int)diff + " coins!";
 		int duration = Toast.LENGTH_LONG;
 		totalCoinsWon += (int)diff;
+		rep += (int) diff;
 
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
 	}
-	
+
 	/* Adjust flambe speed around a mean of 15.  Note: The speed of the droplet descent isn't changed.
 	 * Only the amount of time between droplets is changed. The higher this amount of time, the "slower"
 	 * the droplets, and the more your score is improving at the moment. */
@@ -453,33 +462,41 @@ public class AnimatedView extends ImageView{
 			flambe = 25;
 		}
 	}
-	
+
 	private String updateBestTip() {
-	    String bestRec = "";
-	    int maxHits = 0;    
-	    for(String key : recTracker.keySet()) {
-	    	int currentHits = recTracker.get(key);
-	    	if (currentHits > maxHits) {
-	    		bestRec = key;
-	    		maxHits = currentHits;
-	    	}
-	    }
-	    return bestRec;
+		String bestRec = "";
+		int maxHits = 0;    
+		for(String key : recTracker.keySet()) {
+			int currentHits = recTracker.get(key);
+			if (currentHits > maxHits) {
+				bestRec = key;
+				maxHits = currentHits;
+			}
+		}
+		return bestRec;
 	}
 
 	protected void onDraw(Canvas c) {  
+		Activity a = (Activity) mContext;
+		Intent k = new Intent(a, SummaryActivity.class);
+		a.startActivity(k);
 		if (BluetoothChatService.end_game) {
+			totalDriveTime = System.currentTimeMillis() - startDriveTime;
+			// convert to minutes
+			totalDriveTime = totalDriveTime/(1000 * 60);
 			recommendedTip = updateBestTip();
 			updateCoins(true);
 			avgMpg = calculateAverageMPG();
-			Activity a = (Activity) mContext;
-			a.setContentView(R.layout.summary);
+			/*Activity a = (Activity) mContext;
+			Intent k = new Intent(a.this, SummaryActivity.class);
+			a.startActivity(k);*/
+			//a.setContentView(R.layout.summary);
 		}
 
 		if(++counter % 10 == 0)	{
 			drawRecommendation(c, new Paint());
 		}
-		
+
 		if (greenCircle == null) {
 			greenCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.darkcircle1);
 			grayCircle = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.graycircle);

@@ -102,12 +102,7 @@ public class BluetoothChat extends Service {
 
 	@Override
 	public void onCreate() {
-		if(D) Log.e(TAG, "+++ ON CREATE +++");
-
 		super.onCreate();
-
-
-		System.out.println("bluetooth created");
 
 		// Get local Bluetooth adapter
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -148,7 +143,7 @@ public class BluetoothChat extends Service {
 					/* Update this */
 					//String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
 					String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + currentUserFBID + "&currentScore=" + currentScore;
-					System.out.println(getURL);
+					//String getURL = "http://www.omnidrive.io/api/?fbid=" + currentUserFBID + "&currentScore=" + mpg;
 					HttpGet get = new HttpGet(getURL);
 					HttpResponse responseGet = client.execute(get);
 
@@ -161,7 +156,6 @@ public class BluetoothChat extends Service {
 	}
 
 	public void onStart() {
-		if(D) Log.e(TAG, "++ ON START ++");
 		// If BT is not on, request that it be enabled.
 		// setupChat() will then be called during onActivityResult
 		if (!mBluetoothAdapter.isEnabled()) {
@@ -173,50 +167,33 @@ public class BluetoothChat extends Service {
 	}
 
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.i("STARTTTINGGG", "Received Start ID " + startId + ": " + intent);
 		return START_STICKY;
 	}
 
 
 	private void setupChat() {
-		Log.d(TAG, "setupChat()");
-
 		// Initialize the array adapter for the conversation thread
 		mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
-
-		Log.e("SETUP_CHAT", "ADAPTER");
 
 		// Initialize the BluetoothChatService to perform bluetooth connections
 		mChatService = new BluetoothChatService(this, mHandler);
 
-		Log.e("SETUP_CHAT", "CHAT SERVICE");
-
 		// Initialize the buffer for outgoing messages
 		mOutStringBuffer = new StringBuffer("");
 
-		Log.e("SETUP_CHAT", "BUFFER");
-
 		BluetoothAdapter myAdapter = BluetoothAdapter.getDefaultAdapter();
-
-		Log.e("SETUP_CHAT", "MY_ADAPTER");
 
 		BluetoothDevice remoteDevice = myAdapter.getRemoteDevice(Main.macAddress);
 		
-		Log.e("SETUP_CHAT", "REMOTE_DEVICE");
-		
 		try	{
 			BluetoothSocket btSocket = remoteDevice.createRfcommSocketToServiceRecord(BluetoothChatService.MY_UUID_INSECURE);
-			Log.e("SETUP_CHAT", "SOCKET");
 			btSocket.connect();
-			Log.e("SETUP_CHAT", "SOCKET_CONNECT");
 		}
 		catch(IOException exc)	{
 			System.out.println("Error connecting");
 			stopSelf();
 		}
-		Log.e("AQT", "STARTING THREAD");
 		new AutomaticQueryThread(mSendButton, this).start();
-		Log.e("AQT", "THREAD STARTED");
 	}
 
 	@Override
@@ -224,11 +201,9 @@ public class BluetoothChat extends Service {
 		super.onDestroy();
 		// Stop the Bluetooth chat services
 		if (mChatService != null) mChatService.stop();
-		if(D) Log.e(TAG, "--- ON DESTROY ---");
 	}
 
 	private void ensureDiscoverable() {
-		if(D) Log.d(TAG, "ensure discoverable");
 		if (mBluetoothAdapter.getScanMode() !=
 				BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
 			Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -246,12 +221,13 @@ public class BluetoothChat extends Service {
 	 * @param message  A string of text to send.
 	 */
 	private void sendMessage(String message) {
-		System.out.println("trying to sendMessage");
-		if (System.currentTimeMillis() - BluetoothChatService.last_data_collection > 5000) {
+		if (System.currentTimeMillis() - BluetoothChatService.last_data_collection > 2000) {
 			BluetoothChatService.end_game = true;
 			try {
 				HttpClient client = new DefaultHttpClient();
-				String getURL = "http://omnidrive.herokuapp.com/data?fbid=" + Main.fbid + "&recordmpg=" +  BluetoothChatService.allMPG.toString();
+				String getURL = "http://www.omnidrive.io/api/?fbid=" + Main.fbid + "&mpgs=" +  BluetoothChatService.allMPG.toString().replaceAll("\\s", "");
+				getURL = getURL.replace("[", "");
+				getURL = getURL.replace("]", "");
 				HttpGet get = new HttpGet(getURL);
 				HttpResponse responseGet = client.execute(get);
 			} catch (Exception e) {
@@ -316,7 +292,6 @@ public class BluetoothChat extends Service {
 				String message = view.getText().toString();
 				sendMessage(message);
 			}
-			if(D) Log.i(TAG, "END onEditorAction");
 			return true;
 		}
 	};
@@ -327,7 +302,6 @@ public class BluetoothChat extends Service {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MESSAGE_STATE_CHANGE:
-				if(D) Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
 				switch (msg.arg1) {
 				case BluetoothChatService.STATE_CONNECTED:
 					mConversationArrayAdapter.clear();
@@ -366,7 +340,6 @@ public class BluetoothChat extends Service {
 	};
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(D) Log.d(TAG, "onActivityResult " + resultCode);
 		switch (requestCode) {
 		case REQUEST_CONNECT_DEVICE_SECURE:
 			// When DeviceListActivity returns with a device to connect
@@ -387,7 +360,6 @@ public class BluetoothChat extends Service {
 				setupChat();
 			} else {
 				// User did not enable Bluetooth or an error occurred
-				Log.d(TAG, "BT not enabled");
 				Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
 			}
 		}

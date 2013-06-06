@@ -1,5 +1,14 @@
 <resources>
 
     <style name="AppTheme" parent="android:Theme.Light" />
+    
+
+        <style name="CustomProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+          <item name="android:indeterminateOnly">false</item>
+          <item name="android:progressDrawable">@drawable/progressbar</item>
+          <item name="android:minHeight">20dip</item>
+          <item name="android:maxHeight">25dip</item>
+        </style>       
+
 
 </resources>

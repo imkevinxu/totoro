@@ -3,7 +3,7 @@
     <string name="app_name">Bounce</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">Bounce</string>
+    <string name="title_activity_main">OmniDrive</string>
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>
     <string name="button_scan">Scan for devices</string>
@@ -26,4 +26,6 @@
     <string name="total_coins"/>
     <string name="top_tip"/>
     <string name="level_progress"/>  
+    <string name="exitButton"/>
+    <string name="view_button"/>
 </resources>
