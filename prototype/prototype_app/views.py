@@ -38,6 +38,8 @@ def home(request):
 def analytics(request):
     # facebook_profile = request.user.get_profile().get_facebook_profile()
     facebook_profile = {'id': "1374900452", "name": "Kevin Xu", "username": "imkevinxu"}
+    drives = Drive.objects.all()
+    len_drives = len(drives)
     return render_to_response('analytics.html', locals(), context_instance=RequestContext(request))
 
 #@login_required

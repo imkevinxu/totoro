@@ -38,11 +38,43 @@
             <br>
             <h1>Mobile Analytics</h1>
             <h2>Total Users - 5</h2>
-            <h2>Total Drives - 8</h2>
+            <h2>Total Drives - {{len_drives}}</h2>
+            {% for d in drives %}
+                <li>{{d.mpg}} - {{d.timestamp}}</li>
+                {% endfor %}
 
         </div>
     </div>
 </div>
+
+
+
+{% endblock %}
+
+
+{% block javascript %}
+
+
+    <script type="text/javascript">
+
+var data = {
+    labels : ["January","February","March","April","May","June","July"],
+    datasets : [
+        {
+            fillColor : "rgba(220,220,220,0.5)",
+            strokeColor : "rgba(220,220,220,1)",
+            data : [65,59,90,81,56,55,40]
+        },
+        {
+            fillColor : "rgba(151,187,205,0.5)",
+            strokeColor : "rgba(151,187,205,1)",
+            data : [28,48,40,19,96,27,100]
+        }
+    ]
+}
+
+    </script>
+
 
 
 
