@@ -42,7 +42,7 @@ def analytics(request):
     len_drives = len(drives)
     return render_to_response('analytics.html', locals(), context_instance=RequestContext(request))
 
-#@login_required
+@login_required
 def dashboard(request):
     ecoscore = [e['ecoScore'] for e in log['trips']]
     totals = [e['currentSpeed'] for e in log['trips']]
@@ -68,21 +68,21 @@ def dashboard(request):
     # Change over time charts (output is a list)
 
     #engine_rev_data is a tuple: (timestamp, number of revs/min)
-    engine_rev_data = graph_engine_rpm(facebook_profile['id'], 'engine_rpm', start_time, end_time)
+    # engine_rev_data = graph_engine_rpm(facebook_profile['id'], 'engine_rpm', start_time, end_time)
 
     #throttle_position_data is a tuple: (timestamp, position of throttle)
-    throttle_position_data = graph_throttle(facebook_profile['id'], 'pedal_force', start_time, end_time)
+    # throttle_position_data = graph_throttle(facebook_profile['id'], 'pedal_force', start_time, end_time)
 
     # Using util scoring functions
 
     # Scores how much your engine idles (0 - 100)
-    engine_idle_score = util_views.score_idling(get_list(facebook_profile['id'], 'engine_rpm', start_time, end_time))
-    pedal_score = get_average(facebook_profile['id'], 'pedal_force', start_time, end_time)
+    # engine_idle_score = util_views.score_idling(get_list(facebook_profile['id'], 'engine_rpm', start_time, end_time))
+    # pedal_score = get_average(facebook_profile['id'], 'pedal_force', start_time, end_time)
 
     # Scores how much you 'think ahead', e.g. pressing the throttle ahead of a hill
-    think_ahead_score = util_views.score_thinking_ahead(
-        get_list(facebook_profile['id'], 'pedal_force', start_time, end_time),
-        get_list(facebook_profile['id'], 'altitude', start_time, end_time))
+    # think_ahead_score = util_views.score_thinking_ahead(
+        # get_list(facebook_profile['id'], 'pedal_force', start_time, end_time),
+        # get_list(facebook_profile['id'], 'altitude', start_time, end_time))
 
     # data from the last trip
     last_trip = get_last_trip(facebook_profile['id'], start_time, end_time)

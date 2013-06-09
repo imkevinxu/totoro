@@ -43,9 +43,9 @@ $(document).ready(function() {
     });
 
     // Disable link click not scroll top
-    $("a[href='#']").click(function() {
-        return false
-    });
+    // $("a[href='#']").click(function() {
+    //     return false
+    // });
 
 
     // $(".score").countTo({

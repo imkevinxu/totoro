@@ -30,9 +30,9 @@
 <div id="sidebar">
     <ul>
         <a href="#overview"><li class="active" id="overview">Overview</li></a>
-        <a href="#recent"><li id="recent">Recent</li></a>
-        <a href="#replay"><li id="replay">Replay</li></a>
-        <a href="#economic"><li id="economic">Economic</li></a>
+        {# <a href="#recent"><li id="recent">Recent</li></a> #}
+        {# <a href="#replay"><li id="replay">Replay</li></a> #}
+        {# <a href="#economic"><li id="economic">Economic</li></a> #}
         <a href="#social"><li id="social">Social</li></a>
         <a href="#rewards"><li id="rewards">Rewards</li></a>
     </ul>
@@ -115,43 +115,9 @@
         </div>
     </div>
 
-
-    <div id="scores">
-        <div class="row header">
-            <div class="span4">
-                <h2>&#9733;&nbsp;&nbsp;&nbsp;SPECIAL SCORES</h2>
-            </div>
-            <div class="span5 offset2" style="text-align: right">
-                <h2 style="color:rgba(255, 255, 255, 0.7)">Calculated by Nick Wu</h2>
-            </div>
-        </div>
-        <div class="row data">
-            <div class="half">
-                <h2>Engine Idle Score <a href="#" data-toggle="tooltip" title="Your score is higher if you avoid engine idling">?</a></h2>
-                <h3><span>{{engine_idle_score}}</span></h3>
-                <div class="donut donut-big">
-                    <div class="donut-arrow" data-percentage="{{engine_idle_score}}"></div>
-                </div>
-            </div>
-            <div class="half">
-                <h2>Pedal Score <a href="#" data-toggle="tooltip" title="Your score is higher if you avoid pushing down on the pedal too hard">?</a></h2>
-                <h3><span>{{pedal_score}}</span></h3>
-                <div class="donut donut-big">
-                    <div class="donut-arrow" data-percentage="{{pedal_score}}"></div>
-                </div>
-            </div>
-            <div class="half">
-                <h2>Think Ahead Score <a href="#" data-toggle="tooltip" title="Your score is higher if you avoid accelerating on inclines">?</a></h2>
-                <h3><span>{{think_ahead_score|round(2, 'floor')}}</span></h3>
-                <div class="donut donut-big">
-                    <div class="donut-arrow" data-percentage="{{think_ahead_score}}"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
-<div id="dashboard" class="container recent">
+{# <div id="dashboard" class="container recent">
 
     <div id="latest_trip">
         <div class="row header">
@@ -179,9 +145,9 @@
     </div>
 
     <div id="map-canvas"></div>
-</div>
+</div> #}
 
-<div id="dashboard" class="container economic">
+{# <div id="dashboard" class="container economic">
 
     <div id="eco-score">
         <div class="row header">
@@ -204,7 +170,7 @@
             <canvas id="myChart" width="940" height="400"></canvas>
         </div>
     </div>
-</div>
+</div> #}
 
 
 
@@ -283,7 +249,7 @@
   </div>
 </div>
 
-<div id="dashboard" class="container replay">
+{# <div id="dashboard" class="container replay">
 
        <div class="row">
         <div class="span8">
@@ -326,7 +292,7 @@
         </div>
     </div>
 
-</div>
+</div> #}
 
 <div id="dashboard" class="container rewards">
 
