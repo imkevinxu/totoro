@@ -22,6 +22,7 @@ from utils import views as util_views
 from datetime import datetime
 
 import csv, random, time
+from math import sqrt
 
 try:
     import json
@@ -79,7 +80,6 @@ def dashboard(request):
     recent_secs = recent_trip_length.seconds%60
     total_miles = recent_trip_length.seconds * 30.0/60.0/60.0
     graph_times = [d.timestamp.strftime('%H:%M') for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
-    from math import sqrt
     if len(graph_times) > 0:
         graph_times = [graph_times[i] for i in xrange(0, len(graph_times), int(sqrt(len(graph_times))))]
     else:
@@ -127,13 +127,12 @@ def dashboard(request):
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))
 
-from random import random
 
 def dummydata(request):
     fb = request.user.get_profile()
     drives = Drive.objects.all()
     for d in drives:
-        if random() < 0.75:
+        if random.random() < 0.05:
             d.fb.add(fb)
             d.save()
     return redirect('/dashboard')

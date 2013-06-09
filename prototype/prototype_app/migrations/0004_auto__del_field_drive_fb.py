@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.delete_column(u'prototype_app_drive', 'fb_id')
 
         # Adding M2M table for field fb on 'Drive'
-        m2m_table_name = db.shorten_name(u'prototype_app_drive_fb')
+        m2m_table_name = u'prototype_app_drive_fb'
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('drive', models.ForeignKey(orm[u'prototype_app.drive'], null=False)),
@@ -26,7 +26,7 @@ class Migration(SchemaMigration):
         # User chose to not deal with backwards NULL issues for 'Drive.fb'
         raise RuntimeError("Cannot reverse this migration. 'Drive.fb' and its values cannot be restored.")
         # Removing M2M table for field fb on 'Drive'
-        db.delete_table(db.shorten_name(u'prototype_app_drive_fb'))
+        db.delete_table(u'prototype_app_drive_fb')
 
 
     models = {
