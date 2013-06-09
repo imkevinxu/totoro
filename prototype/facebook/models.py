@@ -30,6 +30,7 @@ class FacebookProfile(models.Model):
 
     def _average_mpg(self):
         drives = Drive.objects.filter(fb=self)
+        if len(drives) == 0: return 0
         return sum([d.mpg for d in drives]) / len(drives)
 
     average_mpg = property(_average_mpg)

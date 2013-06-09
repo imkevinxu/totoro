@@ -65,6 +65,7 @@ def dashboard(request):
     # avg_mpg = get_average(facebook_profile['id'], 'mpg', start_time, end_time)
     # avg_altitude = get_average(facebook_profile['id'], 'altitude', start_time, end_time)
     all_drives = Drive.objects.filter(fb=fb)
+    if not len(all_drives): all_drives = [Drive(mpg=0, timestamp=datetime.today())]
     all_mpg = [d.mpg for d in all_drives]
     high_mpg = max(all_mpg)
     low_mpg = min(all_mpg)
@@ -77,7 +78,10 @@ def dashboard(request):
     recent_secs = recent_trip_length.seconds%60
     total_miles = recent_trip_length.seconds * 30.0/60.0/60.0
     recent_avg_mpg_list = [d.mpg for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
-    recent_avg_mpg = sum(recent_avg_mpg_list) / len(recent_avg_mpg_list)
+    if len(recent_avg_mpg_list):
+        recent_avg_mpg = sum(recent_avg_mpg_list) / len(recent_avg_mpg_list)
+    else:
+        recent_avg_mpg = 0
 
     # Change over time charts (output is a list)
 
@@ -104,7 +108,7 @@ def dashboard(request):
     # last_trip_duration = ("%d" % (last_trip[1].seconds/3600), "%d" % (last_trip[1].seconds%3600/60))
     # last_trip_fuel = last_trip[2]
 
-    friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'username' : user.get_facebook_profile()['username'], 'first_name' : user.get_facebook_profile()['name'], 'highscore' : user.highscore } for user in FacebookProfile.objects.all() if 'error' not in user.get_facebook_profile()]
+    friends = [user for user in FacebookProfile.objects.all() if 'error' not in user.get_facebook_profile()]
 
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))

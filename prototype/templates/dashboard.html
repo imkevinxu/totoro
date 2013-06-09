@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="row data">
-                    <h2><span class="score">{{(fb.average_mpg / 55 * 100)|int}}</span></h2>
+                    <h2><span class="score">{%if high_mpg==0%}0{%else%}{{(fb.average_mpg / high_mpg * 100)|int}}{%endif%}</span></h2>
                 </div>
             </div>
         </div>
@@ -95,21 +95,21 @@
                 <h2>Average MPG</h2>
                 <h3><span>{{"{0:.2f}".format(fb.average_mpg)}} <small>mpg</small></span></h3>
                 <div class="donut donut-big">
-                    <div class="donut-arrow" data-percentage="{{fb.average_mpg / 55 * 100}}"></div>
+                    <div class="donut-arrow" data-percentage="{%if high_mpg==0%}0{%else%}{{fb.average_mpg / high_mpg * 100}}{%endif%}"></div>
                 </div>
             </div>
             <div class="half">
                 <h2>Lowest MPG</h2>
                 <h3><span>{{"{0:.2f}".format(low_mpg)}} <small>mpg</small></span></h3>
                 <div class="donut donut-big">
-                    <div class="donut-arrow" data-percentage="{{low_mpg / 55 * 100}}"></div>
+                    <div class="donut-arrow" data-percentage="{%if high_mpg==0%}0{%else%}{{low_mpg / high_mpg * 100}}{%endif%}"></div>
                 </div>
             </div>
             <div class="half">
                 <h2>Highest MPG</h2>
                 <h3><span>{{"{0:.2f}".format(high_mpg)}} <small>mpg</small></span></h3>
                 <div class="donut donut-big">
-                    <div class="donut-arrow" data-percentage="{{high_mpg / 55 * 100}}"></div>
+                    <div class="donut-arrow" data-percentage="{%if high_mpg==0%}0{%else%}{{high_mpg / high_mpg * 100}}{%endif%}"></div>
                 </div>
             </div>
         </div>
@@ -195,20 +195,21 @@
             {# <div class="span5"></div> #}
         </div>
         {% for f in friends|sort(attribute='highscore', reverse=True) %}
+            {% set profile = f.get_facebook_profile() %}
             <div class="row data">
                 <div class="span1">
                     <div class="number"><span>{{loop.index}}</span></div>
                 </div>
                 <div class="span4">
-                    <img src="http://graph.facebook.com/{{ f.username }}/picture" />
-                    <h3 class="name">{{ f.first_name }}</h3>
+                    <img src="http://graph.facebook.com/{{ profile.username }}/picture" />
+                    <h3 class="name">{{ profile.name }}</h3>
                 </div>
                 <div class="span3">
-                    <h3>{{f.highscore|floatformat}}</h3>
+                    <h3>{% if f.average_mpg == 0 %}Demo Mode{% else %}{%if high_mpg==0%}0{%else%}{{(f.average_mpg / high_mpg * 100)|floatformat}}{%endif%}{% endif %}</h3>
                 </div>
                 <div class="span3"></div>
                 <div class="span2">
-                    {% if f.first_name != facebook_profile.name %}
+                    {% if profile.name != facebook_profile.name %}
                         <a href="#myModal" role="button" class="btn" data-toggle="modal">Challenge</a>
                     {% endif %}
                 </div>
@@ -368,7 +369,7 @@
 
 
 
-<script type="text/javascript"
+<!--script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=false">
     </script>
     <script type="text/javascript">
@@ -388,7 +389,7 @@
       var ecos = {{ecoscore}};
       var totals = {{totals}};
       var fuels = {{fuels}};
-    </script>
+    </script-->
 
 
 
