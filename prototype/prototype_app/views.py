@@ -149,7 +149,7 @@ def challenge(request):
         fb = request.user.get_profile()
         challengee = FacebookProfile.objects.get(facebook_id=request.POST['challengee'])
         bet = request.POST['bet']
-        c = Challenge(challenger=fb, challengee=challengee, bet=bet)
+        c = Challenge(challenger=fb, challengee=challengee, bet=bet, complete=0)
         c.save()
         fb.coins = fb.coins - int(bet)
         fb.save()
