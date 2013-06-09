@@ -47,6 +47,9 @@ $(document).ready(function() {
     //     return false
     // });
 
+    $("#dummydata a").click(function() {
+        $("#dummydata .hidden").removeClass("hidden");
+    });
 
     $(".score").each(function(){
         $(this).countTo({
