@@ -62,8 +62,11 @@ def dashboard(request):
 
     # Averages (output is a number)
     avg_speed = get_average(facebook_profile['id'], 'vehicle_speed', start_time, end_time)
-    avg_mpg = get_average(facebook_profile['id'], 'mpg', start_time, end_time)
-    avg_altitude = get_average(facebook_profile['id'], 'altitude', start_time, end_time)
+    # avg_mpg = get_average(facebook_profile['id'], 'mpg', start_time, end_time)
+    # avg_altitude = get_average(facebook_profile['id'], 'altitude', start_time, end_time)
+    all_drives = Drive.objects.filter(fb=fb)
+    all_mpg = [d.mpg for d in all_drives]
+    print all_mpg
 
     # Change over time charts (output is a list)
 
