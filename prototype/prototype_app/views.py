@@ -71,7 +71,6 @@ def dashboard(request):
     high_mpg = max(all_mpg)
     low_mpg = min(all_mpg)
     all_times = [d.timestamp for d in all_drives]
-    all_times_formatted = [d.strftime('%m/%d/%Y') for d in all_times]
     recent_time = max(all_times)
     start_of_recent_trip = min([d.timestamp for d in all_drives if d.timestamp.date() == recent_time.date()])
     recent_trip_length = recent_time - start_of_recent_trip
@@ -79,6 +78,12 @@ def dashboard(request):
     recent_mins = (recent_trip_length.seconds//60)%60
     recent_secs = recent_trip_length.seconds%60
     total_miles = recent_trip_length.seconds * 30.0/60.0/60.0
+    graph_times = [d.timestamp.strftime('%H:%M') for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
+    from math import sqrt
+    graph_times = [graph_times[i] for i in xrange(0, len(graph_times), int(sqrt(len(graph_times))))]
+    graph_mpgs = [d.mpg for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
+    graph_mpgs = [graph_mpgs[i] for i in xrange(0, len(graph_mpgs), int(sqrt(len(graph_times))))]
+
     recent_avg_mpg_list = [d.mpg for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
     if len(recent_avg_mpg_list):
         recent_avg_mpg = sum(recent_avg_mpg_list) / len(recent_avg_mpg_list)

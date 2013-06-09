@@ -127,10 +127,10 @@
 
     <div id="graph">
         <div class="row header">
-            <div class="span4">
-                <h2>MPG OVER TIME</h2>
+            <div class="span5">
+                <h2>RECENT MPG OVER TIME</h2>
             </div>
-            <div class="span5 offset2" style="text-align: right">
+            <div class="span5 offset1" style="text-align: right">
                 <h2 style="color:rgba(255, 255, 255, 0.7)">{{fb.created_at.strftime('%m/%d/%Y')}} - {{today.strftime('%m/%d/%Y')}}</h2>
             </div>
         </div>
@@ -394,14 +394,14 @@
 <script>
 
     var data = {
-        labels : {{all_times_formatted}},
+        labels : {{graph_times|safe}},
         datasets : [
             {
                 fillColor : "rgba(155, 89, 182, 0.5)",
                 strokeColor : "#8e44ad",
                 pointColor : "#8e44ad",
                 pointStrokeColor : "#fff",
-                data : {{all_mpg}},
+                data : {{graph_mpgs|safe}},
             }
         ]
     }
