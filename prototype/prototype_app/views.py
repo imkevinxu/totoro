@@ -70,10 +70,14 @@ def dashboard(request):
     low_mpg = min(all_mpg)
     all_times = [d.timestamp for d in all_drives]
     recent_time = max(all_times)
-    recent_trip_length = recent_time - min([d.timestamp for d in all_drives if d.timestamp.date() == recent_time.date()])
+    start_of_recent_trip = min([d.timestamp for d in all_drives if d.timestamp.date() == recent_time.date()])
+    recent_trip_length = recent_time - start_of_recent_trip
     recent_hours = recent_trip_length.seconds//3600
     recent_mins = (recent_trip_length.seconds//60)%60
     recent_secs = recent_trip_length.seconds%60
+    total_miles = recent_trip_length.seconds * 30.0/60.0/60.0
+    recent_avg_mpg_list = [d.mpg for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
+    recent_avg_mpg = sum(recent_avg_mpg_list) / len(recent_avg_mpg_list)
 
     # Change over time charts (output is a list)
 

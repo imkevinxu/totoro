@@ -54,11 +54,11 @@
                 <div class="row data">
                     <div class="half">
                         <h2>Average MPG</h2>
-                        <h3><span>32.12 <small>mpg</small></span></h3>
+                        <h3><span>{{"{0:.2f}".format(recent_avg_mpg)}} <small>mpg</small></span></h3>
                     </div>
                     <div class="half">
                         <h2>Total Miles</h2>
-                        <h3><span class="">42.31 <small>miles</small></span></h3>
+                        <h3><span class="">{{"{0:.2f}".format(total_miles)}} <small>miles</small></span></h3>
                     </div>
                     <div class="half">
                         <h2>Trip Length</h2>
@@ -93,21 +93,21 @@
         <div class="row data">
             <div class="half">
                 <h2>Average MPG</h2>
-                <h3><span>{{fb.average_mpg}} <small>mpg</small></span></h3>
+                <h3><span>{{"{0:.2f}".format(fb.average_mpg)}} <small>mpg</small></span></h3>
                 <div class="donut donut-big">
                     <div class="donut-arrow" data-percentage="{{fb.average_mpg / 55 * 100}}"></div>
                 </div>
             </div>
             <div class="half">
                 <h2>Lowest MPG</h2>
-                <h3><span>{{low_mpg}} <small>mpg</small></span></h3>
+                <h3><span>{{"{0:.2f}".format(low_mpg)}} <small>mpg</small></span></h3>
                 <div class="donut donut-big">
                     <div class="donut-arrow" data-percentage="{{low_mpg / 55 * 100}}"></div>
                 </div>
             </div>
             <div class="half">
                 <h2>Highest MPG</h2>
-                <h3><span>{{high_mpg}} <small>mpg</small></span></h3>
+                <h3><span>{{"{0:.2f}".format(high_mpg)}} <small>mpg</small></span></h3>
                 <div class="donut donut-big">
                     <div class="donut-arrow" data-percentage="{{high_mpg / 55 * 100}}"></div>
                 </div>
