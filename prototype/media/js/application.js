@@ -48,11 +48,13 @@ $(document).ready(function() {
     // });
 
 
-    // $(".score").countTo({
-    //     "interval": 100,
-    //     "startNumber": 0,
-    //     "endNumber": $(self).text(),
-    // });
+    $(".score").each(function(){
+        $(this).countTo({
+        "interval": 30,
+        "startNumber": 0,
+        "endNumber": $(this).text(),
+        });
+    });
 
     // $('.donut-arrow').trigger('updatePercentage', 0);
     // $('.donut-arrow').eachtrigger('updatePercentage', $(this).data('percentage'));

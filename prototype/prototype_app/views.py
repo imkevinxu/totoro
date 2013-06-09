@@ -44,20 +44,20 @@ def analytics(request):
 
 @login_required
 def dashboard(request):
-    ecoscore = [e['ecoScore'] for e in log['trips']]
-    totals = [e['currentSpeed'] for e in log['trips']]
-    fuels = [e['fuelUsage'] for e in log['trips']]
+    # ecoscore = [e['ecoScore'] for e in log['trips']]
+    # totals = [e['currentSpeed'] for e in log['trips']]
+    # fuels = [e['fuelUsage'] for e in log['trips']]
 
     facebook_profile = request.user.get_profile().get_facebook_profile()
     fb = request.user.get_profile()
     # facebook_profile = {'id': "1374900452", "name": "Kevin Xu", "username": "imkevinxu"}
     # match_user_profile(facebook_profile['id'])
     #read_csv()
-    if len(DriveData.objects.all()) == 0:
-        read_csv()
+    # if len(DriveData.objects.all()) == 0:
+        # read_csv()
     #dates hard coded for now
-    start_time = datetime.strptime('Thu Feb 28 23:13:32 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
-    end_time = datetime.strptime('Thu Feb 28 23:25:39 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
+    # start_time = datetime.strptime('Thu Feb 28 23:13:32 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
+    # end_time = datetime.strptime('Thu Feb 28 23:25:39 PST 2013', '%a %b %d %H:%M:%S %Z %Y')
     today = datetime.today()
 
     # Averages (output is a number)
@@ -70,6 +70,10 @@ def dashboard(request):
     low_mpg = min(all_mpg)
     all_times = [d.timestamp for d in all_drives]
     recent_time = max(all_times)
+    recent_trip_length = recent_time - min([d.timestamp for d in all_drives if d.timestamp.date() == recent_time.date()])
+    recent_hours = recent_trip_length.seconds//3600
+    recent_mins = (recent_trip_length.seconds//60)%60
+    recent_secs = recent_trip_length.seconds%60
 
     # Change over time charts (output is a list)
 
@@ -91,10 +95,10 @@ def dashboard(request):
         # get_list(facebook_profile['id'], 'altitude', start_time, end_time))
 
     # data from the last trip
-    last_trip = get_last_trip(facebook_profile['id'], start_time, end_time)
-    last_trip_date = last_trip[0]
-    last_trip_duration = ("%d" % (last_trip[1].seconds/3600), "%d" % (last_trip[1].seconds%3600/60))
-    last_trip_fuel = last_trip[2]
+    # last_trip = get_last_trip(facebook_profile['id'], start_time, end_time)
+    # last_trip_date = last_trip[0]
+    # last_trip_duration = ("%d" % (last_trip[1].seconds/3600), "%d" % (last_trip[1].seconds%3600/60))
+    # last_trip_fuel = last_trip[2]
 
     friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'username' : user.get_facebook_profile()['username'], 'first_name' : user.get_facebook_profile()['name'], 'highscore' : user.highscore } for user in FacebookProfile.objects.all() if 'error' not in user.get_facebook_profile()]
 

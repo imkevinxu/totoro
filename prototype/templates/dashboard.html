@@ -53,16 +53,16 @@
                 </div>
                 <div class="row data">
                     <div class="half">
+                        <h2>Average MPG</h2>
+                        <h3><span>32.12 <small>mpg</small></span></h3>
+                    </div>
+                    <div class="half">
                         <h2>Total Miles</h2>
-                        <h3><span class="score">42.31 <small>miles</small></span></h3>
+                        <h3><span class="">42.31 <small>miles</small></span></h3>
                     </div>
                     <div class="half">
                         <h2>Trip Length</h2>
-                        <h3><span>50 <small>min</small> 10 <small>sec</small></span></h3>
-                    </div>
-                    <div class="half">
-                        <h2>Fuel Used</h2>
-                        <h3><span>32.12 <small>gal</small></span></h3>
+                        <h3><span>{% if recent_hours > 0 %}{{recent_hours}} <small>hrs</small> {% endif %}{{recent_mins}} <small>mins</small> {{recent_secs}} <small>secs</small></span></h3>
                     </div>
                 </div>
             </div>
