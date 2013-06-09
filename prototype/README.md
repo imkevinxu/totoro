@@ -5,7 +5,10 @@ Auto-generated from [Kevin Xu](https://github.com/imkevinxu)'s [Django Project B
 
 ### Development Team
 
-* Kevin Xu <kevin@imkevinxu.com>
+* Kevin Xu <kevinx@stanford.edu>
+* Jessica Liu <jliu12@stanford.edu>
+* Angela Yeung <ayyyeung@stanford.edu>
+* Nick Wu <huaiyu.wu2014@stanford.edu>
 
 ## Getting Started
 
