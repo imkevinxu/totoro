@@ -19,6 +19,7 @@
             </div>
             <div class="span4 offset6 last">
                 <span class="brand">{{ facebook_profile.name }}
+                    <small class="coins" style="font-size: 20px; color:#999"> {{fb.coins}} Coins</small>
                     <img src="http://graph.facebook.com/{{ facebook_profile.username }}/picture" />
                 </span>
             </div>
@@ -221,7 +222,9 @@
             <div class="span3">
                 <h3>Ecoscore</h3>
             </div>
-            {# <div class="span5"></div> #}
+            <div class="span2">
+                <h3>Coins</h3>
+            </div>
         </div>
         {% for f in friends|sort(attribute='average_mpg', reverse=True) %}
             {% set profile = f.get_facebook_profile() %}
@@ -236,8 +239,10 @@
                 <div class="span3">
                     <h3>{% if f.average_mpg == 0 %}Demo Mode{% else %}{%if high_mpg==0%}0{%else%}{{(f.average_mpg / high_mpg * 100)|floatformat}}{%endif%}{% endif %}</h3>
                 </div>
-                <div class="span3"></div>
                 <div class="span2">
+                    <h3>{{f.coins}}</h3>
+                </div>
+                <div class="span1">
                     {% if profile.name != facebook_profile.name %}
                         <a href="#myModal" role="button" class="btn" data-toggle="modal">Challenge</a>
                     {% endif %}
@@ -254,15 +259,21 @@
     <h3 id="myModalLabel">How many coins would you like to bet?</h3>
   </div>
   <div class="modal-body">
+    {%if fb.coins > 0%}
     <form action="">
 
         <input type="number" placeholder="10">
 
     </form>
+    {%else%}
+        <h3 style="font-weight:300">Sorry, it seems you do not have any coins. Please download the app here.</h3>
+    {%endif%}
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-success">Challenge</button>
+    {%if fb.coins > 0%}
+        <button class="btn btn-success">Challenge</button>
+    {%endif%}
   </div>
 </div>
 
