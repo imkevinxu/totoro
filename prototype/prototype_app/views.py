@@ -50,6 +50,7 @@ def dashboard(request):
 
 
     facebook_profile = request.user.get_profile().get_facebook_profile()
+    fb = request.user.get_profile()
     # facebook_profile = {'id': "1374900452", "name": "Kevin Xu", "username": "imkevinxu"}
     # match_user_profile(facebook_profile['id'])
     #read_csv()
@@ -89,7 +90,7 @@ def dashboard(request):
     last_trip_duration = ("%d" % (last_trip[1].seconds/3600), "%d" % (last_trip[1].seconds%3600/60))
     last_trip_fuel = last_trip[2]
 
-    friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'username' : user.get_facebook_profile()['username'], 'first_name' : user.get_facebook_profile()['name'], 'highscore' : user.highscore } for user in FacebookProfile.objects.all()]
+    friends = [{ 'fbid' : user.get_facebook_profile()['id'], 'username' : user.get_facebook_profile()['username'], 'first_name' : user.get_facebook_profile()['name'], 'highscore' : user.highscore } for user in FacebookProfile.objects.all() if 'error' not in user.get_facebook_profile()]
 
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))

@@ -228,7 +228,7 @@
             </div>
             {# <div class="span5"></div> #}
         </div>
-        {% for f in friends %}
+        {% for f in friends|sort(attribute='highscore', reverse=True) %}
             <div class="row data">
                 <div class="span1">
                     <div class="number"><span>{{loop.index}}</span></div>
@@ -255,15 +255,31 @@
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">What would you like to do?</h3>
+    <h3 id="myModalLabel">How many coins would you like to bet?</h3>
   </div>
-{#   <div class="modal-body">
-    <p>One fine body…</p>
-  </div> #}
+  <div class="modal-body">
+    <form action="">
+
+        <input type="number" placeholder="10">
+
+    </form>
+  </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Throw Banana</button>
-    <button class="btn btn-warning">Challenge</button>
+    <button class="btn btn-success">Challenge</button>
+  </div>
+</div>
+
+<div id="redeemModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="redeemModalLabel">Redeeming Gift Card</h3>
+  </div>
+  <div class="modal-body">
+    <p>Please email kevin@imkevinxu.com to redeem your gift card.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
   </div>
 </div>
 
@@ -322,17 +338,54 @@
                         <h2>REWARDS</h2>
                     </div>
                     <div class="span2 offset6">
-                        <h2 style="color:rgba(255, 255, 255, 0.7)">500 Points</h2>
+                        <h2 style="color:rgba(255, 255, 255, 0.7); text-align: right">{{fb.coins}} Coins</h2>
+                    </div>
+                </div>
+
+                <div class="row header">
+                    <div class="span4">
+                        <h3 style="font-weight: 300">Prize</h3>
+                    </div>
+                    <div class="span3">
+                        <h3 style="font-weight: 300">Coins to redeem</h3>
+                    </div>
+                    {# <div class="span5"></div> #}
+                </div>
+                <div class="row data">
+                    <div class="span4">
+                        <h2>$5 Gift Card</h2>
+                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt=""></h2>
+                    </div>
+                    <div class="span3">
+                        <h2>50 Coins</h2>
+                    </div>
+                    <div class="span2" style="padding-top: 20px">
+                        <a href="#redeemModal" role="button" class="btn" data-toggle="modal">Redeem</a>
                     </div>
                 </div>
                 <div class="row data">
-                    <center>
-                        <h2>$5 Gas Card</h2>
-                        <h3><img src="{{ MEDIA_URL }}images/giftcard.jpg" alt=""></h3>
-                        <br><br>
-                        <h2>$10 Gas Card</h2>
-                        <h3><img src="{{ MEDIA_URL }}images/giftcard.jpg" alt=""></h3>
-                    </center>
+                    <div class="span4">
+                        <h2>$10 Gift Card</h2>
+                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt=""></h2>
+                    </div>
+                    <div class="span3">
+                        <h2>90 Coins</h2>
+                    </div>
+                    <div class="span2" style="padding-top: 20px">
+                        <a href="#redeemModal" role="button" class="btn" data-toggle="modal">Redeem</a>
+                    </div>
+                </div>
+                <div class="row data">
+                    <div class="span4">
+                        <h2>$20 Gift Card</h2>
+                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt=""></h2>
+                    </div>
+                    <div class="span3">
+                        <h2>180 Coins</h2>
+                    </div>
+                    <div class="span2" style="padding-top: 20px">
+                        <a href="#redeemModal" role="button" class="btn" data-toggle="modal">Redeem</a>
+                    </div>
                 </div>
             </div>
         </div>

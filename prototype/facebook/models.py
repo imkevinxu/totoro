@@ -8,7 +8,7 @@ from prototype_app.models import Drive
 class FacebookProfile(models.Model):
     user = models.OneToOneField(User)
     facebook_id = models.BigIntegerField()
-    access_token = models.CharField(max_length=150)
+    access_token = models.CharField(max_length=255)
     highscore = models.FloatField(null=True, blank=True, default=0)
     currentscore = models.FloatField(null=True, blank=True, default=0)
     rpm = models.FloatField(null=True, blank=True, default=0)

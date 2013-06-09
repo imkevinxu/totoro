@@ -119,6 +119,10 @@ footer {
     padding-bottom: 20px;
 }
 
+.rewards #latest_trip .data {
+    text-align: left;
+}
+
 .data small {
     font-size: 20px;
 }
