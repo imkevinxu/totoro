@@ -219,7 +219,7 @@
             </div>
             {# <div class="span5"></div> #}
         </div>
-        {% for f in friends|sort(attribute='highscore', reverse=True) %}
+        {% for f in friends|sort(attribute='average_mpg', reverse=True) %}
             {% set profile = f.get_facebook_profile() %}
             <div class="row data">
                 <div class="span1">

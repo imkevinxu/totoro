@@ -127,12 +127,15 @@ def dashboard(request):
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))
 
+from random import random
+
 def dummydata(request):
     fb = request.user.get_profile()
     drives = Drive.objects.all()
     for d in drives:
-        d.fb.add(fb)
-        d.save()
+        if random() < 0.75:
+            d.fb.add(fb)
+            d.save()
     return redirect('/dashboard')
 
 #def match_user_profile(id):
