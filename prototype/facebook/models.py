@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from prototype_app.models import Drive
 
 class FacebookProfile(models.Model):
+    created_at  = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now_add=True, auto_now=True)
     user = models.OneToOneField(User)
     facebook_id = models.BigIntegerField()
     access_token = models.CharField(max_length=255)
