@@ -51,8 +51,6 @@ def dashboard(request):
     facebook_profile = request.user.get_profile().get_facebook_profile()
     fb = request.user.get_profile()
 
-
-
     # facebook_profile = {'id': "1374900452", "name": "Kevin Xu", "username": "imkevinxu"}
     # match_user_profile(facebook_profile['id'])
     #read_csv()
@@ -73,6 +71,7 @@ def dashboard(request):
     high_mpg = max(all_mpg)
     low_mpg = min(all_mpg)
     all_times = [d.timestamp for d in all_drives]
+    all_times_formatted = [d.strftime('%m/%d/%Y') for d in all_times]
     recent_time = max(all_times)
     start_of_recent_trip = min([d.timestamp for d in all_drives if d.timestamp.date() == recent_time.date()])
     recent_trip_length = recent_time - start_of_recent_trip
@@ -115,6 +114,14 @@ def dashboard(request):
 
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))
+
+def dummydata(request):
+    fb = request.user.get_profile()
+    drives = Drive.objects.all()
+    for d in drives:
+        d.fb.add(fb)
+        d.save()
+    return redirect('/dashboard')
 
 #def match_user_profile(id):
 def scores(request):
@@ -170,7 +177,9 @@ def api(request):
                 if "mpgs" in parameters.keys():
                     mpgs = parameters.pop('mpgs')[0].split(',')
                     for mpg in mpgs:
-                        d = Drive(fb=fb, mpg=mpg)
+                        d = Drive(mpg=mpg)
+                        d.save()
+                        d.fb = [fb]
                         d.save()
                 for key, value in parameters.items():
                     setattr(fb, key, value)

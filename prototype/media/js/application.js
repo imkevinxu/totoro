@@ -152,37 +152,38 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
     var ctx = $("#myChart").get(0).getContext("2d");
     //This will get the first returned node in the jQuery collection.
 
-    var data = {
-        labels : ["January","February","March","April","May","June","July"],
-        datasets : [
-            {
-                fillColor : "rgba(29, 221, 184, 0.5)",
-                strokeColor : "#1ABC9C",
-                pointColor : "#1ABC9C",
-                pointStrokeColor : "#fff",
-                data : [70,56,60,66,70,90,88]
-            }
-        ]
+    var options = {
+        //String - Scale label font declaration for the scale label
+        scaleFontFamily : "'Lato'",
+
+        //Number - Scale label font size in pixels
+        scaleFontSize : 20,
+
+        //String - Scale label font weight style
+        scaleFontStyle : "normal",
+
+        //String - Scale label font colour
+        scaleFontColor : "#34495e",
     }
-    var myNewChart = new Chart(ctx).Line(data);
+    var myNewChart = new Chart(ctx).Line(data, options);
 
 
 
-    var catx = $("#analyticsgraph").get(0).getContext("2d");
-    //This will get the first returned node in the jQuery collection.
+    // var catx = $("#analyticsgraph").get(0).getContext("2d");
+    // //This will get the first returned node in the jQuery collection.
 
-    var datanew = {
-        labels : ["January","February","March","April","May","June","July"],
-        datasets : [
-            {
-                fillColor : "rgba(29, 221, 184, 0.5)",
-                strokeColor : "#1ABC9C",
-                pointColor : "#1ABC9C",
-                pointStrokeColor : "#fff",
-                data : [70,56,60,66,70,90,88]
-            }
-        ]
-    }
-    var anal = new Chart(catx).Bar(datanew);
+    // var datanew = {
+    //     labels : ["January","February","March","April","May","June","July"],
+    //     datasets : [
+    //         {
+    //             fillColor : "rgba(29, 221, 184, 0.5)",
+    //             strokeColor : "#1ABC9C",
+    //             pointColor : "#1ABC9C",
+    //             pointStrokeColor : "#fff",
+    //             data : [70,56,60,66,70,90,88]
+    //         }
+    //     ]
+    // }
+    // var anal = new Chart(catx).Bar(datanew);
 });
 

@@ -193,6 +193,29 @@ footer {
     padding-bottom: 20px;
 }
 
+#graph {
+    background-color: #9b59b6;
+    border: 4px solid #9b59b6;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+#graph .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#graph .data {
+    text-align: center;
+    background-color: white;
+}
+
+#myChart {
+    margin-left: -48px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 #scores {
     background-color: #E74C3C;
     border: 4px solid #E74C3C;
@@ -246,7 +269,7 @@ a[data-toggle="tooltip"] {
 
 
 
-#sidebar {
+#sidebar, #dummydata {
     position: absolute;
     left: 0;
     top: 103px;
@@ -255,23 +278,34 @@ a[data-toggle="tooltip"] {
     border-left: none;
 }
 
-#sidebar ul {
+#sidebar ul, #dummydata ul {
     list-style-type: none;
     margin: 0;
 }
 
-#sidebar li {
+#sidebar li, #dummydata li {
     padding: 10px 20px;
     text-transform: uppercase;
 }
 
-#sidebar a {
+#sidebar a, #dummydata a {
     text-decoration: none;
     color: white;
 }
 
 #sidebar a:hover li, #sidebar li.active {
     background-color: #7F8C8D;
+}
+
+#dummydata {
+    top: 250px;
+    background-color: #e74c3c;
+    border: 4px solid #c0392b;
+    border-left: none;
+}
+
+#dummydata a:hover li, #dummydata li.active {
+    background-color: #c0392b;
 }
 
 
