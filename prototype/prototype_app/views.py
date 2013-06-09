@@ -125,7 +125,7 @@ def dashboard(request):
     # last_trip_duration = ("%d" % (last_trip[1].seconds/3600), "%d" % (last_trip[1].seconds%3600/60))
     # last_trip_fuel = last_trip[2]
 
-    friends = [user for user in FacebookProfile.objects.all() if 'error' not in user.get_facebook_profile()]
+    friends = [user for user in FacebookProfile.objects.all() if str(user.facebook_id) in fb.get_facebook_friends()]
 
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))
@@ -148,7 +148,7 @@ def challenge(request):
         bet = request.POST['bet']
         c = Challenge(challenger=fb, challengee=challengee, bet=bet)
         c.save()
-        fb.coins = fb.coins - bet
+        fb.coins = fb.coins - int(bet)
         fb.save()
 
     return redirect('/dashboard')

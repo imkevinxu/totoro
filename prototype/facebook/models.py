@@ -28,6 +28,11 @@ class FacebookProfile(models.Model):
         fb_profile = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % self.access_token)
         return json.load(fb_profile)
 
+    def get_facebook_friends(self):
+        fb_friends = urllib.urlopen('https://graph.facebook.com/me/friends?access_token=%s' % self.access_token)
+        json_friends = json.load(fb_friends)['data']
+        return [f['id'] for f in json_friends]
+
     def _average_mpg(self):
         drives = Drive.objects.filter(fb=self)
         if len(drives) == 0: return 0
