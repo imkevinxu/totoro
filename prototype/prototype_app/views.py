@@ -80,9 +80,16 @@ def dashboard(request):
     total_miles = recent_trip_length.seconds * 30.0/60.0/60.0
     graph_times = [d.timestamp.strftime('%H:%M') for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
     from math import sqrt
-    graph_times = [graph_times[i] for i in xrange(0, len(graph_times), int(sqrt(len(graph_times))))]
+    if len(graph_times) > 0:
+        graph_times = [graph_times[i] for i in xrange(0, len(graph_times), int(sqrt(len(graph_times))))]
+    else:
+        graph_times = ["00:00", "00:00"]
     graph_mpgs = [d.mpg for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
-    graph_mpgs = [graph_mpgs[i] for i in xrange(0, len(graph_mpgs), int(sqrt(len(graph_times))))]
+
+    if len(graph_mpgs) > 0:
+        graph_mpgs = [graph_mpgs[i] for i in xrange(0, len(graph_mpgs), int(sqrt(len(graph_times))))]
+    else:
+        graph_mpgs = [0, 0]
 
     recent_avg_mpg_list = [d.mpg for d in all_drives if start_of_recent_trip < d.timestamp < recent_time]
     if len(recent_avg_mpg_list):
