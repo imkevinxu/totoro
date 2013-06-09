@@ -228,6 +228,32 @@
         </div>
         {% for f in friends|sort(attribute='average_mpg', reverse=True) %}
             {% set profile = f.get_facebook_profile() %}
+
+
+
+<div id="challengeModal_{{f.facebook_id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="challengeModal_{{f.facebook_id}}Label" aria-hidden="true">
+    <form action="/challenge" method="POST">{%csrf_token%}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="challengeModal_{{f.facebook_id}}Label">How many coins would you like to bet?</h3>
+  </div>
+  <div class="modal-body">
+    {%if fb.coins > 0%}
+        <input type="hidden" name="challengee" value="{{f.facebook_id}}">
+        <input type="number" name="bet" max="{{fb.coins}}" placeholder="10">
+    {%else%}
+        <h3 style="font-weight:300">Sorry, it seems you do not have any coins. Please download the app here.</h3>
+    {%endif%}
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    {%if fb.coins > 0%}
+        <input type="submit" class="btn btn-success" value="Challenge">
+    {%endif%}
+  </div>
+    </form>
+</div>
+
             <div class="row data">
                 <div class="span1">
                     <div class="number"><span>{{loop.index}}</span></div>
@@ -244,37 +270,13 @@
                 </div>
                 <div class="span1">
                     {% if profile.name != facebook_profile.name %}
-                        <a href="#myModal" role="button" class="btn" data-toggle="modal">Challenge</a>
+                        <a href="#challengeModal_{{f.facebook_id}}" role="button" class="btn btn-success" data-toggle="modal" style="margin-top: 7px;">Challenge</a>
                     {% endif %}
                 </div>
             </div>
         {% endfor %}
     </div>
 
-</div>
-
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">How many coins would you like to bet?</h3>
-  </div>
-  <div class="modal-body">
-    {%if fb.coins > 0%}
-    <form action="">
-
-        <input type="number" placeholder="10">
-
-    </form>
-    {%else%}
-        <h3 style="font-weight:300">Sorry, it seems you do not have any coins. Please download the app here.</h3>
-    {%endif%}
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    {%if fb.coins > 0%}
-        <button class="btn btn-success">Challenge</button>
-    {%endif%}
-  </div>
 </div>
 
 <div id="redeemModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemModalLabel" aria-hidden="true">

@@ -319,6 +319,14 @@ a[data-toggle="tooltip"] {
 }
 
 
+.challenge_button {
+    background-color:#27ae60;
+}
+
+.challenge_button:hover {
+    background-color: #2ecc71;
+}
+
 
 .social .leaderboard {
     background-color: #3498DB;
