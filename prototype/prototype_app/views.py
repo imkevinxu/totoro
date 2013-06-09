@@ -97,6 +97,9 @@ def dashboard(request):
     else:
         recent_avg_mpg = 0
 
+    challenges_sent = Challenge.objects.filter(challenger=fb)
+    challenges_received = Challenge.objects.filter(challengee=fb)
+
     # Change over time charts (output is a list)
 
     #engine_rev_data is a tuple: (timestamp, number of revs/min)
@@ -135,6 +138,19 @@ def dummydata(request):
         if random.random() < 0.05:
             d.fb.add(fb)
             d.save()
+    return redirect('/dashboard')
+
+
+def challenge(request):
+    if request.POST:
+        fb = request.user.get_profile()
+        challengee = FacebookProfile.objects.get(facebook_id=request.POST['challengee'])
+        bet = request.POST['bet']
+        c = Challenge(challenger=fb, challengee=challengee, bet=bet)
+        c.save()
+        fb.coins = fb.coins - bet
+        fb.save()
+
     return redirect('/dashboard')
 
 #def match_user_profile(id):

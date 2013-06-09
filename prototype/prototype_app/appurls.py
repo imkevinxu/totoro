@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^dashboard$', 'prototype_app.views.dashboard'),
     url(r'^analytics$', 'prototype_app.views.analytics'),
     url(r'^dummydata$', 'prototype_app.views.dummydata'),
+    url(r'^challenge$', 'prototype_app.views.challenge'),
 
     # url(r'^index$', 'prototype_app.views.index', name='index'),
 

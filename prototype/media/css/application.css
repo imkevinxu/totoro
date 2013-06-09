@@ -172,19 +172,26 @@ footer {
     position: relative;
 }
 
-#averages {
+#averages, #challenges_sent {
     background-color: #34495E;
     border: 4px solid #34495E;
     margin-top: 20px;
     padding-left: 20px;
 }
 
-#averages .header {
+#challenges_received {
+    background-color: #c0392b;
+    border: 4px solid #c0392b;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+#averages .header, #challenges_sent .header, #challenges_received .header {
     color: white;
     padding-bottom:10px;
 }
 
-#averages .data {
+#averages .data, #challenges_sent .data, #challenges_received .data {
     text-align: center;
     background-color: white;
 }
@@ -195,6 +202,14 @@ footer {
     float: left;
     padding-top: 5px;
     padding-bottom: 20px;
+}
+
+#challenges_sent .header h3, #challenges_received .header h3 {
+    font-weight: 300;
+}
+
+#challenges_sent .data, #challenges_received .data {
+    text-align: left;
 }
 
 #graph {
@@ -343,20 +358,20 @@ a[data-toggle="tooltip"] {
     font-weight: 300;
 }
 
-.social .leaderboard .data {
+.social .leaderboard .data, #challenges_sent .data, #challenges_received .data {
     background-color: white;
     padding-top: 10px;
     padding-bottom: 20px;
 }
 
-.social .leaderboard img {
+.social .leaderboard img, #challenges_sent img, #challenges_received img {
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
     border-radius: 100px;
     float: left;
 }
 
-.social .leaderboard .name {
+.social .leaderboard .name, #challenges_sent .name, #challenges_received .name {
     float: left;
     padding-left: 20px;
 }

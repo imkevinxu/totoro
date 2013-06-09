@@ -46,5 +46,5 @@ class Challenge(models.Model):
     challenger = models.ForeignKey('facebook.FacebookProfile', related_name='challenger')
     challengee = models.ForeignKey('facebook.FacebookProfile', related_name='challengee')
     bet = models.IntegerField(null=True, blank=True, default=0)
-    complete = models.BooleanField(default=False)
+    complete = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)

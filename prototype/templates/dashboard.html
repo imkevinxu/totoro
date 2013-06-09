@@ -277,7 +277,95 @@
         {% endfor %}
     </div>
 
+
+    <div id="challenges_sent">
+        <div class="row header">
+            <div class="span4">
+                <h2>CHALLENGES SENT</h2>
+            </div>
+        </div>
+        <div class="row header">
+            <div class="span2">
+                <h3>Date</h3>
+            </div>
+            <div class="span5">
+                <h3>Friend</h3>
+            </div>
+            <div class="span2">
+                <h3>Bet</h3>
+            </div>
+            <div class="span2">
+                <h3>Status</h3>
+            </div>
+        </div>
+
+        {% for c in challenges_sent|sort(attribute='timestamp', reverse=True) %}
+
+            <div class="row data">
+                <div class="span2">
+                    <h3>{{c.timestamp.strftime('%m/%d')}}</h3>
+                </div>
+                <div class="span5">
+                    <img src="http://graph.facebook.com/{{ c.challengee.get_facebook_profile().username }}/picture" />
+                    <h3 class="name">{{ c.challengee.get_facebook_profile().name }}</h3>
+                </div>
+                <div class="span2">
+                    <h3>{{ c.bet }}</h3>
+                </div>
+                <div class="span2">
+                    <h3>{% if c.complete > 0 %}<h3 style="background-color: #27ae60; color: white; text-align: center">Won</h3>{%elif c.complete < 0%}<h3 style="background-color: #c0392b; color: white;text-align: center">Lost</h3>{%else%}<h3 style="background-color: #2c3e50; color: white; text-align: center">Pending</h3>{%endif%}</h3>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+    <div id="challenges_received">
+        <div class="row header">
+            <div class="span4">
+                <h2>CHALLENGES RECEIVED</h2>
+            </div>
+        </div>
+        <div class="row header">
+            <div class="span2">
+                <h3>Date</h3>
+            </div>
+            <div class="span5">
+                <h3>Friend</h3>
+            </div>
+            <div class="span2">
+                <h3>Bet</h3>
+            </div>
+            <div class="span2">
+                <h3>Status</h3>
+            </div>
+        </div>
+
+        {% for c in challenges_received|sort(attribute='timestamp', reverse=True) %}
+
+            <div class="row data">
+                <div class="span2">
+                    <h3>{{c.timestamp.strftime('%m/%d')}}</h3>
+                </div>
+                <div class="span5">
+                    <img src="http://graph.facebook.com/{{ c.challenger.get_facebook_profile().username }}/picture" />
+                    <h3 class="name">{{ c.challenger.get_facebook_profile().name }}</h3>
+                </div>
+                <div class="span2">
+                    <h3>{{ c.bet }}</h3>
+                </div>
+                <div class="span2">
+                    <h3>{% if c.complete > 0 %}<h3 style="background-color: #27ae60; color: white; text-align: center">Won</h3>{%elif c.complete < 0%}<h3 style="background-color: #c0392b; color: white;text-align: center">Lost</h3>{%else%}<h3 style="background-color: #2c3e50; color: white; text-align: center">Pending</h3>{%endif%}</h3>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
 </div>
+
+
 
 <div id="redeemModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemModalLabel" aria-hidden="true">
   <div class="modal-header">
