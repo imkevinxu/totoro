@@ -38,6 +38,6 @@ class DriveData(models.Model):
 #         return u'%s' % (self.data)
 
 class Drive(models.Model):
-    fb = models.ForeignKey('facebook.FacebookProfile')
+    fb = models.ManyToManyField('facebook.FacebookProfile')
     mpg = models.FloatField(null=True, blank=True, default=0)
     timestamp = models.DateTimeField(auto_now_add=True)

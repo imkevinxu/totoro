@@ -50,6 +50,9 @@ def dashboard(request):
 
     facebook_profile = request.user.get_profile().get_facebook_profile()
     fb = request.user.get_profile()
+
+
+
     # facebook_profile = {'id': "1374900452", "name": "Kevin Xu", "username": "imkevinxu"}
     # match_user_profile(facebook_profile['id'])
     #read_csv()
