@@ -126,6 +126,7 @@ def dashboard(request):
     # last_trip_fuel = last_trip[2]
 
     friends = [user for user in FacebookProfile.objects.all() if str(user.facebook_id) in fb.get_facebook_friends()]
+    friends.append(fb)
 
     return render(request, 'dashboard.html', locals())
     #return render_to_response('index.html',  {'facebook_profile': facebook_profile}, context_instance=RequestContext(request))
@@ -134,10 +135,12 @@ def dashboard(request):
 def dummydata(request):
     fb = request.user.get_profile()
     drives = Drive.objects.all()
+    if len(drives) > 101:
+        r = random.randint(0, len(drives)-100)
+        drives = drives[r:r+100]
     for d in drives:
-        if random.random() < 0.05:
-            d.fb.add(fb)
-            d.save()
+        d.fb.add(fb)
+        d.save()
     return redirect('/dashboard')
 
 

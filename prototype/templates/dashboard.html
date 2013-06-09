@@ -242,7 +242,7 @@
         <input type="hidden" name="challengee" value="{{f.facebook_id}}">
         <input type="number" name="bet" max="{{fb.coins}}" placeholder="10">
     {%else%}
-        <h3 style="font-weight:300">Sorry, it seems you do not have any coins. Please download the app here.</h3>
+        <h3 style="font-weight:300">Sorry, it seems you do not have any coins. In order to get coins, please get an OBDII Reader and our Android App.</h3>
     {%endif%}
   </div>
   <div class="modal-footer">
@@ -366,20 +366,6 @@
 </div>
 
 
-
-<div id="redeemModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="redeemModalLabel">Redeeming Gift Card</h3>
-  </div>
-  <div class="modal-body">
-    <p>Please email kevin@imkevinxu.com to redeem your gift card.</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-  </div>
-</div>
-
 {# <div id="dashboard" class="container replay">
 
        <div class="row">
@@ -425,6 +411,23 @@
 
 </div> #}
 
+
+
+
+<div id="redeemModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="redeemModalLabel">Redeeming Gift Card</h3>
+  </div>
+  <div class="modal-body">
+    <h2>Promotion Over</h2>
+    <p>Thanks for participating, unfortunately we've run out of rewards for the moment but please check back shortly!</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
 <div id="dashboard" class="container rewards">
 
        <div class="row">
@@ -451,37 +454,37 @@
                 <div class="row data">
                     <div class="span4">
                         <h2>$5 Gift Card</h2>
-                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt=""></h2>
+                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt="" width=75></h2>
                     </div>
                     <div class="span3">
                         <h2>50 Coins</h2>
                     </div>
                     <div class="span2" style="padding-top: 20px">
-                        <a href="#redeemModal" role="button" class="btn" data-toggle="modal">Redeem</a>
+                        <a href="#redeemModal" role="button" class="btn btn-block btn-large {% if fb.coins < 50 %}disabled{% else %}btn-success{% endif %}" data-toggle="modal">{% if fb.coins < 50 %}Not enough coins{% else %}Redeem!{% endif %}</a>
                     </div>
                 </div>
                 <div class="row data">
                     <div class="span4">
                         <h2>$10 Gift Card</h2>
-                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt=""></h2>
+                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt="" width=110></h2>
                     </div>
                     <div class="span3">
                         <h2>90 Coins</h2>
                     </div>
                     <div class="span2" style="padding-top: 20px">
-                        <a href="#redeemModal" role="button" class="btn" data-toggle="modal">Redeem</a>
+                        <a href="#redeemModal" role="button" class="btn btn-block btn-large {% if fb.coins < 90 %}disabled{% else %}btn-success{% endif %}" data-toggle="modal">{% if fb.coins < 50 %}Not enough coins{% else %}Redeem!{% endif %}</a>
                     </div>
                 </div>
                 <div class="row data">
                     <div class="span4">
                         <h2>$20 Gift Card</h2>
-                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt=""></h2>
+                        <h2><img src="{{ MEDIA_URL }}images/card.png" alt="" width=145></h2>
                     </div>
                     <div class="span3">
                         <h2>180 Coins</h2>
                     </div>
                     <div class="span2" style="padding-top: 20px">
-                        <a href="#redeemModal" role="button" class="btn" data-toggle="modal">Redeem</a>
+                        <a href="#redeemModal" role="button" class="btn btn-block btn-large {% if fb.coins < 180 %}disabled{% else %}btn-success{% endif %}" data-toggle="modal">{% if fb.coins < 50 %}Not enough coins{% else %}Redeem!{% endif %}</a>
                     </div>
                 </div>
             </div>

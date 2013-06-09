@@ -22,7 +22,7 @@ class FacebookProfile(models.Model):
     barometer = models.FloatField(null=True, blank=True, default=0)
     ambienttemp = models.FloatField(null=True, blank=True, default=0)
     throttle = models.FloatField(null=True, blank=True, default=0)
-    coins = models.IntegerField(null=True, blank=True, default=0)
+    coins = models.IntegerField(null=True, blank=True, default=10)
 
     def get_facebook_profile(self):
         fb_profile = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % self.access_token)

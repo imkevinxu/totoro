@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('challenger', self.gf('django.db.models.fields.related.ForeignKey')(related_name='challenger', to=orm['facebook.FacebookProfile'])),
             ('challengee', self.gf('django.db.models.fields.related.ForeignKey')(related_name='challengee', to=orm['facebook.FacebookProfile'])),
             ('bet', self.gf('django.db.models.fields.IntegerField')(default=0, null=True, blank=True)),
-            ('complete', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('complete', self.gf('django.db.models.fields.IntegerField')(default=0, null=True, blank=True)),
             ('timestamp', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
         db.send_create_signal(u'prototype_app', ['Challenge'])
@@ -88,7 +88,7 @@ class Migration(SchemaMigration):
             'bet': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
             'challengee': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'challengee'", 'to': u"orm['facebook.FacebookProfile']"}),
             'challenger': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'challenger'", 'to': u"orm['facebook.FacebookProfile']"}),
-            'complete': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'complete': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'timestamp': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
         },
