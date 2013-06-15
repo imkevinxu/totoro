@@ -155,27 +155,6 @@ public class AnimatedView extends ImageView{
 		}
 		speedDeltaTolerance *= TOLERANCE_SCALE_DECREASE;
 		return "No recommendation.";
-
-		/*
-		switch((int)(2))	{
-		case 0: 
-			mp1 = MediaPlayer.create(mContext, R.raw.rec1);
-			return "Try to avoid flooring the accelerator";//.\nSudden changes in acceleration produce significantly larger\n quantities of carbon dioxide.";
-		case 1: 
-			mp1 = MediaPlayer.create(mContext, R.raw.rec2);
-			return "Try hitting the brake pedal more softly.";//\nThis will prevent degradation of your brakes.";
-		case 3: 
-			mp1 = MediaPlayer.create(mContext, R.raw.rec3);
-			return "Try to turn more smoothly.";
-		case 2: 
-			mp1 = MediaPlayer.create(mContext, R.raw.rec4);
-			return "Avoid accelerating on inclines.";//\nUse your momentum to carry you through inclines.";
-			//case 4: 
-			//mp1 = MediaPlayer.create(mContext, R.raw.rec5);
-			//return "Avoid idling your engine.";//\nTurn off your car if you're going to not use it for extended periods of time.";
-		default:
-			return "No recommendation.";
-		}*/
 	}
 
 	/* Updates the player's total number of coins to the database once the drive
@@ -240,38 +219,6 @@ public class AnimatedView extends ImageView{
 
 		@Override
 		protected Integer doInBackground(String... params) {
-			/*try {
-				HttpClient client = new DefaultHttpClient();
-				HttpGet get = new HttpGet(getURL);
-				Log.e("FBID", "url: " + getURL);
-				HttpResponse responseGet = client.execute(get);
-				HttpEntity responseEntity = responseGet.getEntity();
-				String response = EntityUtils.toString(responseEntity);
-				if (!response.equals(null)) {
-					JSONObject currUser;
-					try {
-						currUser = new JSONObject(response);
-						String score = currUser.optString("highscore");
-						Log.e("FBID", "score: " + score);
-						if(score != null) {
-							Double mpg = Double.parseDouble(score);
-							Log.e("FBID", "Mpg" + " " + mpg);
-							if (mpg != scoreNum) {
-								lastMPG = scoreNum;
-								scoreNum = mpg;
-							}
-							scoreNum = mpg; 
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return 0; */
 			double mpg = BluetoothChatService.currentMPG;
 			if (mpg != scoreNum) {
 				lastMPG = scoreNum;
@@ -351,11 +298,6 @@ public class AnimatedView extends ImageView{
 			scoreDec++;
 		}
 
-		//System.out.println(speed);
-
-		//double averageMPG 
-		//String score = String.format("%.2g%n", calculateAverageMPG());
-		//String score = String.format("%.2g%n", averageMPG);
 		String score = String.format("%.2g%n", scoreNum);
 		winWidth = this.getWidth();
 		winHeight = this.getHeight();
@@ -477,9 +419,7 @@ public class AnimatedView extends ImageView{
 	}
 
 	protected void onDraw(Canvas c) {  
-		Activity a = (Activity) mContext;
-		Intent k = new Intent(a, SummaryActivity.class);
-		a.startActivity(k);
+
 		if (BluetoothChatService.end_game) {
 			totalDriveTime = System.currentTimeMillis() - startDriveTime;
 			// convert to minutes
@@ -487,10 +427,9 @@ public class AnimatedView extends ImageView{
 			recommendedTip = updateBestTip();
 			updateCoins(true);
 			avgMpg = calculateAverageMPG();
-			/*Activity a = (Activity) mContext;
-			Intent k = new Intent(a.this, SummaryActivity.class);
-			a.startActivity(k);*/
-			//a.setContentView(R.layout.summary);
+			Activity a = (Activity) mContext;
+			Intent k = new Intent(a, SummaryActivity.class);
+			a.startActivity(k);
 		}
 
 		if(++counter % 10 == 0)	{

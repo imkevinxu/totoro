@@ -163,10 +163,7 @@ public class Main extends Activity {
 		if (fbid == null) {
 			setContentView(R.layout.login);     
 		}
-		//setContentView(R.layout.main);
-		//Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.example.android.BluetoothChat");
-		//startActivity(launchIntent);
-		//   
+
 		// start Facebook Login
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
 
@@ -182,6 +179,7 @@ public class Main extends Activity {
 						@Override
 						public void onCompleted(GraphUser user, Response response) {
 							if (user != null) {
+								// need to change the mac address to the proper address of the OBDII device a specific user is using 
 								macAddress = "00:0D:18:28:04:F4";
 								//macAddress = "00:0D:18:00:7A:BE";
 								fbid = user.getId();  
@@ -201,10 +199,7 @@ public class Main extends Activity {
 								}
 								//mChatService.start();
 								loopQuery();
-								//setContentView(R.layout.main);
-								//Activity a = (Activity) mContext;
-								Intent k = new Intent(act, SummaryActivity.class);
-								act.startActivity(k);
+								setContentView(R.layout.main);
 							}
 						}
 					});
