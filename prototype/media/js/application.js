@@ -43,16 +43,21 @@ $(document).ready(function() {
     });
 
     // Disable link click not scroll top
-    $("a[href='#']").click(function() {
-        return false
+    // $("a[href='#']").click(function() {
+    //     return false
+    // });
+
+    $("#dummydata a").click(function() {
+        $("#dummydata .hidden").removeClass("hidden");
     });
 
-
-    // $(".score").countTo({
-    //     "interval": 100,
-    //     "startNumber": 0,
-    //     "endNumber": $(self).text(),
-    // });
+    $(".score").each(function(){
+        $(this).countTo({
+        "interval": 30,
+        "startNumber": 0,
+        "endNumber": $(this).text(),
+        });
+    });
 
     // $('.donut-arrow').trigger('updatePercentage', 0);
     // $('.donut-arrow').eachtrigger('updatePercentage', $(this).data('percentage'));
@@ -77,6 +82,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.overview").slideRightIn();
                 }, 400);
@@ -85,6 +91,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.recent").slideRightIn();
                     google.maps.event.trigger(map, 'resize');
@@ -95,6 +102,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.recent").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.economic").slideRightIn();
                 }, 400);
@@ -104,6 +112,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.replay").slideLeftOut();
                 $("#dashboard.recent").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.social").slideRightIn();
                 }, 400);
@@ -113,6 +122,7 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                 $("#dashboard.social").slideLeftOut();
                 $("#dashboard.recent").slideLeftOut();
                 $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.rewards").slideLeftOut();
                 window.setTimeout(function() {
                     $("#dashboard.replay").slideRightIn();
                     var c = 0;
@@ -126,6 +136,16 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
                    }, 50);
                 }, 400);
 
+            } else if ($(clicked).is("#rewards")) {
+                $("#dashboard.overview").slideLeftOut();
+                $("#dashboard.social").slideLeftOut();
+                $("#dashboard.recent").slideLeftOut();
+                $("#dashboard.economic").slideLeftOut();
+                $("#dashboard.replay").slideLeftOut();
+                window.setTimeout(function() {
+                    $("#dashboard.rewards").slideRightIn();
+                }, 400);
+
             }
           }
         });
@@ -135,18 +155,38 @@ jQuery.fn.slideRightIn = function(speed, easing, callback) {
     var ctx = $("#myChart").get(0).getContext("2d");
     //This will get the first returned node in the jQuery collection.
 
-    var data = {
-        labels : ["January","February","March","April","May","June","July"],
-        datasets : [
-            {
-                fillColor : "rgba(29, 221, 184, 0.5)",
-                strokeColor : "#1ABC9C",
-                pointColor : "#1ABC9C",
-                pointStrokeColor : "#fff",
-                data : [70,56,60,66,70,90,88]
-            }
-        ]
+    var options = {
+        //String - Scale label font declaration for the scale label
+        scaleFontFamily : "'Lato'",
+
+        //Number - Scale label font size in pixels
+        scaleFontSize : 20,
+
+        //String - Scale label font weight style
+        scaleFontStyle : "normal",
+
+        //String - Scale label font colour
+        scaleFontColor : "#34495e",
     }
-    var myNewChart = new Chart(ctx).Line(data);
+    var myNewChart = new Chart(ctx).Line(data, options);
+
+
+
+    // var catx = $("#analyticsgraph").get(0).getContext("2d");
+    // //This will get the first returned node in the jQuery collection.
+
+    // var datanew = {
+    //     labels : ["January","February","March","April","May","June","July"],
+    //     datasets : [
+    //         {
+    //             fillColor : "rgba(29, 221, 184, 0.5)",
+    //             strokeColor : "#1ABC9C",
+    //             pointColor : "#1ABC9C",
+    //             pointStrokeColor : "#fff",
+    //             data : [70,56,60,66,70,90,88]
+    //         }
+    //     ]
+    // }
+    // var anal = new Chart(catx).Bar(datanew);
 });
 

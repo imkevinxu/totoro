@@ -11,13 +11,13 @@
 
     <title>{% block title %}OmniDrive{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
-    {# TODO: <link rel="icon" type="image/x-icon" href="{{ MEDIA_URL }}images/favicon.png" /> #}
+    <link rel="icon" type="image/x-icon" href="{{ MEDIA_URL }}images/favicon.png" />
 
     <!-- Apple Meta Data -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="viewport" content="width=device-width; initial-scale=1.0;" />
-    {# TODO: <link rel="apple-touch-icon-precomposed" href="{{ MEDIA_URL }}images/apple-touch-icon.png" /> #}
+    <link rel="apple-touch-icon-precomposed" href="{{ MEDIA_URL }}images/apple-touch-icon.png" />
 
     <!-- Facebook Meta Data -->
     <!-- <meta property="og:url" content="http://example.com/" />
@@ -90,7 +90,7 @@
     <script src="http://vjs.zencdn.net/c/video.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 
-    <script src="https://raw.github.com/nnnick/Chart.js/master/Chart.min.js"></script>
+    <script src="{{ MEDIA_URL }}js/Chart.min.js"></script>
     <script src="{{ MEDIA_URL }}js/application.js"></script>
     <!--[if lt IE 8]>
       <script src="js/icon-font-ie7.js"></script>

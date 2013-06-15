@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}{{ super() }}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block bodyid %}dashboardbody{% endblock %}
+
+{% block content %}
+
+
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+        <div class="row">
+            <div class="span2">
+                <a class="brand" href="/">OmniDrive</a>
+            </div>
+            <div class="span4 offset6 last">
+                <span class="brand">{{ facebook_profile.name }}
+                    <img src="http://graph.facebook.com/{{ facebook_profile.username }}/picture" />
+                </span>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div id="dashboard" class="container overview active">
+    <div class="row">
+        <div class="span12">
+
+            <h1>Website Analytics</h1>
+            <h2>Total Users - 10</h2>
+            <h2>Total Ask for OBDII - 2</h2>
+
+            <br>
+            <h1>Mobile Analytics</h1>
+            <h2>Total Users - 5</h2>
+            <h2>Total Drives - {{len_drives}}</h2>
+            {% for d in drives %}
+                <li>{{d.mpg}} - {{d.timestamp}}</li>
+                {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block javascript %}
+
+
+    <script type="text/javascript">
+
+var data = {
+    labels : ["January","February","March","April","May","June","July"],
+    datasets : [
+        {
+            fillColor : "rgba(220,220,220,0.5)",
+            strokeColor : "rgba(220,220,220,1)",
+            data : [65,59,90,81,56,55,40]
+        },
+        {
+            fillColor : "rgba(151,187,205,0.5)",
+            strokeColor : "rgba(151,187,205,1)",
+            data : [28,48,40,19,96,27,100]
+        }
+    ]
+}
+
+    </script>
+
+
+
+
+{% endblock %}

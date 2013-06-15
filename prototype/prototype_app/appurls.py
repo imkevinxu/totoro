@@ -16,6 +16,9 @@ def smartlogin(request, **kwargs):
 urlpatterns = patterns('',
     url(r'^$', 'prototype_app.views.home', name='home'),
     url(r'^dashboard$', 'prototype_app.views.dashboard'),
+    url(r'^analytics$', 'prototype_app.views.analytics'),
+    url(r'^dummydata$', 'prototype_app.views.dummydata'),
+    url(r'^challenge$', 'prototype_app.views.challenge'),
 
     # url(r'^index$', 'prototype_app.views.index', name='index'),
 
@@ -23,9 +26,10 @@ urlpatterns = patterns('',
     url(r'^facebook/authentication_callback$', 'facebook.views.authentication_callback'),
     #url(r'^logout$', 'django.contrib.auth.views.logout'),
 
-    url(r'^scores$', 'prototype_app.views.scores'),
-    url(r'^data$', 'prototype_app.views.data'),
-    url(r'^getscore$', 'prototype_app.views.getscore'),
+    url(r'^scores/$', 'prototype_app.views.scores'),
+    url(r'^data/$', 'prototype_app.views.data'),
+    url(r'^api/$', 'prototype_app.views.api'),
+    url(r'^getscore/$', 'prototype_app.views.getscore'),
 
 
     url(r'^mariokart$', 'prototype_app.views.mariokart'),

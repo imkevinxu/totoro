@@ -8,80 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'FacebookProfile.rpm'
-        db.add_column('facebook_facebookprofile', 'rpm',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
 
-        # Adding field 'FacebookProfile.mpg'
-        db.add_column('facebook_facebookprofile', 'mpg',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'FacebookProfile.speed'
-        db.add_column('facebook_facebookprofile', 'speed',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'FacebookProfile.maf'
-        db.add_column('facebook_facebookprofile', 'maf',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'FacebookProfile.runsec'
-        db.add_column('facebook_facebookprofile', 'runsec',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'FacebookProfile.warmups'
-        db.add_column('facebook_facebookprofile', 'warmups',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'FacebookProfile.barometer'
-        db.add_column('facebook_facebookprofile', 'barometer',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'FacebookProfile.ambienttemp'
-        db.add_column('facebook_facebookprofile', 'ambienttemp',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'FacebookProfile.throttle'
-        db.add_column('facebook_facebookprofile', 'throttle',
-                      self.gf('django.db.models.fields.FloatField')(default=0, null=True, blank=True),
-                      keep_default=False)
-
+        # Changing field 'FacebookProfile.access_token'
+        db.alter_column('facebook_facebookprofile', 'access_token', self.gf('django.db.models.fields.CharField')(max_length=255))
 
     def backwards(self, orm):
-        # Deleting field 'FacebookProfile.rpm'
-        db.delete_column('facebook_facebookprofile', 'rpm')
 
-        # Deleting field 'FacebookProfile.mpg'
-        db.delete_column('facebook_facebookprofile', 'mpg')
-
-        # Deleting field 'FacebookProfile.speed'
-        db.delete_column('facebook_facebookprofile', 'speed')
-
-        # Deleting field 'FacebookProfile.maf'
-        db.delete_column('facebook_facebookprofile', 'maf')
-
-        # Deleting field 'FacebookProfile.runsec'
-        db.delete_column('facebook_facebookprofile', 'runsec')
-
-        # Deleting field 'FacebookProfile.warmups'
-        db.delete_column('facebook_facebookprofile', 'warmups')
-
-        # Deleting field 'FacebookProfile.barometer'
-        db.delete_column('facebook_facebookprofile', 'barometer')
-
-        # Deleting field 'FacebookProfile.ambienttemp'
-        db.delete_column('facebook_facebookprofile', 'ambienttemp')
-
-        # Deleting field 'FacebookProfile.throttle'
-        db.delete_column('facebook_facebookprofile', 'throttle')
-
+        # Changing field 'FacebookProfile.access_token'
+        db.alter_column('facebook_facebookprofile', 'access_token', self.gf('django.db.models.fields.CharField')(max_length=150))
 
     models = {
         'auth.group': {
@@ -122,9 +56,10 @@ class Migration(SchemaMigration):
         },
         'facebook.facebookprofile': {
             'Meta': {'object_name': 'FacebookProfile'},
-            'access_token': ('django.db.models.fields.CharField', [], {'max_length': '150'}),
+            'access_token': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'ambienttemp': ('django.db.models.fields.FloatField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
             'barometer': ('django.db.models.fields.FloatField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
+            'coins': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
             'currentscore': ('django.db.models.fields.FloatField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),
             'facebook_id': ('django.db.models.fields.BigIntegerField', [], {}),
             'highscore': ('django.db.models.fields.FloatField', [], {'default': '0', 'null': 'True', 'blank': 'True'}),

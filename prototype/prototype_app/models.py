@@ -36,3 +36,15 @@ class DriveData(models.Model):
 
 #     def __unicode__(self):
 #         return u'%s' % (self.data)
+
+class Drive(models.Model):
+    fb = models.ManyToManyField('facebook.FacebookProfile')
+    mpg = models.FloatField(null=True, blank=True, default=0)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+class Challenge(models.Model):
+    challenger = models.ForeignKey('facebook.FacebookProfile', related_name='challenger')
+    challengee = models.ForeignKey('facebook.FacebookProfile', related_name='challengee')
+    bet = models.IntegerField(null=True, blank=True, default=0)
+    complete = models.IntegerField(default=0)
+    timestamp = models.DateTimeField(auto_now_add=True)

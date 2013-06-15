@@ -2,6 +2,10 @@
     text-align: center;
 }
 
+.hidden {
+    display: none;
+}
+
 .navbar {
     margin-bottom: 0;
     border-bottom: 1px solid #F4F4F4;
@@ -69,7 +73,7 @@
 }
 
 footer {
-     margin-top: 64px;
+     margin-top: 32px;
      padding-bottom: 32px;
 }
 
@@ -119,6 +123,10 @@ footer {
     padding-bottom: 20px;
 }
 
+.rewards #latest_trip .data {
+    text-align: left;
+}
+
 .data small {
     font-size: 20px;
 }
@@ -164,19 +172,26 @@ footer {
     position: relative;
 }
 
-#averages {
+#averages, #challenges_sent {
     background-color: #34495E;
     border: 4px solid #34495E;
     margin-top: 20px;
     padding-left: 20px;
 }
 
-#averages .header {
+#challenges_received {
+    background-color: #c0392b;
+    border: 4px solid #c0392b;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+#averages .header, #challenges_sent .header, #challenges_received .header {
     color: white;
     padding-bottom:10px;
 }
 
-#averages .data {
+#averages .data, #challenges_sent .data, #challenges_received .data {
     text-align: center;
     background-color: white;
 }
@@ -187,6 +202,37 @@ footer {
     float: left;
     padding-top: 5px;
     padding-bottom: 20px;
+}
+
+#challenges_sent .header h3, #challenges_received .header h3 {
+    font-weight: 300;
+}
+
+#challenges_sent .data, #challenges_received .data {
+    text-align: left;
+}
+
+#graph {
+    background-color: #9b59b6;
+    border: 4px solid #9b59b6;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+#graph .header {
+    color: white;
+    padding-bottom:10px;
+}
+
+#graph .data {
+    text-align: center;
+    background-color: white;
+}
+
+#myChart {
+    margin-left: -48px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #scores {
@@ -242,7 +288,7 @@ a[data-toggle="tooltip"] {
 
 
 
-#sidebar {
+#sidebar, #dummydata {
     position: absolute;
     left: 0;
     top: 103px;
@@ -251,17 +297,17 @@ a[data-toggle="tooltip"] {
     border-left: none;
 }
 
-#sidebar ul {
+#sidebar ul, #dummydata ul {
     list-style-type: none;
     margin: 0;
 }
 
-#sidebar li {
+#sidebar li, #dummydata li {
     padding: 10px 20px;
     text-transform: uppercase;
 }
 
-#sidebar a {
+#sidebar a, #dummydata a {
     text-decoration: none;
     color: white;
 }
@@ -270,12 +316,31 @@ a[data-toggle="tooltip"] {
     background-color: #7F8C8D;
 }
 
+#dummydata {
+    top: 250px;
+    background-color: #e74c3c;
+    border: 4px solid #c0392b;
+    border-left: none;
+}
+
+#dummydata a:hover li, #dummydata li.active {
+    background-color: #c0392b;
+}
+
 
 #map-canvas {
     margin-top: 20px;
     height: 500px;
 }
 
+
+.challenge_button {
+    background-color:#27ae60;
+}
+
+.challenge_button:hover {
+    background-color: #2ecc71;
+}
 
 
 .social .leaderboard {
@@ -293,20 +358,20 @@ a[data-toggle="tooltip"] {
     font-weight: 300;
 }
 
-.social .leaderboard .data {
+.social .leaderboard .data, #challenges_sent .data, #challenges_received .data {
     background-color: white;
     padding-top: 10px;
     padding-bottom: 20px;
 }
 
-.social .leaderboard img {
+.social .leaderboard img, #challenges_sent img, #challenges_received img {
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
     border-radius: 100px;
     float: left;
 }
 
-.social .leaderboard .name {
+.social .leaderboard .name, #challenges_sent .name, #challenges_received .name {
     float: left;
     padding-left: 20px;
 }

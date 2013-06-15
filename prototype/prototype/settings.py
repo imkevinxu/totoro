@@ -125,7 +125,7 @@ from django.core.urlresolvers import reverse_lazy
 
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/'
 
 LOGOUT_URL = '/logout/'
 
